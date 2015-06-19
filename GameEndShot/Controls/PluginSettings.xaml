@@ -1,0 +1,53 @@
+﻿<dialogs:CustomDialog x:Class="HDT.Plugins.GameEndShot.Controls.PluginSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="380" Height="380" d:DesignWidth="450">
+    <dialogs:CustomDialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </dialogs:CustomDialog.Resources>
+    <StackPanel Width="300" Margin="0,15,0,0">
+        <TextBlock TextWrapping="Wrap" Text="GameEndShot Settings" 
+                   FontSize="18"/>
+        <Separator Margin="0,2,0,16" />
+        <DockPanel Margin="0,4,0,4">
+            <Label Content="Filename prefix" Width="100"/>
+            <TextBox x:Name="TextBox_Prefix" Text="MyTourny_" />
+        </DockPanel>
+        <DockPanel Margin="0,4,0,4">
+            <Label Content="Delay (miliseconds)" Width="100"/>
+            <TextBox x:Name="TextBox_Delay" Text="15000" />
+        </DockPanel>
+        <DockPanel Margin="0,4,0,4">
+            <Label Content="Advanced Mode" Width="100"/>
+            <CheckBox x:Name="CheckBox_Advanced" />
+        </DockPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,6,0,0">
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+            <!-- TODO: Add current setting or set dialog to default to it -->
+            <Button Margin="0,4,0,4" Content="Set Default Output Directory" Click="BtnDefaultDirectory_Click"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="210" Margin="0,30,0,0">
+            <Button x:Name="BtnSave"  Content="Save" Width="90" Click="BtnSave_OnClick" 
+                    Style="{StaticResource AccentedSquareButtonStyle}" />
+            <Button x:Name="BtnCancel" Content="Cancel" Width="90" Margin="20,0,0,0" Click="BtnCancel_OnClick" />
+        </StackPanel>
+    </StackPanel>
+</dialogs:CustomDialog>
+
