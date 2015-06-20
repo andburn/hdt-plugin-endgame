@@ -1,14 +1,14 @@
-﻿using GameEndShot.Properties;
-using Hearthstone_Deck_Tracker;
-using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
+using GameEndShot.Properties;
+using Hearthstone_Deck_Tracker;
+
 namespace HDT.Plugins.GameEndShot.Controls
 {
-	public partial class PluginSettings : CustomDialog
+	public partial class PluginSettings : System.Windows.Controls.UserControl
 	{
 		private string _defaultPath;
 
@@ -32,12 +32,10 @@ namespace HDT.Plugins.GameEndShot.Controls
 		private void BtnSave_OnClick(object sender, RoutedEventArgs e)
 		{
 			SaveSettings();
-			Helper.MainWindow.HideMetroDialogAsync(this);
 		}
 
 		private void BtnCancel_OnClick(object sender, RoutedEventArgs e)
 		{
-			Helper.MainWindow.HideMetroDialogAsync(this);
 		}
 
 		private void LoadSettings()

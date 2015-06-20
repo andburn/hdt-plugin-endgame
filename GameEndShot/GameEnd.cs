@@ -38,7 +38,7 @@ namespace HDT.Plugins.GameEndShot
 
 		private static void Advanced(int delay, string dir)
 		{
-
+			
 		}
 
 	}

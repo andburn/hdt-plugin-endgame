@@ -5,13 +5,14 @@ using Hearthstone_Deck_Tracker.Plugins;
 using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.Controls;
 
 namespace HDT.Plugins.GameEndShot
 {
     public class GameEndShotPlugin : IPlugin
     {
 		private MenuItem ShotMenuItem;
-		private Controls.PluginSettings SettingsDialog;
+		private Flyout _settings;
 
 		public string Author
 		{
@@ -45,27 +46,45 @@ namespace HDT.Plugins.GameEndShot
 
 		public void OnButtonPress()
 		{
-			if (SettingsDialog != null)
-				Helper.MainWindow.ShowMetroDialogAsync(SettingsDialog);
+			if (_settings != null)
+				_settings.IsOpen = true;
 		}
 
 		public void OnLoad()
 		{
 			ShotMenuItem = new Controls.PluginMenu();
-			SettingsDialog = new Controls.PluginSettings();
+			SetSettingsFlyout();
 			GameEvents.OnGameEnd.Add(GameEnd.ScreenShot);
 		}
 
 		public void OnUnload()
 		{
-			SettingsDialog.RequestCloseAsync();
+			_settings.IsOpen = false;
 		}
 
 		public void OnUpdate()
 		{
 			
 		}
-		
+
+		private void SetSettingsFlyout()
+		{
+			var window = Hearthstone_Deck_Tracker.Helper.MainWindow;
+			var flyouts = window.Flyouts;
+			var items = flyouts.Items;
+			
+			var newflyout = new Flyout();
+			newflyout.Name = "PluginSettingsFlyout";
+			newflyout.Position = Position.Left;
+			// TODO: how to set Panel.ZIndex
+			//newflyout.Width = 250;
+			newflyout.Header = "Game Shot Settings";
+			newflyout.Content = new Controls.PluginSettings();
+			newflyout.Theme = FlyoutTheme.Accent;
+			items.Add(newflyout);
+
+			_settings = newflyout;	
+		}
 	}
 }
 
