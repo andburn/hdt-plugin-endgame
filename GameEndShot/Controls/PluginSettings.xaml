@@ -3,51 +3,54 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="380" Height="380" d:DesignWidth="450">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    <StackPanel Width="300" Margin="0,15,0,0">
-        <TextBlock TextWrapping="Wrap" Text="GameEndShot Settings" 
-                   FontSize="18"/>
-        <Separator Margin="0,2,0,16" />
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Margin="10,15,10,15">       
         <DockPanel Margin="0,4,0,4">
-            <Label Content="Filename prefix" Width="100"/>
-            <TextBox x:Name="TextBox_Prefix" Text="MyTourny_" />
-        </DockPanel>
-        <DockPanel Margin="0,4,0,4">
-            <Label Content="Delay (miliseconds)" Width="100"/>
-            <TextBox x:Name="TextBox_Delay" Text="15000" />
+            <Label Content="Delay (seconds)" Width="100"/>
+            <TextBox x:Name="TextBox_Delay" 
+                     Text="5" TextChanged="TextBox_Delay_TextChanged"
+                     ToolTip="Set the delay from game end detection to screenshot"/>
         </DockPanel>
         <DockPanel Margin="0,4,0,4">
             <Label Content="Advanced Mode" Width="100"/>
-            <CheckBox x:Name="CheckBox_Advanced" />
+            <CheckBox x:Name="CheckBox_Advanced" IsChecked="False"
+                      Checked="CheckBox_Advanced_Checked"
+                      Unchecked="CheckBox_Advanced_Unchecked"
+                      ToolTip="Advanced mode enables additional features"/>
         </DockPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,6,0,0">
-            <StackPanel.Resources>
-                <ResourceDictionary>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-                    </ResourceDictionary.MergedDictionaries>
-                </ResourceDictionary>
-            </StackPanel.Resources>
-            <!-- TODO: Add current setting or set dialog to default to it -->
-            <Button Margin="0,4,0,4" Content="Set Default Output Directory" Click="BtnDefaultDirectory_Click"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="210" Margin="0,30,0,0">
-            <Button x:Name="BtnSave"  Content="Save" Width="90" Click="BtnSave_OnClick" 
-                    Style="{StaticResource AccentedSquareButtonStyle}" />
-            <Button x:Name="BtnCancel" Content="Cancel" Width="90" Margin="20,0,0,0" Click="BtnCancel_OnClick" />
-        </StackPanel>
+        <DockPanel Margin="0,4,0,4">
+            <Label Content="Image Number" Width="100" DockPanel.Dock="Left"/>
+            <TextBox x:Name="TextBox_NumShots" 
+                     Text="{Binding ElementName=Slider_NumShots, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                     DockPanel.Dock="Right" 
+                     TextAlignment="Center" 
+                     Width="30" 
+                     IsEnabled="False"/>
+            <Slider x:Name="Slider_NumShots" 
+                    Margin="0,0,5,0"
+                    Maximum="8" 
+                    Minimum="1" 
+                    Value="4" 
+                    IsEnabled="False" 
+                    TickPlacement="BottomRight" 
+                    TickFrequency="1" 
+                    IsSnapToTickEnabled="True" 
+                    ValueChanged="Slider_NumShots_ValueChanged"
+                    ToolTip="The number of screenshots to take after the inital delay"/>
+        </DockPanel>        
+        <DockPanel Margin="0,4,0,4">
+            <Label Content="Filename prefix" Width="100"/>
+            <TextBox x:Name="TextBox_Prefix" 
+                     Text="" IsEnabled="False" TextChanged="TextBox_Prefix_TextChanged"
+                     ToolTip="The text to put at the start of all saved screenshot files"/>
+        </DockPanel>
+        <Button x:Name="BtnDefaultDirectory" 
+                Content="Set Output Directory"
+                Margin="0,10,0,4" 
+                Click="BtnDefaultDirectory_Click"
+                IsEnabled="False"
+                ToolTip="Set the default ouput directory for saved screenshots"/>
     </StackPanel>
 </UserControl>
 

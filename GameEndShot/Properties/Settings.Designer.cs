@@ -25,7 +25,7 @@ namespace GameEndShot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int Delay {
             get {
                 return ((int)(this["Delay"]));
@@ -49,7 +49,7 @@ namespace GameEndShot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool UseAdvancedShot {
             get {
                 return ((bool)(this["UseAdvancedShot"]));
@@ -68,6 +68,54 @@ namespace GameEndShot.Properties {
             }
             set {
                 this["FilePrefix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int NumberOfImages {
+            get {
+                return ((int)(this["NumberOfImages"]));
+            }
+            set {
+                this["NumberOfImages"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WasNoteDialogOn {
+            get {
+                return ((bool)(this["WasNoteDialogOn"]));
+            }
+            set {
+                this["WasNoteDialogOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WasNoteDialogDelayed {
+            get {
+                return ((bool)(this["WasNoteDialogDelayed"]));
+            }
+            set {
+                this["WasNoteDialogDelayed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WasNoteEnterChecked {
+            get {
+                return ((bool)(this["WasNoteEnterChecked"]));
+            }
+            set {
+                this["WasNoteEnterChecked"] = value;
             }
         }
     }

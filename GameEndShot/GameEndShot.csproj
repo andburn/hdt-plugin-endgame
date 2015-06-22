@@ -58,6 +58,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\NoteDialog.xaml.cs">
+      <DependentUpon>NoteDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PluginMenu.xaml.cs">
       <DependentUpon>PluginMenu.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\NoteDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PluginMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

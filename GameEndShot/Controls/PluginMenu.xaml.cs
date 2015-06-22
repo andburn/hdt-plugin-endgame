@@ -21,5 +21,10 @@ namespace HDT.Plugins.GameEndShot.Controls
 		{
 			InitializeComponent();
 		}
+
+		private void MenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			GameEndShotPlugin.SettingsFlyout.IsOpen = true;
+		}
 	}
 }

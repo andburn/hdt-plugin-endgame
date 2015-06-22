@@ -6,13 +6,22 @@ using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
+using GameEndShot.Properties;
 
 namespace HDT.Plugins.GameEndShot
 {
     public class GameEndShotPlugin : IPlugin
     {
-		private MenuItem ShotMenuItem;
-		private Flyout _settings;
+		private MenuItem _shotMenuItem;
+		private static Flyout _settings;
+
+		public static Flyout SettingsFlyout { 
+			get {
+				if (_settings == null)
+					SetSettingsFlyout();
+				return _settings;
+			}
+		}
 
 		public string Author
 		{
@@ -31,7 +40,7 @@ namespace HDT.Plugins.GameEndShot
 
 		public MenuItem MenuItem
 		{
-			get { return ShotMenuItem; }
+			get { return _shotMenuItem; }
 		}
 
 		public string Name
@@ -52,7 +61,8 @@ namespace HDT.Plugins.GameEndShot
 
 		public void OnLoad()
 		{
-			ShotMenuItem = new Controls.PluginMenu();
+			SaveDefaultNoteSettings();
+			_shotMenuItem = new Controls.PluginMenu();
 			SetSettingsFlyout();
 			GameEvents.OnGameEnd.Add(GameEnd.ScreenShot);
 		}
@@ -60,6 +70,7 @@ namespace HDT.Plugins.GameEndShot
 		public void OnUnload()
 		{
 			_settings.IsOpen = false;
+			RestoreDefaultNoteSettings();
 		}
 
 		public void OnUpdate()
@@ -67,24 +78,40 @@ namespace HDT.Plugins.GameEndShot
 			
 		}
 
-		private void SetSettingsFlyout()
+		private static void SetSettingsFlyout()
 		{
 			var window = Hearthstone_Deck_Tracker.Helper.MainWindow;
-			var flyouts = window.Flyouts;
-			var items = flyouts.Items;
+			var flyouts = window.Flyouts.Items;
 			
-			var newflyout = new Flyout();
-			newflyout.Name = "PluginSettingsFlyout";
-			newflyout.Position = Position.Left;
+			var settings = new Flyout();
+			settings.Name = "PluginSettingsFlyout";
+			settings.Position = Position.Left;
 			// TODO: how to set Panel.ZIndex
 			//newflyout.Width = 250;
-			newflyout.Header = "Game Shot Settings";
-			newflyout.Content = new Controls.PluginSettings();
-			newflyout.Theme = FlyoutTheme.Accent;
-			items.Add(newflyout);
+			settings.Header = "Game Shot Settings";
+			settings.Content = new Controls.PluginSettings();
+			//settings.Theme = FlyoutTheme.Accent;
+			flyouts.Add(settings);
 
-			_settings = newflyout;	
+			_settings = settings;	
 		}
+
+		public static void SaveDefaultNoteSettings()
+		{
+			Settings.Default.WasNoteDialogOn = Config.Instance.ShowNoteDialogAfterGame;
+			Settings.Default.WasNoteDialogDelayed = Config.Instance.NoteDialogDelayed;
+			Settings.Default.WasNoteEnterChecked = Config.Instance.EnterToSaveNote;
+			Settings.Default.Save();
+		}
+
+		public static void RestoreDefaultNoteSettings()
+		{
+			Config.Instance.ShowNoteDialogAfterGame = Settings.Default.WasNoteDialogOn;
+			Config.Instance.NoteDialogDelayed = Settings.Default.WasNoteDialogDelayed;
+			Config.Instance.EnterToSaveNote = Settings.Default.WasNoteEnterChecked;
+			Config.Save();
+		}
+
 	}
 }
 
