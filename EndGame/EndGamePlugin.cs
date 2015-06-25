@@ -6,11 +6,11 @@ using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
-using GameEndShot.Properties;
+using HDT.Plugins.EndGame.Properties;
 
-namespace HDT.Plugins.GameEndShot
+namespace HDT.Plugins.EndGame
 {
-    public class GameEndShotPlugin : IPlugin
+    public class EndGamePlugin : IPlugin
     {
 		private MenuItem _shotMenuItem;
 		private static Flyout _settings;
@@ -35,7 +35,7 @@ namespace HDT.Plugins.GameEndShot
 
 		public string Description
 		{
-			get { return "Take a screenshot at end of a game"; }
+			get { return "Take a screenshot at end of a game."; }
 		}
 
 		public MenuItem MenuItem
@@ -45,7 +45,7 @@ namespace HDT.Plugins.GameEndShot
 
 		public string Name
 		{
-			get { return "GameEndShot"; }
+			get { return "End Game"; }
 		}
 
 		public Version Version
@@ -62,9 +62,10 @@ namespace HDT.Plugins.GameEndShot
 		public void OnLoad()
 		{
 			SaveDefaultNoteSettings();
+			ClearDefaultNoteSettings();
 			_shotMenuItem = new Controls.PluginMenu();
 			SetSettingsFlyout();
-			GameEvents.OnGameEnd.Add(GameEnd.ScreenShot);
+			GameEvents.OnGameEnd.Add(EndGame.ScreenShot);
 		}
 
 		public void OnUnload()
@@ -88,7 +89,7 @@ namespace HDT.Plugins.GameEndShot
 			settings.Position = Position.Left;
 			// TODO: how to set Panel.ZIndex
 			//newflyout.Width = 250;
-			settings.Header = "Game Shot Settings";
+			settings.Header = "End Game Settings";
 			settings.Content = new Controls.PluginSettings();
 			//settings.Theme = FlyoutTheme.Accent;
 			flyouts.Add(settings);
@@ -102,6 +103,15 @@ namespace HDT.Plugins.GameEndShot
 			Settings.Default.WasNoteDialogDelayed = Config.Instance.NoteDialogDelayed;
 			Settings.Default.WasNoteEnterChecked = Config.Instance.EnterToSaveNote;
 			Settings.Default.Save();
+		}
+
+		public static void ClearDefaultNoteSettings()
+		{
+			if (Settings.Default.UseAdvancedShot)
+			{
+				Config.Instance.ShowNoteDialogAfterGame = false;
+				Config.Save();
+			}
 		}
 
 		public static void RestoreDefaultNoteSettings()

@@ -3,10 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
-using GameEndShot.Properties;
+using HDT.Plugins.EndGame.Properties;
 using Hearthstone_Deck_Tracker;
 
-namespace HDT.Plugins.GameEndShot.Controls
+namespace HDT.Plugins.EndGame.Controls
 {
 	public partial class PluginSettings : System.Windows.Controls.UserControl
 	{
@@ -82,7 +82,7 @@ namespace HDT.Plugins.GameEndShot.Controls
 				return;
 
 			// reset the default dialog to its previous state
-			GameEndShotPlugin.RestoreDefaultNoteSettings();
+			EndGamePlugin.RestoreDefaultNoteSettings();
 
 			Settings.Default.UseAdvancedShot = false;
 			Settings.Default.Save();

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HDT.Plugins.GameEndShot.Controls
+namespace HDT.Plugins.EndGame.Controls
 {
 	public partial class PluginMenu : MenuItem
 	{
@@ -24,7 +24,7 @@ namespace HDT.Plugins.GameEndShot.Controls
 
 		private void MenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			GameEndShotPlugin.SettingsFlyout.IsOpen = true;
+			EndGamePlugin.SettingsFlyout.IsOpen = true;
 		}
 	}
 }
