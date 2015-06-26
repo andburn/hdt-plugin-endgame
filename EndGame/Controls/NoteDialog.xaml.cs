@@ -61,7 +61,7 @@ namespace HDT.Plugins.EndGame
 					try
 					{
 						Logger.WriteLine("saving screenshot", "gameshot");
-						var filename = Settings.Default.FilePrefix + _game.EndTime.ToString("dd-mm-yyyy_HHMM") + "_" + _game.OpponentName + "(" + _game.OpponentHero + ").png";
+						var filename = Settings.Default.FilePrefix + _game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_" + _game.OpponentName + "(" + _game.OpponentHero + ").png";
 						Logger.WriteLine("filename: " + filename, "gameshot");
 						_screenshot.Image.Save(Path.Combine(Settings.Default.OutputDir, filename));
 					}
