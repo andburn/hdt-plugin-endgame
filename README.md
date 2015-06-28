@@ -1,0 +1,1 @@
+A plugin to semi-automatically save a screenshot at the end of a game.
