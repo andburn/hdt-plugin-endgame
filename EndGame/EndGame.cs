@@ -15,6 +15,9 @@ namespace HDT.Plugins.EndGame
 {
 	public static class EndGame
 	{
+		// TODO: refactor to make async where necessary
+		// TODO: investigate problem with no deck selected
+
 		public static void ScreenShot()
 		{
 			// load settigns
