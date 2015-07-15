@@ -7,10 +7,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Margin="10,15,10,15">       
         <DockPanel Margin="0,4,0,4">
-            <Label Content="Delay (seconds)" Width="100"/>
+            <Label Content="Delay (ms)" Width="100"/>
             <TextBox x:Name="TextBox_Delay" 
-                     Text="5" TextChanged="TextBox_Delay_TextChanged"
-                     ToolTip="Set the delay from game end detection to screenshot"/>
+                     Text="7500" TextChanged="TextBox_Delay_TextChanged"
+                     ToolTip="Set the delay from game end detection to taking screenshot, in milliseconds"/>
         </DockPanel>
         <DockPanel Margin="0,4,0,4">
             <Label Content="Advanced Mode" Width="100"/>
@@ -38,7 +38,13 @@
                     IsSnapToTickEnabled="True" 
                     ValueChanged="Slider_NumShots_ValueChanged"
                     ToolTip="The number of screenshots to take after the inital delay"/>
-        </DockPanel>        
+        </DockPanel>
+        <DockPanel Margin="0,4,0,4">
+            <Label Content="Spacing (ms)" Width="100"/>
+            <TextBox x:Name="TextBox_DelayBetween" 
+                     Text="500" TextChanged="TextBox_DelayBetween_TextChanged"
+                     ToolTip="Set the time spacing between each screenshot, in milliseconds"/>
+        </DockPanel>
         <DockPanel Margin="0,4,0,4">
             <Label Content="Filename prefix" Width="100"/>
             <TextBox x:Name="TextBox_Prefix" 

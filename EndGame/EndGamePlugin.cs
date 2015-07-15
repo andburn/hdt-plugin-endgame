@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Controls;
-
-using Hearthstone_Deck_Tracker.Plugins;
-using Hearthstone_Deck_Tracker.API;
-using Hearthstone_Deck_Tracker;
-using MahApps.Metro.Controls.Dialogs;
-using MahApps.Metro.Controls;
 using HDT.Plugins.EndGame.Properties;
+using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.API;
+using Hearthstone_Deck_Tracker.Plugins;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace HDT.Plugins.EndGame
 {
     public class EndGamePlugin : IPlugin
     {
-		private MenuItem _shotMenuItem;
+		private MenuItem _endGameMenuItem;
 		private static Flyout _settings;
 
 		public static Flyout SettingsFlyout { 
@@ -35,12 +36,12 @@ namespace HDT.Plugins.EndGame
 
 		public string Description
 		{
-			get { return "Take a screenshot at end of a game."; }
+			get { return "Takes a screenshot of the end game screen."; }
 		}
 
 		public MenuItem MenuItem
 		{
-			get { return _shotMenuItem; }
+			get { return _endGameMenuItem; }
 		}
 
 		public string Name
@@ -59,13 +60,20 @@ namespace HDT.Plugins.EndGame
 				_settings.IsOpen = true;
 		}
 
-		public void OnLoad()
+		public async void OnLoad()
 		{
 			SaveDefaultNoteSettings();
 			ClearDefaultNoteSettings();
-			_shotMenuItem = new Controls.PluginMenu();
+			_endGameMenuItem = new Controls.PluginMenu();
 			SetSettingsFlyout();
 			GameEvents.OnGameEnd.Add(EndGame.ScreenShot);
+			//TODO: change names here
+			var latest = await Github.CheckForUpdate("andburn", "hdt-plugin-statsconverter", Version);
+			if(latest != null)
+			{
+				await ShowUpdateMessage(latest);
+				Logger.WriteLine("Update available: " + latest.tag_name, "StatsConverter");
+			}
 		}
 
 		public void OnUnload()
@@ -75,8 +83,7 @@ namespace HDT.Plugins.EndGame
 		}
 
 		public void OnUpdate()
-		{
-			
+		{			
 		}
 
 		private static void SetSettingsFlyout()
@@ -87,10 +94,10 @@ namespace HDT.Plugins.EndGame
 			var settings = new Flyout();
 			settings.Name = "PluginSettingsFlyout";
 			settings.Position = Position.Left;
-			// TODO: how to set Panel.ZIndex
-			//newflyout.Width = 250;
+			Panel.SetZIndex(settings, 100);			
 			settings.Header = "End Game Settings";
 			settings.Content = new Controls.PluginSettings();
+			//newflyout.Width = 250;
 			//settings.Theme = FlyoutTheme.Accent;
 			flyouts.Add(settings);
 
@@ -120,6 +127,16 @@ namespace HDT.Plugins.EndGame
 			Config.Instance.NoteDialogDelayed = Settings.Default.WasNoteDialogDelayed;
 			Config.Instance.EnterToSaveNote = Settings.Default.WasNoteEnterChecked;
 			Config.Save();
+		}
+
+		private async Task ShowUpdateMessage(Github.GithubRelease release)
+		{
+			var settings = new MetroDialogSettings { AffirmativeButtonText = "Get Update", NegativeButtonText = "Close" };
+
+			var result = await Helper.MainWindow.ShowMessageAsync("Uptate Available",
+				"For Plugin: \"" + this.Name + "\"", MessageDialogStyle.AffirmativeAndNegative, settings);
+			if(result == MessageDialogResult.Affirmative)
+				Process.Start(release.html_url);
 		}
 
 	}

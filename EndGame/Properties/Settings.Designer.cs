@@ -25,7 +25,7 @@ namespace HDT.Plugins.EndGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7500")]
         public int Delay {
             get {
                 return ((int)(this["Delay"]));
@@ -116,6 +116,18 @@ namespace HDT.Plugins.EndGame.Properties {
             }
             set {
                 this["WasNoteEnterChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int DelayBetweenShots {
+            get {
+                return ((int)(this["DelayBetweenShots"]));
+            }
+            set {
+                this["DelayBetweenShots"] = value;
             }
         }
     }

@@ -1,15 +1,16 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 
+using HDT.Plugins.EndGame.Properties;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Stats;
-using System.Collections.Generic;
-using System.Windows.Media.Imaging;
-using System.Windows.Controls;
-using System.Drawing;
-using HDT.Plugins.EndGame.Properties;
-using System.IO;
-using System;
+
+using Image = HDT.Plugins.EndGame.Screenshot.Image;
 
 namespace HDT.Plugins.EndGame
 {
@@ -17,9 +18,9 @@ namespace HDT.Plugins.EndGame
 	{
 		private readonly GameStats _game;
 		private readonly bool _initialized;
-		private Screenshot _screenshot;
+		private Image _screenshot;
 
-		public NoteDialog(GameStats game, List<Screenshot> screenshots)
+		public NoteDialog(GameStats game, List<Image> screenshots)
 		{
 			InitializeComponent();
 			_game = game;
@@ -61,10 +62,10 @@ namespace HDT.Plugins.EndGame
 					try
 					{
 						Logger.WriteLine("saving screenshot", "gameshot");
-						var filename = Settings.Default.FilePrefix + _game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_" + _game.OpponentName + "(" + _game.OpponentHero + ").png";
+						var filename = Settings.Default.FilePrefix + _game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_" 
+							+ _game.OpponentName + "(" + _game.OpponentHero + ")";
 						Logger.WriteLine("filename: " + filename, "gameshot");
-						// TODO: make image smaller for saving
-						_screenshot.Image.Save(Path.Combine(Settings.Default.OutputDir, filename));
+						SaveAsPng(_screenshot.Full, Path.Combine(Settings.Default.OutputDir, filename));
 					}
 					catch (Exception e)
 					{
@@ -74,6 +75,11 @@ namespace HDT.Plugins.EndGame
 				}				
 			}
 			Close();
+		}
+
+		private void SaveAsPng(Bitmap bmp, string filename)
+		{
+			bmp.Save(Path.Combine(Settings.Default.OutputDir, filename) + ".png", ImageFormat.Png);
 		}
 
 		private void TextBoxNote_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -102,7 +108,7 @@ namespace HDT.Plugins.EndGame
 		{
 			if (ListBox_Images.SelectedItem != null)
 			{
-				_screenshot = (Screenshot)ListBox_Images.SelectedItem;
+				_screenshot = (Image)ListBox_Images.SelectedItem;
 			}
 		}
 

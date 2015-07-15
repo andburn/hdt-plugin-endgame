@@ -20,6 +20,31 @@ namespace HDT.Plugins.EndGame.Controls
 			_initialized = true;
 		}
 
+		private void LoadSettings()
+		{
+			_defaultPath = Settings.Default.OutputDir;
+
+			TextBox_Prefix.Text = Settings.Default.FilePrefix;
+			TextBox_Delay.Text = Settings.Default.Delay.ToString();
+			CheckBox_Advanced.IsChecked = Settings.Default.UseAdvancedShot;
+			Slider_NumShots.Value = Settings.Default.NumberOfImages;
+			TextBox_DelayBetween.Text = Settings.Default.DelayBetweenShots.ToString();
+
+			if(Settings.Default.UseAdvancedShot)
+			{
+				EnableAdvancedOptions();
+			}
+		}
+
+		private void EnableAdvancedOptions()
+		{
+			TextBox_Prefix.IsEnabled = true;
+			BtnDefaultDirectory.IsEnabled = true;
+			Slider_NumShots.IsEnabled = true;
+			TextBox_NumShots.IsEnabled = true;
+			TextBox_DelayBetween.IsEnabled = true;
+		}
+
 		private void BtnDefaultDirectory_Click(object sender, RoutedEventArgs e)
 		{
 			if (!_initialized)
@@ -39,24 +64,6 @@ namespace HDT.Plugins.EndGame.Controls
 			}
 		}
 
-		private void LoadSettings()
-		{
-			_defaultPath = Settings.Default.OutputDir;
-			
-			TextBox_Prefix.Text = Settings.Default.FilePrefix;
-			TextBox_Delay.Text = Settings.Default.Delay.ToString();
-			CheckBox_Advanced.IsChecked = Settings.Default.UseAdvancedShot;
-			Slider_NumShots.Value = Settings.Default.NumberOfImages;
-
-			if (Settings.Default.UseAdvancedShot)
-			{
-				TextBox_Prefix.IsEnabled = true;
-				BtnDefaultDirectory.IsEnabled = true;
-				Slider_NumShots.IsEnabled = true;
-				TextBox_NumShots.IsEnabled = true;
-			}
-		}
-
 		private void CheckBox_Advanced_Checked(object sender, RoutedEventArgs e)
 		{
 			if (!_initialized)
@@ -70,10 +77,7 @@ namespace HDT.Plugins.EndGame.Controls
 			Settings.Default.UseAdvancedShot = true;
 			Settings.Default.Save();
 
-			TextBox_Prefix.IsEnabled = true;
-			BtnDefaultDirectory.IsEnabled = true;
-			Slider_NumShots.IsEnabled = true;
-			TextBox_NumShots.IsEnabled = true;
+			EnableAdvancedOptions();
 		}
 
 		private void CheckBox_Advanced_Unchecked(object sender, RoutedEventArgs e)
@@ -124,6 +128,21 @@ namespace HDT.Plugins.EndGame.Controls
 
 			Settings.Default.FilePrefix = TextBox_Prefix.Text;
 			Settings.Default.Save();
+		}
+
+		private void TextBox_DelayBetween_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+
+			int delay = 0;
+			bool result = int.TryParse(TextBox_DelayBetween.Text, out delay);
+			if(result)
+			{
+				Settings.Default.DelayBetweenShots = delay;
+				Settings.Default.Save();
+			}
+			// TODO: error on parse failure
 		}
 	}
 }

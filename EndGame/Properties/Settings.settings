@@ -1,9 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GameEndShot.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HDT.Plugins.EndGame.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="Delay" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8</Value>
+      <Value Profile="(Default)">7500</Value>
     </Setting>
     <Setting Name="OutputDir" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -25,6 +25,9 @@
     </Setting>
     <Setting Name="WasNoteEnterChecked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DelayBetweenShots" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
     </Setting>
   </Settings>
 </SettingsFile>
