@@ -60,20 +60,14 @@ namespace HDT.Plugins.EndGame
 				_settings.IsOpen = true;
 		}
 
-		public async void OnLoad()
+		public void OnLoad()
 		{
+			CheckForUpdate();
 			SaveDefaultNoteSettings();
 			ClearDefaultNoteSettings();
 			_endGameMenuItem = new Controls.PluginMenu();
 			SetSettingsFlyout();
 			GameEvents.OnGameEnd.Add(EndGame.ScreenShot);
-			//TODO: change names here
-			var latest = await Github.CheckForUpdate("andburn", "hdt-plugin-statsconverter", Version);
-			if(latest != null)
-			{
-				await ShowUpdateMessage(latest);
-				Logger.WriteLine("Update available: " + latest.tag_name, "StatsConverter");
-			}
 		}
 
 		public void OnUnload()
@@ -84,6 +78,16 @@ namespace HDT.Plugins.EndGame
 
 		public void OnUpdate()
 		{			
+		}
+
+		private async void CheckForUpdate()
+		{
+			var latest = await Github.CheckForUpdate("andburn", "hdt-plugin-endgame", Version);
+			if(latest != null)
+			{
+				await ShowUpdateMessage(latest);
+				Logger.WriteLine("Update available: " + latest.tag_name, "EndGame");
+			}
 		}
 
 		private static void SetSettingsFlyout()

@@ -25,7 +25,7 @@ namespace HDT.Plugins.EndGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7500")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
         public int Delay {
             get {
                 return ((int)(this["Delay"]));
@@ -73,7 +73,7 @@ namespace HDT.Plugins.EndGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int NumberOfImages {
             get {
                 return ((int)(this["NumberOfImages"]));

@@ -48,12 +48,10 @@ namespace HDT.Plugins.EndGame
 
 				if (Config.Instance.StatsInWindow)
 				{
-					Logger.WriteLine("refreshing window", "gameshot");
 					((DeckStatsControl)Helper.MainWindow.StatsWindow.FindName("StatsControl")).Refresh();
 				}
 				else
 				{
-					Logger.WriteLine("refreshing flyout", "gameshot");
 					((DeckStatsControl)Helper.MainWindow.FindName("DeckStatsFlyout")).Refresh();
 				}
 
@@ -61,16 +59,18 @@ namespace HDT.Plugins.EndGame
 				{
 					try
 					{
-						Logger.WriteLine("saving screenshot", "gameshot");
+						var dir = Settings.Default.OutputDir;
+						if(!Directory.Exists(dir))
+						{
+							dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+						}
 						var filename = Settings.Default.FilePrefix + _game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_" 
 							+ _game.OpponentName + "(" + _game.OpponentHero + ")";
-						Logger.WriteLine("filename: " + filename, "gameshot");
-						SaveAsPng(_screenshot.Full, Path.Combine(Settings.Default.OutputDir, filename));
+						SaveAsPng(_screenshot.Full, Path.Combine(dir, filename));
 					}
 					catch (Exception e)
 					{
-						Logger.WriteLine(e.Message, "gameshot");
-						Logger.WriteLine(Settings.Default.OutputDir, "gameshot");
+						Logger.WriteLine("Error saving note dialog: " + e.Message, "EndGame");
 					}
 				}				
 			}

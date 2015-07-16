@@ -25,7 +25,6 @@ namespace HDT.Plugins.EndGame.Screenshot
 		{
 			Logger.WriteLine("Capture (Simple) @ " + delay, "EndGame");
 			await Task.Delay(delay);
-			// TODO: bring hearthstone to foreground
 			var sim = new WindowsInput.InputSimulator();
 			sim.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.SNAPSHOT);
 		}
@@ -38,35 +37,38 @@ namespace HDT.Plugins.EndGame.Screenshot
 			List<ScreenImage> screenshots = new List<ScreenImage>();
 
 			await Task.Delay(delay);
-			Logger.WriteLine("Delay Over", "Gameshot");
 			// disable overlay, before captures
-			Helper.MainWindow.Overlay.ForceHidden = true;
+			ForceHideOverlay(true);
+			// take num screenshots
 			for (int i = 0; i < num; i++)
 			{
-				Logger.WriteLine("Capture", "Gameshot");
 				Bitmap img = CaptureScreenShot();
-				Bitmap thb = ResizeImage(img);
-				screenshots.Add(new ScreenImage(img, ToMediaImage(thb)));
-				Logger.WriteLine("Sleeping", "Gameshot");
-				await Task.Delay(delayBetween);
-				//System.Threading.Thread.Sleep(delayBetween);
+				if(img != null)
+				{
+					Bitmap thb = ResizeImage(img);
+					screenshots.Add(new ScreenImage(img, ToMediaImage(thb)));
+					await Task.Delay(delayBetween);
+				}
+				else
+				{
+					Logger.WriteLine("Capture failed, reverting to Simple mode.", "EndGame");
+					await Simple(delay);
+				}
 			}
-			ReEnableOverlay();
+			// enable overlay
+			ForceHideOverlay(false);
 
 			new NoteDialog(Game.CurrentGameStats, screenshots);
 		}
 
-		private static void ReEnableOverlay()
-		{
-			// TODO: could this renable when not suppose to (i.e. menu)
-			Logger.WriteLine("reenableing overlay");
-			Helper.MainWindow.Overlay.ShowOverlay(true);
+		private static void ForceHideOverlay(bool force = true) {
+			Helper.MainWindow.Overlay.ForceHidden = force;
+			Helper.MainWindow.Overlay.UpdatePosition();
 		}
 
 		private static Bitmap CaptureScreenShot()
 		{
 			var rect = Helper.GetHearthstoneRect(true);
-			Logger.WriteLine(rect.X + ", " + rect.Y + ", " + rect.Width + ", " + rect.Height);
 			var bmp = Helper.CaptureHearthstone(new Point(0,0), rect.Width, rect.Height);			
 			return bmp;
 		}

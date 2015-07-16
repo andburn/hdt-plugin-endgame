@@ -1,8 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-
 using HDT.Plugins.EndGame.Properties;
 using Hearthstone_Deck_Tracker;
 
@@ -32,17 +32,17 @@ namespace HDT.Plugins.EndGame.Controls
 
 			if(Settings.Default.UseAdvancedShot)
 			{
-				EnableAdvancedOptions();
+				AdvancedOptionsOn(true);
 			}
 		}
 
-		private void EnableAdvancedOptions()
+		private void AdvancedOptionsOn(bool on = false)
 		{
-			TextBox_Prefix.IsEnabled = true;
-			BtnDefaultDirectory.IsEnabled = true;
-			Slider_NumShots.IsEnabled = true;
-			TextBox_NumShots.IsEnabled = true;
-			TextBox_DelayBetween.IsEnabled = true;
+			TextBox_Prefix.IsEnabled = on;
+			BtnDefaultDirectory.IsEnabled = on;
+			Slider_NumShots.IsEnabled = on;
+			TextBox_NumShots.IsEnabled = on;
+			TextBox_DelayBetween.IsEnabled = on;
 		}
 
 		private void BtnDefaultDirectory_Click(object sender, RoutedEventArgs e)
@@ -72,12 +72,11 @@ namespace HDT.Plugins.EndGame.Controls
 			// disable the default note dialog
 			Config.Instance.ShowNoteDialogAfterGame = false;
 			Config.Save();
-			// TODO: add default note settings to new note dialog
 
 			Settings.Default.UseAdvancedShot = true;
 			Settings.Default.Save();
 
-			EnableAdvancedOptions();
+			AdvancedOptionsOn(true);
 		}
 
 		private void CheckBox_Advanced_Unchecked(object sender, RoutedEventArgs e)
@@ -86,15 +85,13 @@ namespace HDT.Plugins.EndGame.Controls
 				return;
 
 			// reset the default dialog to its previous state
+			// TODO: unloading and loading the plugin will mess this up?
 			EndGamePlugin.RestoreDefaultNoteSettings();
 
 			Settings.Default.UseAdvancedShot = false;
 			Settings.Default.Save();
 
-			TextBox_Prefix.IsEnabled = false;
-			BtnDefaultDirectory.IsEnabled = false;
-			Slider_NumShots.IsEnabled = false;
-			TextBox_NumShots.IsEnabled = false;
+			AdvancedOptionsOn(false);
 		}
 
 		private void TextBox_Delay_TextChanged(object sender, TextChangedEventArgs e)
@@ -109,7 +106,10 @@ namespace HDT.Plugins.EndGame.Controls
 				Settings.Default.Delay = delay;
 				Settings.Default.Save();
 			}
-			// TODO: error on parse failure
+			else
+			{
+				TextBox_Delay.Text = Settings.Default.Delay.ToString();
+			}
 		}
 
 		private void Slider_NumShots_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -142,7 +142,10 @@ namespace HDT.Plugins.EndGame.Controls
 				Settings.Default.DelayBetweenShots = delay;
 				Settings.Default.Save();
 			}
-			// TODO: error on parse failure
+			else
+			{
+				TextBox_Delay.Text = Settings.Default.DelayBetweenShots.ToString();
+			}
 		}
 	}
 }

@@ -1,20 +1,29 @@
-﻿using HDT.Plugins.EndGame.Properties;
+﻿using System;
+using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Screenshot;
 
 namespace HDT.Plugins.EndGame
 {
 	public static class EndGame
 	{
-		// TODO: refactor to make async where necessary
-		// TODO: investigate problem with no deck selected
-		// TODO: add update github
-		// TODO: adv screenshot off in window
+		private static DateTime lastCall;
 
 		public async static void ScreenShot()
 		{
+			// multiple calls may occur, only process one in a time span
+			if(lastCall != null)
+			{
+				var diff = DateTime.Now - lastCall;
+				lastCall = DateTime.Now;
+				if(diff.TotalSeconds < 20)
+					return;
+			}
+			lastCall = DateTime.Now;
+
 			// load settigns
 			string outputDir = Settings.Default.OutputDir;
-			int delay = Settings.Default.Delay;
+			// stored as seconds, used in millis
+			int delay = Settings.Default.Delay * 1000;
 			int numImages = Settings.Default.NumberOfImages;
 			int delayBetween = Settings.Default.DelayBetweenShots;
 
