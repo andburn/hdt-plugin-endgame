@@ -5,11 +5,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-
 using HDT.Plugins.EndGame.Properties;
+using HDT.Plugins.EndGame.Screenshot;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Stats;
-
 using Image = HDT.Plugins.EndGame.Screenshot.Image;
 
 namespace HDT.Plugins.EndGame
@@ -41,45 +40,8 @@ namespace HDT.Plugins.EndGame
 
 		private void SaveAndClose()
 		{
-			if (_game != null)
-			{
-				_game.Note = TextBoxNote.Text;
-				DeckStatsList.Save();
-
-				if (Config.Instance.StatsInWindow)
-				{
-					((DeckStatsControl)Helper.MainWindow.StatsWindow.FindName("StatsControl")).Refresh();
-				}
-				else
-				{
-					((DeckStatsControl)Helper.MainWindow.FindName("DeckStatsFlyout")).Refresh();
-				}
-
-				if (_screenshot != null)
-				{
-					try
-					{
-						var dir = Settings.Default.OutputDir;
-						if(!Directory.Exists(dir))
-						{
-							dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-						}
-						var filename = Settings.Default.FilePrefix + _game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_" 
-							+ _game.OpponentName + "(" + _game.OpponentHero + ")";
-						SaveAsPng(_screenshot.Full, Path.Combine(dir, filename));
-					}
-					catch (Exception e)
-					{
-						Logger.WriteLine("Error saving note dialog: " + e.Message, "EndGame");
-					}
-				}				
-			}
+			Capture.SaveImage(_game, _screenshot, TextBoxNote.Text);			
 			Close();
-		}
-
-		private void SaveAsPng(Bitmap bmp, string filename)
-		{
-			bmp.Save(Path.Combine(Settings.Default.OutputDir, filename) + ".png", ImageFormat.Png);
 		}
 
 		private void TextBoxNote_OnPreviewKeyDown(object sender, KeyEventArgs e)

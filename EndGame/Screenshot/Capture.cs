@@ -58,7 +58,59 @@ namespace HDT.Plugins.EndGame.Screenshot
 			// enable overlay
 			ForceHideOverlay(false);
 
-			new NoteDialog(Game.CurrentGameStats, screenshots);
+			if(screenshots.Count == 1)
+			{
+				// only one image, no need for dialog
+				// TODO: would mean no dialog if it was expected, however
+				SaveImage(Game.CurrentGameStats, screenshots[0]);
+			}
+			else
+			{
+				new NoteDialog(Game.CurrentGameStats, screenshots);
+			}			
+		}
+
+		public static void SaveImage(GameStats game, Image screenshot, String note = null)
+		{
+			if(game != null)
+			{
+				if (!String.IsNullOrEmpty(note))
+					game.Note = note;
+				DeckStatsList.Save();
+
+				if(Config.Instance.StatsInWindow)
+				{
+					((DeckStatsControl)Helper.MainWindow.StatsWindow.FindName("StatsControl")).Refresh();
+				}
+				else
+				{
+					((DeckStatsControl)Helper.MainWindow.FindName("DeckStatsFlyout")).Refresh();
+				}
+
+				if(screenshot != null)
+				{
+					try
+					{
+						var dir = Settings.Default.OutputDir;
+						if(!Directory.Exists(dir))
+						{
+							dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+						}
+						var filename = Settings.Default.FilePrefix + game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_"
+							+ game.OpponentName + "(" + game.OpponentHero + ")";
+						SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
+					}
+					catch(Exception e)
+					{
+						Logger.WriteLine("Error saving image: " + e.Message, "EndGame");
+					}
+				}
+			}
+		}
+
+		private static void SaveAsPng(Bitmap bmp, string filename)
+		{
+			bmp.Save(Path.Combine(Settings.Default.OutputDir, filename) + ".png", ImageFormat.Png);
 		}
 
 		private static void ForceHideOverlay(bool force = true) {
