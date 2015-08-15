@@ -130,5 +130,89 @@ namespace HDT.Plugins.EndGame.Properties {
                 this["DelayBetweenShots"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordArena {
+            get {
+                return ((bool)(this["RecordArena"]));
+            }
+            set {
+                this["RecordArena"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordBrawl {
+            get {
+                return ((bool)(this["RecordBrawl"]));
+            }
+            set {
+                this["RecordBrawl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordCasual {
+            get {
+                return ((bool)(this["RecordCasual"]));
+            }
+            set {
+                this["RecordCasual"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RecordFriendly {
+            get {
+                return ((bool)(this["RecordFriendly"]));
+            }
+            set {
+                this["RecordFriendly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordOther {
+            get {
+                return ((bool)(this["RecordOther"]));
+            }
+            set {
+                this["RecordOther"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordPractice {
+            get {
+                return ((bool)(this["RecordPractice"]));
+            }
+            set {
+                this["RecordPractice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordRanked {
+            get {
+                return ((bool)(this["RecordRanked"]));
+            }
+            set {
+                this["RecordRanked"] = value;
+            }
+        }
     }
 }

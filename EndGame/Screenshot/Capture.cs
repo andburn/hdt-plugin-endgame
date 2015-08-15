@@ -14,6 +14,7 @@ using System.Drawing.Drawing2D;
 using ScreenImage = HDT.Plugins.EndGame.Screenshot.Image;
 using DrawImage = System.Drawing.Image;
 using System.Threading.Tasks;
+using Hearthstone_Deck_Tracker.Enums;
 
 
 namespace HDT.Plugins.EndGame.Screenshot
@@ -58,16 +59,26 @@ namespace HDT.Plugins.EndGame.Screenshot
 			// enable overlay
 			ForceHideOverlay(false);
 
-			if(screenshots.Count == 1)
+			// copy the reference, TODO: clone?
+			var cstats = Game.CurrentGameStats;
+
+			// Bit of a hack to allow selecting of game mode
+			await GameModeDectection(30);
+			await RankedDectection(20);
+
+			if(IsSetToCapture())
 			{
-				// only one image, no need for dialog
-				// TODO: would mean no dialog if it was expected, however
-				SaveImage(Game.CurrentGameStats, screenshots[0]);
+				if(screenshots.Count == 1)
+				{
+					// only one image, no need for dialog
+					// TODO: would mean no dialog if it was expected, however
+					SaveImage(cstats, screenshots[0]);
+				}
+				else
+				{
+					new NoteDialog(cstats, screenshots);
+				}
 			}
-			else
-			{
-				new NoteDialog(Game.CurrentGameStats, screenshots);
-			}			
 		}
 
 		public static void SaveImage(GameStats game, Image screenshot, String note = null)
@@ -98,6 +109,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 						}
 						var filename = Settings.Default.FilePrefix + game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_"
 							+ game.OpponentName + "(" + game.OpponentHero + ")";
+						Logger.WriteLine("Name: " + filename, "EndGame");
 						SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
 					}
 					catch(Exception e)
@@ -105,6 +117,14 @@ namespace HDT.Plugins.EndGame.Screenshot
 						Logger.WriteLine("Error saving image: " + e.Message, "EndGame");
 					}
 				}
+				else
+				{
+					Logger.WriteLine("Screenshot is null", "EndGame");
+				}
+			}
+			else
+			{
+				Logger.WriteLine("Game is null", "EndGame");
 			}
 		}
 
@@ -118,12 +138,46 @@ namespace HDT.Plugins.EndGame.Screenshot
 			Helper.MainWindow.Overlay.UpdatePosition();
 		}
 
+		// check if the currrent game mode is to be captured
+		private static bool IsSetToCapture()
+		{
+			return Game.CurrentGameMode == GameMode.None && Settings.Default.RecordOther
+				|| Game.CurrentGameMode == GameMode.Practice && Settings.Default.RecordPractice
+				|| Game.CurrentGameMode == GameMode.Arena && Settings.Default.RecordArena
+				|| Game.CurrentGameMode == GameMode.Brawl && Settings.Default.RecordBrawl
+				|| Game.CurrentGameMode == GameMode.Ranked && Settings.Default.RecordRanked
+				|| Game.CurrentGameMode == GameMode.Friendly && Settings.Default.RecordFriendly
+				|| Game.CurrentGameMode == GameMode.Casual && Settings.Default.RecordCasual;
+		}
+
 		private static Bitmap CaptureScreenShot()
 		{
 			var rect = Helper.GetHearthstoneRect(true);
 			var bmp = Helper.CaptureHearthstone(new Point(0,0), rect.Width, rect.Height);			
 			return bmp;
+		}		
+
+		// Hacky method to wait on game mode
+		private static async Task GameModeDectection(int timeoutInSeconds)
+		{
+			int seconds = 0;
+			while(Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
+			{
+				await Task.Delay(1000);
+				seconds++;
+			}
 		}
+
+		// Hacky method to wait on ranked mode
+		private static async Task RankedDectection(int timeoutInSeconds)
+		{
+			int seconds = 0;
+			while(Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
+			{
+				await Task.Delay(1000);
+				seconds++;
+			}
+		}		
 
 		// Based on: http://stackoverflow.com/a/2001692
 		// "c# Image resizing to different size while preserving aspect ratio"

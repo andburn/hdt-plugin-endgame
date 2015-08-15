@@ -30,6 +30,14 @@ namespace HDT.Plugins.EndGame.Controls
 			Slider_NumShots.Value = Settings.Default.NumberOfImages;
 			TextBox_DelayBetween.Text = Settings.Default.DelayBetweenShots.ToString();
 
+			CheckboxRecordArena.IsChecked = Settings.Default.RecordArena;
+			CheckboxRecordBrawl.IsChecked = Settings.Default.RecordBrawl;
+			CheckboxRecordCasual.IsChecked = Settings.Default.RecordCasual;
+			CheckboxRecordFriendly.IsChecked = Settings.Default.RecordFriendly;
+			CheckboxRecordOther.IsChecked = Settings.Default.RecordOther;
+			CheckboxRecordPractice.IsChecked = Settings.Default.RecordPractice;
+			CheckboxRecordRanked.IsChecked = Settings.Default.RecordRanked;
+
 			if(Settings.Default.UseAdvancedShot)
 			{
 				AdvancedOptionsOn(true);
@@ -43,6 +51,7 @@ namespace HDT.Plugins.EndGame.Controls
 			Slider_NumShots.IsEnabled = on;
 			TextBox_NumShots.IsEnabled = on;
 			TextBox_DelayBetween.IsEnabled = on;
+			ModeGroup.IsEnabled = on;
 		}
 
 		private void BtnDefaultDirectory_Click(object sender, RoutedEventArgs e)
@@ -146,6 +155,118 @@ namespace HDT.Plugins.EndGame.Controls
 			{
 				TextBox_Delay.Text = Settings.Default.DelayBetweenShots.ToString();
 			}
+		}
+
+		private void CheckboxRecordRanked_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordRanked = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordRanked_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordRanked = false;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordArena_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordArena = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordArena_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordArena = false;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordBrawl_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordBrawl = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordBrawl_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordBrawl = false;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordCasual_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordCasual = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordCasual_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordCasual = false;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordFriendly_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordFriendly = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordFriendly_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordFriendly = false;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordPractice_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordPractice = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordPractice_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordPractice = false;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordOther_Checked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordOther = true;
+			Settings.Default.Save();
+		}
+
+		private void CheckboxRecordOther_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+			Settings.Default.RecordOther = false;
+			Settings.Default.Save();
 		}
 	}
 }
