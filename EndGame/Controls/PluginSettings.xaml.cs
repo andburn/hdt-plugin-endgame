@@ -37,11 +37,8 @@ namespace HDT.Plugins.EndGame.Controls
 			CheckboxRecordOther.IsChecked = Settings.Default.RecordOther;
 			CheckboxRecordPractice.IsChecked = Settings.Default.RecordPractice;
 			CheckboxRecordRanked.IsChecked = Settings.Default.RecordRanked;
-
-			if(Settings.Default.UseAdvancedShot)
-			{
-				AdvancedOptionsOn(true);
-			}
+			
+			AdvancedOptionsOn(Settings.Default.UseAdvancedShot);
 		}
 
 		private void AdvancedOptionsOn(bool on = false)
