@@ -1,7 +1,9 @@
 ## End Game
-A plugin to automatically save a screenshot at the end of a game.
+A Hearthstone Deck Tracker plugin to automatically save a screenshot at the end of a game (i.e. the Victory/Defeat screen).
 
-**NOTE: This plugin is in a beta testing phase. It may not work as expected and stats for a particular game may be lost.**
+![EndGame](http://i.imgur.com/gXUHxTK.png)
+
+**NOTE**: *This nature of this plugin means it will never be able to reliably capture the screenshot 100% of time. As it is still under testing, it may not work as expected and stats for a particular game may be lost.*
 
 ---
 
@@ -15,19 +17,20 @@ The plugin has two modes:
 ### Settings
 - You may need to tweak these settings so the plugin works the way you want it to.
 
- ![Plugin Settings](http://i.imgur.com/XqjhSnA.png)
+ ![Plugin Settings](http://i.imgur.com/JmbOsSR.png)
 
 - The first setting *Delay* specifies the number of seconds to wait from the detected end of game to the actual display on screen.
 - To use Advanced mode you check the *Advanced Mode* box.
 - This enables additional options
- - *Image Number* is the number of images to take in sequence.
+ - *Image Number* is the number of images to take in sequence. (If this is set to 1 the end game dialog is not shown, but the screenshot is still saved).
  - *Spacing* is the time to wait in between each image snapshot, in milliseconds (1000 ms = 1 second).
  - *Filename Prefix* set the text to go in front of all saved images.
  - *Set Output Directory* allows you to set the default save directory for screen shots (defaults to the Desktop).
+ - Selection of game modes that you want to capture end game screenshots.
 - To use simple mode you uncheck *Advanced Mode* and set the delay amount in seconds.
 
 ### Advanced Dialog
-- In Advanced mode, the standard end of game note dialog is replaced with a new one that includes thumbnails of captured screenshots.
+- In Advanced mode, the standard end of game note dialog is replaced with a new one that includes thumbnails of captured screenshots (unless you have set *Image Number* to 1 in the options).
 
  ![Advanced Dialog](http://i.imgur.com/Wb00EVh.png)
 

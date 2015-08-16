@@ -109,7 +109,6 @@ namespace HDT.Plugins.EndGame.Screenshot
 						}
 						var filename = Settings.Default.FilePrefix + game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_"
 							+ game.OpponentName + "(" + game.OpponentHero + ")";
-						Logger.WriteLine("Name: " + filename, "EndGame");
 						SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
 					}
 					catch(Exception e)
