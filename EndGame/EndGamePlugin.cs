@@ -51,7 +51,7 @@ namespace HDT.Plugins.EndGame
 
 		public Version Version
 		{
-			get { return new Version(0, 2, 2); }
+			get { return new Version(0, 3, 0); }
 		}
 
 		public void OnButtonPress()
