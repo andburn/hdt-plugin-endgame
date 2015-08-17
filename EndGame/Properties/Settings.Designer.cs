@@ -61,18 +61,6 @@ namespace HDT.Plugins.EndGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FilePrefix {
-            get {
-                return ((string)(this["FilePrefix"]));
-            }
-            set {
-                this["FilePrefix"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int NumberOfImages {
             get {
@@ -212,6 +200,19 @@ namespace HDT.Plugins.EndGame.Properties {
             }
             set {
                 this["RecordRanked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{PlayerName} ({PlayerClass}) VS {OpponentName} ({OpponentClass}) {Date:dd.MM.yyyy" +
+            "_HH.mm}")]
+        public string FileNamePattern {
+            get {
+                return ((string)(this["FileNamePattern"]));
+            }
+            set {
+                this["FileNamePattern"] = value;
             }
         }
     }

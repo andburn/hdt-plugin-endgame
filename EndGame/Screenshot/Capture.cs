@@ -107,8 +107,11 @@ namespace HDT.Plugins.EndGame.Screenshot
 						{
 							dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 						}
-						var filename = Settings.Default.FilePrefix + game.EndTime.ToString("dd-MM-yyyy_HHmm") + "_"
-							+ game.OpponentName + "(" + game.OpponentHero + ")";
+						var pattern = Settings.Default.FileNamePattern;
+						NamingPattern np = null;
+						if(!NamingPattern.TryParse(pattern, out np))
+							Logger.WriteLine("Invalid file name pattern, using default", "EndGame");
+						var filename = np.Apply(game);
 						SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
 					}
 					catch(Exception e)

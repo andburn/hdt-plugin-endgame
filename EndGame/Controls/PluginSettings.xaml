@@ -46,12 +46,6 @@
                      Text="" IsEnabled="False" TextChanged="TextBox_DelayBetween_TextChanged"
                      ToolTip="Set the time spacing between each screenshot, in milliseconds"/>
                 </DockPanel>
-                <DockPanel Margin="0,4,0,4">
-                    <Label Content="Filename prefix" Width="100"/>
-                    <TextBox x:Name="TextBox_Prefix" 
-                     Text="" IsEnabled="False" TextChanged="TextBox_Prefix_TextChanged"
-                     ToolTip="The text to put at the start of all saved screenshot files"/>
-                </DockPanel>
                 <Button x:Name="BtnDefaultDirectory" 
                 Content="Set Output Directory"
                 Margin="0,10,0,4" 
@@ -60,7 +54,14 @@
                 ToolTip="Set the default ouput directory for saved screenshots"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox x:Name="ModeGroup" Header="GAME MODES" ToolTip="The game modes to enable screenshots">
+        <GroupBox x:Name="FileNameGroup" Header="FILENAME PATTERN">
+            <DockPanel>
+                <TextBlock Name="TextBlockPatternPreview" Margin="5,5,0,0" DockPanel.Dock="Bottom" TextTrimming="CharacterEllipsis" MinWidth="180" MaxWidth="180" FontStyle="Italic" />
+                <Button Name="BtnSavePattern" Content="SAVE" DockPanel.Dock="Right" Margin="5,0,0,0" Click="BtnSavePattern_Click"/>
+                <TextBox Name="FileNamePattern" TextChanged="FileNamePattern_TextChanged" MaxWidth="160" MinWidth="160" />
+            </DockPanel>
+        </GroupBox>
+        <GroupBox x:Name="ModeGroup" Header="GAME MODES">
             <StackPanel>
                 <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked"
                         HorizontalAlignment="Left" Margin="0,0,0,0"

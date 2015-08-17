@@ -10,17 +10,21 @@ namespace HDT.Plugins.EndGame
 {
 	public class NamingPattern
 	{
+		private const string DefaultPattern = "{PlayerName} ({PlayerClass}) VS {OpponentName} ({OpponentClass}) {Date:dd.MM.yyyy_HH.mm}";
+
 		private NamingPattern()
 		{
-			Pattern = new List<string>();
+			Pattern = Parse(DefaultPattern);
 		}
 
 		public List<string> Pattern { get; private set; }
 
-		public static bool TryParse(string pattern, out NamingPattern naming)
-		{
+		private static List<string> Parse(string pattern) {			
+			List<string> list = new List<string>();
 			const string regex = @"^([^{}]*)(({[A-Z][^{}]+})([^{}]*))*$";
-			naming = new NamingPattern();
+
+			if(String.IsNullOrWhiteSpace(pattern))
+				pattern = DefaultPattern;
 
 			Regex r = new Regex(regex);
 
@@ -28,8 +32,8 @@ namespace HDT.Plugins.EndGame
 			if(match.Success)
 			{
 				var prefix = match.Groups[1].Captures[0].Value;
-				if (!String.IsNullOrEmpty(prefix))
-					naming.Pattern.Add(prefix);
+				if(!String.IsNullOrEmpty(prefix))
+					list.Add(prefix);
 
 				var tokens = match.Groups[3].Captures;
 				var strings = match.Groups[4].Captures;
@@ -37,14 +41,27 @@ namespace HDT.Plugins.EndGame
 				// TODO: check tokens.count == strings.count
 				for(int i = 0; i < tokens.Count; i++)
 				{
-					naming.Pattern.Add(tokens[i].Value);
+					list.Add(tokens[i].Value);
 					if(!String.IsNullOrEmpty(strings[i].Value))
-						naming.Pattern.Add(strings[i].Value);
+						list.Add(strings[i].Value);
 				}
+			}
+			return list;
+		}
 
+		public static bool TryParse(string pattern, out NamingPattern naming)
+		{
+			naming = new NamingPattern();
+			List<string> result = Parse(pattern);
+			if(result.Count <= 0) 
+			{
+				return false;
+			}
+			else
+			{
+				naming.Pattern = result;
 				return true;
 			}
-			return false;
 		}
 
 		public string Apply(GameStats game)

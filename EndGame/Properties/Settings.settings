@@ -11,9 +11,6 @@
     <Setting Name="UseAdvancedShot" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FilePrefix" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="NumberOfImages" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">8</Value>
     </Setting>
@@ -49,6 +46,9 @@
     </Setting>
     <Setting Name="RecordRanked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FileNamePattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{PlayerName} ({PlayerClass}) VS {OpponentName} ({OpponentClass}) {Date:dd.MM.yyyy_HH.mm}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

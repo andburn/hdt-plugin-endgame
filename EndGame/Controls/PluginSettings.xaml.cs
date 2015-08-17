@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using HDT.Plugins.EndGame.Properties;
 using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.Enums;
+using Hearthstone_Deck_Tracker.Stats;
 
 namespace HDT.Plugins.EndGame.Controls
 {
@@ -12,6 +14,8 @@ namespace HDT.Plugins.EndGame.Controls
 	{
 		private string _defaultPath;
 		private bool _initialized;
+		private NamingPattern _pattern;
+		private GameStats _sampleGame;
 
 		public PluginSettings()
 		{
@@ -22,13 +26,21 @@ namespace HDT.Plugins.EndGame.Controls
 
 		private void LoadSettings()
 		{
+			_sampleGame = new GameStats() {
+				Result = GameResult.Win,
+				PlayerName = "Player",
+				PlayerHero = "Mage",
+				OpponentName = "Opponent",
+				OpponentHero = "Priest"
+			};
+
 			_defaultPath = Settings.Default.OutputDir;
 
-			TextBox_Prefix.Text = Settings.Default.FilePrefix;
 			TextBox_Delay.Text = Settings.Default.Delay.ToString();
 			CheckBox_Advanced.IsChecked = Settings.Default.UseAdvancedShot;
 			Slider_NumShots.Value = Settings.Default.NumberOfImages;
 			TextBox_DelayBetween.Text = Settings.Default.DelayBetweenShots.ToString();
+			FileNamePattern.Text = Settings.Default.FileNamePattern;
 
 			CheckboxRecordArena.IsChecked = Settings.Default.RecordArena;
 			CheckboxRecordBrawl.IsChecked = Settings.Default.RecordBrawl;
@@ -43,12 +55,12 @@ namespace HDT.Plugins.EndGame.Controls
 
 		private void AdvancedOptionsOn(bool on = false)
 		{
-			TextBox_Prefix.IsEnabled = on;
 			BtnDefaultDirectory.IsEnabled = on;
 			Slider_NumShots.IsEnabled = on;
 			TextBox_NumShots.IsEnabled = on;
 			TextBox_DelayBetween.IsEnabled = on;
 			ModeGroup.IsEnabled = on;
+			FileNameGroup.IsEnabled = on;
 		}
 
 		private void BtnDefaultDirectory_Click(object sender, RoutedEventArgs e)
@@ -125,15 +137,6 @@ namespace HDT.Plugins.EndGame.Controls
 
 			Settings.Default.NumberOfImages = (int)Slider_NumShots.Value;
 			Settings.Default.Save();			
-		}
-
-		private void TextBox_Prefix_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			if (!_initialized)
-				return;
-
-			Settings.Default.FilePrefix = TextBox_Prefix.Text;
-			Settings.Default.Save();
 		}
 
 		private void TextBox_DelayBetween_TextChanged(object sender, TextChangedEventArgs e)
@@ -263,6 +266,29 @@ namespace HDT.Plugins.EndGame.Controls
 			if(!_initialized)
 				return;
 			Settings.Default.RecordOther = false;
+			Settings.Default.Save();
+		}
+
+		private void FileNamePattern_TextChanged(object sender, TextChangedEventArgs e)
+		{			
+			var success = NamingPattern.TryParse(FileNamePattern.Text, out _pattern);
+			if(success)
+			{
+				TextBlockPatternPreview.Text = _pattern.Apply(_sampleGame);
+			}
+			else
+			{
+				TextBlockPatternPreview.Text = "Invalid Pattern";
+			}
+
+		}
+
+		private void BtnSavePattern_Click(object sender, RoutedEventArgs e)
+		{
+			if(!_initialized)
+				return;
+
+			Settings.Default.FileNamePattern = FileNamePattern.Text;
 			Settings.Default.Save();
 		}
 	}

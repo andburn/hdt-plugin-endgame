@@ -46,9 +46,11 @@ namespace HDT.Plugins.EndGame.Tests
 		}
 
 		[TestMethod]
-		public void EmptyPattern()
+		public void EmptyPatternReturnsDefault()
 		{
 			Assert.IsTrue(NamingPattern.TryParse("", out np));
+			Assert.AreEqual("Player1 (Mage) VS Player2 (Warlock) " 
+				+ DateTime.Now.ToString("dd.MM.yyy_HH.mm"), np.Apply(game));
 		}
 
 		[TestMethod]
@@ -110,6 +112,6 @@ namespace HDT.Plugins.EndGame.Tests
 		{
 			NamingPattern.TryParse("{Date:ABC}", out np);
 			Assert.AreEqual(DateTime.Now.ToString("dd.MM.yyy_HH.mm"), np.Apply(game));
-		}
+		}		
 	}
 }
