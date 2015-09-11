@@ -15,6 +15,7 @@ using ScreenImage = HDT.Plugins.EndGame.Screenshot.Image;
 using DrawImage = System.Drawing.Image;
 using System.Threading.Tasks;
 using Hearthstone_Deck_Tracker.Enums;
+using Hearthstone_Deck_Tracker.API;
 
 
 namespace HDT.Plugins.EndGame.Screenshot
@@ -60,7 +61,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 			ForceHideOverlay(false);
 
 			// copy the reference, TODO: clone?
-			var cstats = Game.CurrentGameStats;
+			var cstats = Core.Game.CurrentGameStats;
 
 			// Bit of a hack to allow selecting of game mode
 			await GameModeDectection(30);
@@ -143,13 +144,13 @@ namespace HDT.Plugins.EndGame.Screenshot
 		// check if the currrent game mode is to be captured
 		private static bool IsSetToCapture()
 		{
-			return Game.CurrentGameMode == GameMode.None && Settings.Default.RecordOther
-				|| Game.CurrentGameMode == GameMode.Practice && Settings.Default.RecordPractice
-				|| Game.CurrentGameMode == GameMode.Arena && Settings.Default.RecordArena
-				|| Game.CurrentGameMode == GameMode.Brawl && Settings.Default.RecordBrawl
-				|| Game.CurrentGameMode == GameMode.Ranked && Settings.Default.RecordRanked
-				|| Game.CurrentGameMode == GameMode.Friendly && Settings.Default.RecordFriendly
-				|| Game.CurrentGameMode == GameMode.Casual && Settings.Default.RecordCasual;
+			return Core.Game.CurrentGameMode == GameMode.None && Settings.Default.RecordOther
+				|| Core.Game.CurrentGameMode == GameMode.Practice && Settings.Default.RecordPractice
+				|| Core.Game.CurrentGameMode == GameMode.Arena && Settings.Default.RecordArena
+				|| Core.Game.CurrentGameMode == GameMode.Brawl && Settings.Default.RecordBrawl
+				|| Core.Game.CurrentGameMode == GameMode.Ranked && Settings.Default.RecordRanked
+				|| Core.Game.CurrentGameMode == GameMode.Friendly && Settings.Default.RecordFriendly
+				|| Core.Game.CurrentGameMode == GameMode.Casual && Settings.Default.RecordCasual;
 		}
 
 		private static Bitmap CaptureScreenShot()
@@ -163,7 +164,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 		private static async Task GameModeDectection(int timeoutInSeconds)
 		{
 			int seconds = 0;
-			while(Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
+			while(Core.Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
 			{
 				await Task.Delay(1000);
 				seconds++;
@@ -174,7 +175,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 		private static async Task RankedDectection(int timeoutInSeconds)
 		{
 			int seconds = 0;
-			while(Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
+			while(Core.Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
 			{
 				await Task.Delay(1000);
 				seconds++;
