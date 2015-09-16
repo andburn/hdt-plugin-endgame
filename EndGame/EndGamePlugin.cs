@@ -137,7 +137,7 @@ namespace HDT.Plugins.EndGame
 		{
 			var settings = new MetroDialogSettings { AffirmativeButtonText = "Get Update", NegativeButtonText = "Close" };
 
-			var result = await Helper.MainWindow.ShowMessageAsync("Uptate Available",
+			var result = await Helper.MainWindow.ShowMessageAsync("Update Available",
 				"For Plugin: \"" + this.Name + "\"", MessageDialogStyle.AffirmativeAndNegative, settings);
 			if(result == MessageDialogResult.Affirmative)
 				Process.Start(release.html_url);
