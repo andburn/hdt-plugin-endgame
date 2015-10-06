@@ -137,8 +137,9 @@ namespace HDT.Plugins.EndGame
 		{
 			var settings = new MetroDialogSettings { AffirmativeButtonText = "Get Update", NegativeButtonText = "Close" };
 
-			var result = await Hearthstone_Deck_Tracker.API.Core.MainWindow.ShowMessageAsync("Uptate Available",
+			var result = await Hearthstone_Deck_Tracker.API.Core.MainWindow.ShowMessageAsync("Update Available",
 				"For Plugin: \"" + this.Name + "\"", MessageDialogStyle.AffirmativeAndNegative, settings);
+
 			if(result == MessageDialogResult.Affirmative)
 				Process.Start(release.html_url);
 		}
