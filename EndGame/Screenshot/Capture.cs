@@ -61,7 +61,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 			ForceHideOverlay(false);
 
 			// copy the reference, TODO: clone?
-			var cstats = Core.Game.CurrentGameStats;
+			var cstats = Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameStats;
 
 			// Bit of a hack to allow selecting of game mode
 			await GameModeDectection(30);
@@ -92,11 +92,11 @@ namespace HDT.Plugins.EndGame.Screenshot
 
 				if(Config.Instance.StatsInWindow)
 				{
-					((DeckStatsControl)Helper.MainWindow.StatsWindow.FindName("StatsControl")).Refresh();
+					((DeckStatsControl)Hearthstone_Deck_Tracker.Core.Windows.StatsWindow.FindName("StatsControl")).Refresh();
 				}
 				else
 				{
-					((DeckStatsControl)Helper.MainWindow.FindName("DeckStatsFlyout")).Refresh();
+					((DeckStatsControl)Hearthstone_Deck_Tracker.API.Core.MainWindow.FindName("DeckStatsFlyout")).Refresh();
 				}
 
 				if(screenshot != null)
@@ -137,20 +137,20 @@ namespace HDT.Plugins.EndGame.Screenshot
 		}
 
 		private static void ForceHideOverlay(bool force = true) {
-			Helper.MainWindow.Overlay.ForceHidden = force;
-			Helper.MainWindow.Overlay.UpdatePosition();
+			Hearthstone_Deck_Tracker.Core.Overlay.ForceHidden = force;
+			Hearthstone_Deck_Tracker.Core.Overlay.UpdatePosition();
 		}
 
 		// check if the currrent game mode is to be captured
 		private static bool IsSetToCapture()
 		{
-			return Core.Game.CurrentGameMode == GameMode.None && Settings.Default.RecordOther
-				|| Core.Game.CurrentGameMode == GameMode.Practice && Settings.Default.RecordPractice
-				|| Core.Game.CurrentGameMode == GameMode.Arena && Settings.Default.RecordArena
-				|| Core.Game.CurrentGameMode == GameMode.Brawl && Settings.Default.RecordBrawl
-				|| Core.Game.CurrentGameMode == GameMode.Ranked && Settings.Default.RecordRanked
-				|| Core.Game.CurrentGameMode == GameMode.Friendly && Settings.Default.RecordFriendly
-				|| Core.Game.CurrentGameMode == GameMode.Casual && Settings.Default.RecordCasual;
+			return Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.None && Settings.Default.RecordOther
+				|| Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Practice && Settings.Default.RecordPractice
+				|| Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Arena && Settings.Default.RecordArena
+				|| Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Brawl && Settings.Default.RecordBrawl
+				|| Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Ranked && Settings.Default.RecordRanked
+				|| Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Friendly && Settings.Default.RecordFriendly
+				|| Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Casual && Settings.Default.RecordCasual;
 		}
 
 		private static Bitmap CaptureScreenShot()
@@ -164,7 +164,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 		private static async Task GameModeDectection(int timeoutInSeconds)
 		{
 			int seconds = 0;
-			while(Core.Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
+			while(Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
 			{
 				await Task.Delay(1000);
 				seconds++;
@@ -175,7 +175,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 		private static async Task RankedDectection(int timeoutInSeconds)
 		{
 			int seconds = 0;
-			while(Core.Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
+			while(Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
 			{
 				await Task.Delay(1000);
 				seconds++;

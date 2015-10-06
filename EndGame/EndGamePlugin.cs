@@ -51,7 +51,7 @@ namespace HDT.Plugins.EndGame
 
 		public Version Version
 		{
-			get { return new Version(0, 3, 1); }
+			get { return new Version(0, 3, 2); }
 		}
 
 		public void OnButtonPress()
@@ -92,7 +92,7 @@ namespace HDT.Plugins.EndGame
 
 		private static void SetSettingsFlyout()
 		{
-			var window = Hearthstone_Deck_Tracker.Helper.MainWindow;
+			var window = Hearthstone_Deck_Tracker.API.Core.MainWindow;
 			var flyouts = window.Flyouts.Items;
 			
 			var settings = new Flyout();
@@ -137,7 +137,7 @@ namespace HDT.Plugins.EndGame
 		{
 			var settings = new MetroDialogSettings { AffirmativeButtonText = "Get Update", NegativeButtonText = "Close" };
 
-			var result = await Helper.MainWindow.ShowMessageAsync("Uptate Available",
+			var result = await Hearthstone_Deck_Tracker.API.Core.MainWindow.ShowMessageAsync("Uptate Available",
 				"For Plugin: \"" + this.Name + "\"", MessageDialogStyle.AffirmativeAndNegative, settings);
 			if(result == MessageDialogResult.Affirmative)
 				Process.Start(release.html_url);
