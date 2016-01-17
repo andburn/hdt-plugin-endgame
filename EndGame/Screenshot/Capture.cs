@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Media.Imaging;
-
-using Hearthstone_Deck_Tracker;
-using Hearthstone_Deck_Tracker.Hearthstone;
-using HDT.Plugins.EndGame.Properties;
-using Hearthstone_Deck_Tracker.Stats;
-using System.Drawing.Drawing2D;
-
-using ScreenImage = HDT.Plugins.EndGame.Screenshot.Image;
-using DrawImage = System.Drawing.Image;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
+using HDT.Plugins.EndGame.Properties;
+using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Enums;
-using Hearthstone_Deck_Tracker.API;
-
+using Hearthstone_Deck_Tracker.Stats;
+using Hearthstone_Deck_Tracker.Utility;
+using Hearthstone_Deck_Tracker.Utility.Logging;
+using DrawImage = System.Drawing.Image;
+using ScreenImage = HDT.Plugins.EndGame.Screenshot.Image;
 
 namespace HDT.Plugins.EndGame.Screenshot
 {
@@ -25,7 +22,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 		// Take a screenshot using the print screen button
 		public static async Task Simple(int delay)
 		{
-			Logger.WriteLine("Capture (Simple) @ " + delay, "EndGame");
+			Log.Info("Capture (Simple) @ " + delay, "EndGame");
 			await Task.Delay(delay);
 			var sim = new WindowsInput.InputSimulator();
 			sim.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.SNAPSHOT);
@@ -34,7 +31,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 		// Take a series of screenshots and display them so one can be selected to be saved
 		public static async Task Advanced(int delay, string dir, int num, int delayBetween)
 		{
-			Logger.WriteLine("Capture (Advanced) @ " + delay + "/" + delayBetween, "EndGame");
+			Log.Info("Capture (Advanced) @ " + delay + "/" + delayBetween, "EndGame");
 
 			List<ScreenImage> screenshots = new List<ScreenImage>();
 
@@ -45,7 +42,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 			for (int i = 0; i < num; i++)
 			{
 				Bitmap img = CaptureScreenShot();
-				if(img != null)
+				if (img != null)
 				{
 					Bitmap thb = ResizeImage(img);
 					screenshots.Add(new ScreenImage(img, ToMediaImage(thb)));
@@ -53,7 +50,7 @@ namespace HDT.Plugins.EndGame.Screenshot
 				}
 				else
 				{
-					Logger.WriteLine("Capture failed, reverting to Simple mode.", "EndGame");
+					Log.Info("Capture failed, reverting to Simple mode.", "EndGame");
 					await Simple(delay);
 				}
 			}
@@ -67,9 +64,9 @@ namespace HDT.Plugins.EndGame.Screenshot
 			await GameModeDectection(30);
 			await RankedDectection(20);
 
-			if(IsSetToCapture())
+			if (IsSetToCapture())
 			{
-				if(screenshots.Count == 1)
+				if (screenshots.Count == 1)
 				{
 					// only one image, no need for dialog
 					// TODO: would mean no dialog if it was expected, however
@@ -84,50 +81,50 @@ namespace HDT.Plugins.EndGame.Screenshot
 
 		public static void SaveImage(GameStats game, Image screenshot, String note = null)
 		{
-			if(game != null)
+			if (game != null)
 			{
 				if (!String.IsNullOrEmpty(note))
 					game.Note = note;
 				DeckStatsList.Save();
 
-				if(Config.Instance.StatsInWindow)
-				{
-					((DeckStatsControl)Hearthstone_Deck_Tracker.Core.Windows.StatsWindow.FindName("StatsControl")).Refresh();
-				}
-				else
-				{
-					((DeckStatsControl)Hearthstone_Deck_Tracker.API.Core.MainWindow.FindName("DeckStatsFlyout")).Refresh();
-				}
+				//if(Config.Instance.StatsInWindow)
+				//{
+				//	((DeckStatsControl)Hearthstone_Deck_Tracker.Core.Windows.StatsWindow.FindName("StatsControl")).Refresh();
+				//}
+				//else
+				//{
+				//	((DeckStatsControl)Hearthstone_Deck_Tracker.API.Core.MainWindow.FindName("DeckStatsFlyout")).Refresh();
+				//}
 
-				if(screenshot != null)
+				if (screenshot != null)
 				{
 					try
 					{
 						var dir = Settings.Default.OutputDir;
-						if(!Directory.Exists(dir))
+						if (!Directory.Exists(dir))
 						{
 							dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 						}
 						var pattern = Settings.Default.FileNamePattern;
 						NamingPattern np = null;
-						if(!NamingPattern.TryParse(pattern, out np))
-							Logger.WriteLine("Invalid file name pattern, using default", "EndGame");
+						if (!NamingPattern.TryParse(pattern, out np))
+							Log.Info("Invalid file name pattern, using default", "EndGame");
 						var filename = np.Apply(game);
 						SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
-						Logger.WriteLine("Error saving image: " + e.Message, "EndGame");
+						Log.Info("Error saving image: " + e.Message, "EndGame");
 					}
 				}
 				else
 				{
-					Logger.WriteLine("Screenshot is null", "EndGame");
+					Log.Info("Screenshot is null", "EndGame");
 				}
 			}
 			else
 			{
-				Logger.WriteLine("Game is null", "EndGame");
+				Log.Info("Game is null", "EndGame");
 			}
 		}
 
@@ -136,7 +133,8 @@ namespace HDT.Plugins.EndGame.Screenshot
 			bmp.Save(Path.Combine(Settings.Default.OutputDir, filename) + ".png", ImageFormat.Png);
 		}
 
-		private static void ForceHideOverlay(bool force = true) {
+		private static void ForceHideOverlay(bool force = true)
+		{
 			Hearthstone_Deck_Tracker.Core.Overlay.ForceHidden = force;
 			Hearthstone_Deck_Tracker.Core.Overlay.UpdatePosition();
 		}
@@ -156,15 +154,15 @@ namespace HDT.Plugins.EndGame.Screenshot
 		private static Bitmap CaptureScreenShot()
 		{
 			var rect = Helper.GetHearthstoneRect(true);
-			var bmp = Helper.CaptureHearthstone(new Point(0,0), rect.Width, rect.Height);			
+			var bmp = ScreenCapture.CaptureHearthstone(new Point(0, 0), rect.Width, rect.Height);
 			return bmp;
-		}		
+		}
 
 		// Hacky method to wait on game mode
 		private static async Task GameModeDectection(int timeoutInSeconds)
 		{
 			int seconds = 0;
-			while(Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
+			while (Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.None && seconds < timeoutInSeconds)
 			{
 				await Task.Delay(1000);
 				seconds++;
@@ -175,12 +173,12 @@ namespace HDT.Plugins.EndGame.Screenshot
 		private static async Task RankedDectection(int timeoutInSeconds)
 		{
 			int seconds = 0;
-			while(Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
+			while (Hearthstone_Deck_Tracker.API.Core.Game.CurrentGameMode == GameMode.Casual && seconds < timeoutInSeconds)
 			{
 				await Task.Delay(1000);
 				seconds++;
 			}
-		}		
+		}
 
 		// Based on: http://stackoverflow.com/a/2001692
 		// "c# Image resizing to different size while preserving aspect ratio"

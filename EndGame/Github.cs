@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-
-using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame
@@ -29,7 +28,7 @@ namespace HDT.Plugins.EndGame
 			}
 			catch (Exception ex)
 			{
-				Logger.WriteLine("Update check failed: " + ex.Message, "Github");
+				Log.Error("Update check failed: " + ex.Message, "Github");
 			}
 			return null;
 		}
@@ -65,6 +64,5 @@ namespace HDT.Plugins.EndGame
 			public string prerelease { get; set; }
 			public string published_at { get; set; }
 		}
-
 	}
 }
