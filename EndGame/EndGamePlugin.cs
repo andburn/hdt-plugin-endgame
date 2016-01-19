@@ -6,18 +6,21 @@ using HDT.Plugins.EndGame.Properties;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker.Plugins;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
 namespace HDT.Plugins.EndGame
 {
-    public class EndGamePlugin : IPlugin
-    {
+	public class EndGamePlugin : IPlugin
+	{
 		private MenuItem _endGameMenuItem;
 		private static Flyout _settings;
 
-		public static Flyout SettingsFlyout { 
-			get {
+		public static Flyout SettingsFlyout
+		{
+			get
+			{
 				if (_settings == null)
 					SetSettingsFlyout();
 				return _settings;
@@ -77,16 +80,16 @@ namespace HDT.Plugins.EndGame
 		}
 
 		public void OnUpdate()
-		{			
+		{
 		}
 
 		private async void CheckForUpdate()
 		{
 			var latest = await Github.CheckForUpdate("andburn", "hdt-plugin-endgame", Version);
-			if(latest != null)
+			if (latest != null)
 			{
 				await ShowUpdateMessage(latest);
-				Logger.WriteLine("Update available: " + latest.tag_name, "EndGame");
+				Log.Info("Update available: " + latest.tag_name, "EndGame");
 			}
 		}
 
@@ -94,18 +97,18 @@ namespace HDT.Plugins.EndGame
 		{
 			var window = Hearthstone_Deck_Tracker.API.Core.MainWindow;
 			var flyouts = window.Flyouts.Items;
-			
+
 			var settings = new Flyout();
 			settings.Name = "PluginSettingsFlyout";
 			settings.Position = Position.Left;
-			Panel.SetZIndex(settings, 100);			
+			Panel.SetZIndex(settings, 100);
 			settings.Header = "End Game Settings";
 			settings.Content = new Controls.PluginSettings();
 			//newflyout.Width = 250;
 			//settings.Theme = FlyoutTheme.Accent;
 			flyouts.Add(settings);
 
-			_settings = settings;	
+			_settings = settings;
 		}
 
 		public static void SaveDefaultNoteSettings()
@@ -140,10 +143,8 @@ namespace HDT.Plugins.EndGame
 			var result = await Hearthstone_Deck_Tracker.API.Core.MainWindow.ShowMessageAsync("Update Available",
 				"For Plugin: \"" + this.Name + "\"", MessageDialogStyle.AffirmativeAndNegative, settings);
 
-			if(result == MessageDialogResult.Affirmative)
+			if (result == MessageDialogResult.Affirmative)
 				Process.Start(release.html_url);
 		}
-
 	}
 }
-

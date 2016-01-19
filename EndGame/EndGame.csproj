@@ -31,17 +31,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HearthstoneDeckTracker">
-      <HintPath>..\..\deck-tracker\build\development\HearthstoneDeckTracker.exe</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\source\Hearthstone Deck Tracker\bin\Debug\HearthstoneDeckTracker.exe</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro">
-      <HintPath>..\..\deck-tracker\build\development\MahApps.Metro.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\source\Hearthstone Deck Tracker\bin\Debug\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\deck-tracker\build\development\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\source\Hearthstone Deck Tracker\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
