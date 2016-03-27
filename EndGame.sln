@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGame", "EndGame.csproj", "{E5A17D06-FEB4-4818-9445-4EC22BD3B619}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGame", "EndGame\EndGame.csproj", "{E5A17D06-FEB4-4818-9445-4EC22BD3B619}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGameTests", "..\EndGameTests\EndGameTests.csproj", "{58067CFB-7C33-4864-9B08-63EF2DDAD00D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGameTests", "EndGameTests\EndGameTests.csproj", "{58067CFB-7C33-4864-9B08-63EF2DDAD00D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HearthstoneDeckTracker">
-      <HintPath>..\..\deck-tracker\build\development\HearthstoneDeckTracker.exe</HintPath>
+    <Reference Include="Hearthstone Deck Tracker">
+      <HintPath>..\..\lib\Hearthstone Deck Tracker.exe</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
