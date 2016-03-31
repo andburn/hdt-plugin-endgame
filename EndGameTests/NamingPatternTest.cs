@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Hearthstone_Deck_Tracker.Enums;
 using Hearthstone_Deck_Tracker.Stats;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,7 +48,7 @@ namespace HDT.Plugins.EndGame.Tests
 		public void EmptyPatternReturnsDefault()
 		{
 			Assert.IsTrue(NamingPattern.TryParse("", out np));
-			Assert.AreEqual("Player1 (Mage) VS Player2 (Warlock) " 
+			Assert.AreEqual("Player1 (Mage) VS Player2 (Warlock) "
 				+ DateTime.Now.ToString("dd.MM.yyy_HH.mm"), np.Apply(game));
 		}
 
@@ -112,6 +111,6 @@ namespace HDT.Plugins.EndGame.Tests
 		{
 			NamingPattern.TryParse("{Date:ABC}", out np);
 			Assert.AreEqual(DateTime.Now.ToString("dd.MM.yyy_HH.mm"), np.Apply(game));
-		}		
+		}
 	}
 }

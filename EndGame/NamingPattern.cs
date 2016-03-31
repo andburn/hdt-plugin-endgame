@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Hearthstone_Deck_Tracker.Stats;
 
 namespace HDT.Plugins.EndGame
@@ -19,30 +16,31 @@ namespace HDT.Plugins.EndGame
 
 		public List<string> Pattern { get; private set; }
 
-		private static List<string> Parse(string pattern) {			
+		private static List<string> Parse(string pattern)
+		{
 			List<string> list = new List<string>();
 			const string regex = @"^([^{}]*)(({[A-Z][^{}]+})([^{}]*))*$";
 
-			if(String.IsNullOrWhiteSpace(pattern))
+			if (String.IsNullOrWhiteSpace(pattern))
 				pattern = DefaultPattern;
 
 			Regex r = new Regex(regex);
 
 			var match = Regex.Match(pattern, regex);
-			if(match.Success)
+			if (match.Success)
 			{
 				var prefix = match.Groups[1].Captures[0].Value;
-				if(!String.IsNullOrEmpty(prefix))
+				if (!String.IsNullOrEmpty(prefix))
 					list.Add(prefix);
 
 				var tokens = match.Groups[3].Captures;
 				var strings = match.Groups[4].Captures;
 
 				// TODO: check tokens.count == strings.count
-				for(int i = 0; i < tokens.Count; i++)
+				for (int i = 0; i < tokens.Count; i++)
 				{
 					list.Add(tokens[i].Value);
-					if(!String.IsNullOrEmpty(strings[i].Value))
+					if (!String.IsNullOrEmpty(strings[i].Value))
 						list.Add(strings[i].Value);
 				}
 			}
@@ -53,7 +51,7 @@ namespace HDT.Plugins.EndGame
 		{
 			naming = new NamingPattern();
 			List<string> result = Parse(pattern);
-			if(result.Count <= 0) 
+			if (result.Count <= 0)
 			{
 				return false;
 			}
@@ -67,26 +65,26 @@ namespace HDT.Plugins.EndGame
 		public string Apply(GameStats game)
 		{
 			var name = "";
-			foreach(var token in Pattern)
+			foreach (var token in Pattern)
 			{
 				var tokenLower = token.ToLower();
-				if(tokenLower == "{playerclass}")
+				if (tokenLower == "{playerclass}")
 				{
 					name += game.PlayerHero;
 				}
-				else if(tokenLower == "{opponentclass}")
+				else if (tokenLower == "{opponentclass}")
 				{
 					name += game.OpponentHero;
 				}
-				else if(tokenLower == "{playername}")
+				else if (tokenLower == "{playername}")
 				{
 					name += game.PlayerName;
 				}
-				else if(tokenLower == "{opponentname}")
+				else if (tokenLower == "{opponentname}")
 				{
 					name += game.OpponentName;
 				}
-				else if(tokenLower.Contains("{date:"))
+				else if (tokenLower.Contains("{date:"))
 				{
 					name += ParseDate(token);
 				}
@@ -105,12 +103,12 @@ namespace HDT.Plugins.EndGame
 			{
 				const string regex = "{[Dd]ate:(?<date>(.*?))}";
 				var match = Regex.Match(format, regex);
-				if(match.Success)
+				if (match.Success)
 				{
 					var capture = match.Groups["date"].Value;
 					var date = DateTime.Now.ToString(capture);
 					Console.WriteLine(date);
-					if(date == capture)
+					if (date == capture)
 						return defaultDate;
 					else
 						return date;
@@ -123,6 +121,5 @@ namespace HDT.Plugins.EndGame
 				return defaultDate;
 			}
 		}
-
 	}
 }

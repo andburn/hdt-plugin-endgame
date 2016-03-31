@@ -11,11 +11,11 @@ namespace HDT.Plugins.EndGame
 		public async static void ScreenShot()
 		{
 			// multiple calls may occur, only process one in a time span
-			if(lastCall != null)
+			if (lastCall != null)
 			{
 				var diff = DateTime.Now - lastCall;
 				lastCall = DateTime.Now;
-				if(diff.TotalSeconds < 20)
+				if (diff.TotalSeconds < 20)
 					return;
 			}
 			lastCall = DateTime.Now;
@@ -34,9 +34,8 @@ namespace HDT.Plugins.EndGame
 			}
 			else
 			{
-				await Capture.Simple(delay);				
+				await Capture.Simple(delay);
 			}
 		}
-
 	}
 }
