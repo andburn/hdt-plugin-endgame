@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HearthDb, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\HearthDb.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HearthstoneDeckTracker">
       <HintPath>..\..\lib\HearthstoneDeckTracker.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,6 +68,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archetype\ArchetypeManager.cs" />
+    <Compile Include="Archetype\ArchetypeStyle.cs" />
+    <Compile Include="Archetype\Card.cs" />
+    <Compile Include="Archetype\ArchetypeDeck.cs" />
+    <Compile Include="Archetype\Deck.cs" />
+    <Compile Include="Archetype\PlayedDeck.cs" />
+    <Compile Include="Archetype\SingleCard.cs" />
+    <Compile Include="Controls\ArchetypeDeckListView.xaml.cs">
+      <DependentUpon>ArchetypeDeckListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ArchetypeDeckListViewModel.cs" />
+    <Compile Include="Controls\ArchetypeDeckView.xaml.cs">
+      <DependentUpon>ArchetypeDeckView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ArchetypeDeckViewModel.cs" />
+    <Compile Include="Controls\ArchetypeSettings.xaml.cs">
+      <DependentUpon>ArchetypeSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScreenshotSettings.xaml.cs">
+      <DependentUpon>ScreenshotSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\GameFormat.cs" />
+    <Compile Include="Enums\PlayerClass.cs" />
     <Compile Include="Controls\NoteDialog.xaml.cs">
       <DependentUpon>NoteDialog.xaml</DependentUpon>
     </Compile>
@@ -73,6 +102,7 @@
     </Compile>
     <Compile Include="EndGame.cs" />
     <Compile Include="EndGamePlugin.cs" />
+    <Compile Include="Enums\PlayStyle.cs" />
     <Compile Include="Github.cs" />
     <Compile Include="NamingPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,6 +114,10 @@
     <Compile Include="Screenshot\Image.cs" />
     <Compile Include="Screenshot\Capture.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -94,6 +128,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ArchetypeDeckListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ArchetypeDeckView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ArchetypeSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\NoteDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -103,6 +149,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PluginSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenshotSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

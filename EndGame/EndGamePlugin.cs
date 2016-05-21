@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using HDT.Plugins.EndGame.Properties;
+using HDT.Plugins.EndGame.Windows;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker.Plugins;
@@ -59,8 +60,10 @@ namespace HDT.Plugins.EndGame
 
 		public void OnButtonPress()
 		{
-			if (_settings != null)
-				_settings.IsOpen = true;
+			//if (_settings != null)
+			//	_settings.IsOpen = true;
+			var window = new MainWindow();
+			window.Show();
 		}
 
 		public void OnLoad()
@@ -70,7 +73,7 @@ namespace HDT.Plugins.EndGame
 			ClearDefaultNoteSettings();
 			_endGameMenuItem = new Controls.PluginMenu();
 			SetSettingsFlyout();
-			GameEvents.OnGameEnd.Add(EndGame.ScreenShot);
+			GameEvents.OnGameEnd.Add(EndGame.Archetypes);
 		}
 
 		public void OnUnload()
@@ -104,7 +107,7 @@ namespace HDT.Plugins.EndGame
 			Panel.SetZIndex(settings, 100);
 			settings.Header = "End Game Settings";
 			settings.Content = new Controls.PluginSettings();
-			//newflyout.Width = 250;
+			settings.Width = 400;
 			//settings.Theme = FlyoutTheme.Accent;
 			flyouts.Add(settings);
 

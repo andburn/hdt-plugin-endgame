@@ -1,0 +1,26 @@
+﻿[
+  {
+    "name": "Some Deck",
+	"id": "d493e262-68ed-4d37-93ad-d81e8cef9b21",
+    "style": {
+      "name": "Control",
+      "style": "Control"
+    },
+    "klass": "Hunter",
+    "format": "Standard",
+    "cards": [
+      {
+        "id": "AB_123",
+        "count": 1
+      },
+      {
+        "id": "AB_124",
+        "count": 1
+      },
+      {
+        "id": "AB_125",
+        "count": 1
+      }
+    ]
+  }
+]

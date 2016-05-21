@@ -1,6 +1,7 @@
 ﻿using System;
 using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Screenshot;
+using HDT.Plugins.EndGame.Windows;
 
 namespace HDT.Plugins.EndGame
 {
@@ -36,6 +37,12 @@ namespace HDT.Plugins.EndGame
 			{
 				await Capture.Simple(delay);
 			}
+		}
+
+		public static void Archetypes()
+		{
+			var window = new MainWindow(); // Core.Game.CurrentGameStats);
+			window.Show();
 		}
 	}
 }
