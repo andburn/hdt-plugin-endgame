@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="HDT.Plugins.EndGame.Views.ArchetypeDeckEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
+             xmlns:vm="clr-namespace:HDT.Plugins.EndGame.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Width="230">
+        <TextBox x:Name="TextBoxName" Text="{Binding Deck.Name}" />
+        <ComboBox x:Name="ComboBoxKlass"
+                  ItemsSource="{Binding KlassList}"
+                  SelectedItem="{Binding Deck.Klass}" />
+        <ComboBox x:Name="ComboBoxFormat"
+                  ItemsSource="{Binding FormatList}"
+                  SelectedItem="{Binding Deck.Format}" />
+        <ListView x:Name="ListViewCards" ItemsSource="{Binding Cards}" Margin="0,2,0,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock Text="{Binding Name}" />
+                        <Button Content="X" Width="30" HorizontalAlignment="Right" DockPanel.Dock="Right"
+                                Command="{Binding DataContext.DeleteCardCommand,
+                                    RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                                CommandParameter="{Binding}" />
+                    </DockPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <TextBox x:Name="SearchText"
+                 mah:TextBoxHelper.Watermark="Search"
+                 mah:TextBoxHelper.ClearTextButton="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <i:InvokeCommandAction Command="{Binding SearchTextChangeCommand}"
+                             CommandParameter="{Binding ElementName=SearchText, Path=Text}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <ListView x:Name="SearchList" Height="100"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding AutoComplete}"
+                  Visibility="{Binding AutoCompleteVisibile}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding LocalizedName}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Content="Add" Width="40" HorizontalAlignment="Right" DockPanel.Dock="Right"
+                Command="{Binding AddCardCommand}"
+                CommandParameter="{Binding ElementName=SearchList, Path=SelectedItem}"
+                Visibility="{Binding AutoCompleteVisibile}" />
+    </StackPanel>
+</UserControl>

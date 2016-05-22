@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HearthDb, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\HearthDb.dll</HintPath>
@@ -44,6 +56,10 @@
       <HintPath>..\..\lib\MahApps.Metro.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
@@ -55,6 +71,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,56 +88,44 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archetype\ArchetypeManager.cs" />
-    <Compile Include="Archetype\ArchetypeStyle.cs" />
-    <Compile Include="Archetype\Card.cs" />
-    <Compile Include="Archetype\ArchetypeDeck.cs" />
-    <Compile Include="Archetype\Deck.cs" />
-    <Compile Include="Archetype\PlayedDeck.cs" />
-    <Compile Include="Archetype\SingleCard.cs" />
-    <Compile Include="Controls\ArchetypeDeckListView.xaml.cs">
+    <Compile Include="Models\ArchetypeManager.cs" />
+    <Compile Include="Models\ArchetypeStyle.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\ArchetypeDeck.cs" />
+    <Compile Include="Models\Deck.cs" />
+    <Compile Include="Models\PlayedDeck.cs" />
+    <Compile Include="Models\SingleCard.cs" />
+    <Compile Include="Services\ArchetypeDecksFileRepository.cs" />
+    <Compile Include="Services\IArchetypeDecksRepository.cs" />
+    <Compile Include="ViewModels\ArchetypeDeckListViewModel.cs" />
+    <Compile Include="ViewModels\ArchetypeDeckEditViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\ArchetypeDeckListView.xaml.cs">
       <DependentUpon>ArchetypeDeckListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ArchetypeDeckListViewModel.cs" />
-    <Compile Include="Controls\ArchetypeDeckView.xaml.cs">
-      <DependentUpon>ArchetypeDeckView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ArchetypeDeckViewModel.cs" />
-    <Compile Include="Controls\ArchetypeSettings.xaml.cs">
-      <DependentUpon>ArchetypeSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ScreenshotSettings.xaml.cs">
-      <DependentUpon>ScreenshotSettings.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModels\ArchetypeDeckViewModel.cs" />
     <Compile Include="Enums\GameFormat.cs" />
     <Compile Include="Enums\PlayerClass.cs" />
-    <Compile Include="Controls\NoteDialog.xaml.cs">
-      <DependentUpon>NoteDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PluginMenu.xaml.cs">
-      <DependentUpon>PluginMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PluginSettings.xaml.cs">
-      <DependentUpon>PluginSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EndGame.cs" />
     <Compile Include="EndGamePlugin.cs" />
     <Compile Include="Enums\PlayStyle.cs" />
     <Compile Include="Github.cs" />
     <Compile Include="NamingPattern.cs" />
-    <Compile Include="ObservableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Screenshot\Image.cs" />
-    <Compile Include="Screenshot\Capture.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Views\ArchetypeDeckEditView.xaml.cs">
+      <DependentUpon>ArchetypeDeckEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ArchetypeDeckView.xaml.cs">
+      <DependentUpon>ArchetypeDeckView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -129,39 +137,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ArchetypeDeckListView.xaml">
+    <Page Include="Views\ArchetypeDeckListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ArchetypeDeckView.xaml">
+    <Page Include="Views\ArchetypeDeckEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ArchetypeDeckView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ArchetypeSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\NoteDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PluginMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PluginSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ScreenshotSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
