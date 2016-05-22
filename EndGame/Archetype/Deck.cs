@@ -5,7 +5,7 @@ using HDT.Plugins.EndGame.Enums;
 
 namespace HDT.Plugins.EndGame.Archetype
 {
-	public abstract class Deck
+	public abstract class Deck : ObservableObject
 	{
 		public Guid Id { get; set; }
 		public PlayerClass Klass { get; set; }

@@ -41,5 +41,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button x:Name="ButtonAddCard" Click="ButtonAddCard_Click">Add</Button>
+        <TextBlock x:Name="MirrorBox" Text="{Binding Name}" />
     </StackPanel>
 </UserControl>

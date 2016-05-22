@@ -25,5 +25,11 @@ namespace HDT.Plugins.EndGame.Controls
 
 			return Decks.FirstOrDefault(x => x.Id == d.Id);
 		}
+
+		public void AddDeck(ArchetypeDeck deck)
+		{
+			Decks.Add(deck);
+			ArchetypeManager.Instance.AddDeck(deck);
+		}
 	}
 }

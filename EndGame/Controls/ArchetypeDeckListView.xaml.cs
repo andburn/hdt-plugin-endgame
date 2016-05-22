@@ -62,7 +62,7 @@ namespace HDT.Plugins.EndGame.Controls
 		{
 			var newDeck = new ArchetypeDeck();
 			newDeck.Name = "New Deck";
-			_viewModel.Decks.Add(newDeck);
+			_viewModel.AddDeck(newDeck);
 		}
 
 		private void DeleteButton_Click(object sender, RoutedEventArgs e)

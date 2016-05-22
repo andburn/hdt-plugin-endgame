@@ -26,6 +26,21 @@ namespace HDT.Plugins.EndGame.Controls
 			ComboBoxFormat.ItemsSource = Enum.GetValues(typeof(GameFormat));
 		}
 
+		public static readonly RoutedEvent DeckEditEvent = EventManager.RegisterRoutedEvent(
+			"DeckEdit", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ArchetypeDeckView));
+
+		public event RoutedEventHandler DeckEdit
+		{
+			add { AddHandler(DeckEditEvent, value); }
+			remove { RemoveHandler(DeckEditEvent, value); }
+		}
+
+		private void RaiseDeckEditEvent()
+		{
+			RoutedEventArgs newEventArgs = new RoutedEventArgs(DeckEditEvent);
+			RaiseEvent(newEventArgs);
+		}
+
 		private void ArchetypeDeckView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			_viewModel = (ArchetypeDeckViewModel)DataContext;

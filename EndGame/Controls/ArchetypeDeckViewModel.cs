@@ -48,19 +48,19 @@ namespace HDT.Plugins.EndGame.Controls
 		public string Name
 		{
 			get { return _deck.Name; }
-			set { _deck.Name = value; }
+			set { _deck.Name = value; SaveDeck(); }
 		}
 
 		public PlayerClass Klass
 		{
 			get { return _deck.Klass; }
-			set { _deck.Klass = value; UpdateViableList(); }
+			set { _deck.Klass = value; UpdateViableList(); SaveDeck(); }
 		}
 
 		public GameFormat Format
 		{
 			get { return _deck.Format; }
-			set { _deck.Format = value; }
+			set { _deck.Format = value; SaveDeck(); }
 		}
 
 		public ObservableCollection<HDTCard> Cards
@@ -85,6 +85,7 @@ namespace HDT.Plugins.EndGame.Controls
 			{
 				_cards.Add(card);
 				_deck.Cards.Add(new SingleCard(card.Id));
+				SaveDeck();
 			}
 		}
 
@@ -92,6 +93,12 @@ namespace HDT.Plugins.EndGame.Controls
 		{
 			_cards.Remove(card);
 			_deck.Cards.Remove(new SingleCard(card.Id));
+			SaveDeck();
+		}
+
+		private void SaveDeck()
+		{
+			ArchetypeManager.Instance.SaveDecks(@"E:\Dump\decks.json");
 		}
 	}
 }

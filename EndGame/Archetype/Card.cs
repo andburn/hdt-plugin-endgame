@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Xml.Serialization;
 using Hearthstone_Deck_Tracker.Stats;
 
 namespace HDT.Plugins.EndGame.Archetype
 {
 	public class Card : IEquatable<Card>, IComparable<Card>
 	{
-		[XmlAttribute]
 		public string Id { get; set; }
 
-		[XmlAttribute]
 		public int Count { get; set; }
 
 		public Card()
