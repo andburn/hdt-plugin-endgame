@@ -88,6 +88,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\GameFormat.cs" />
     <Compile Include="Models\ArchetypeManager.cs" />
     <Compile Include="Models\ArchetypeStyle.cs" />
     <Compile Include="Models\Card.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Models\SingleCard.cs" />
     <Compile Include="Services\ArchetypeDecksFileRepository.cs" />
     <Compile Include="Services\IArchetypeDecksRepository.cs" />
+    <Compile Include="Services\RepositoryFactory.cs" />
     <Compile Include="ViewModels\ArchetypeDeckListViewModel.cs" />
     <Compile Include="ViewModels\ArchetypeDeckEditViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -104,7 +106,6 @@
       <DependentUpon>ArchetypeDeckListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ArchetypeDeckViewModel.cs" />
-    <Compile Include="Enums\GameFormat.cs" />
     <Compile Include="Enums\PlayerClass.cs" />
     <Compile Include="EndGamePlugin.cs" />
     <Compile Include="Enums\PlayStyle.cs" />
