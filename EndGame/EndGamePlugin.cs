@@ -58,7 +58,7 @@ namespace HDT.Plugins.EndGame
 
 		public void OnButtonPress()
 		{
-			new NoteView().Show();
+			new NoteView().Show(); // TODO only allow one open at a time
 		}
 
 		public void OnLoad()

@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HDT.Plugins.EndGame.Models;
-
-using Hearthstone_Deck_Tracker.API;
+using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
 
 namespace HDT.Plugins.EndGame.Services
 {
 	public class TrackerRepository : ITrackerRepository
 	{
-		public Task<List<ArchetypeDeck>> GetAllArchetypeDecks()
+		public async Task<List<ArchetypeDeck>> GetAllArchetypeDecks()
 		{
-			throw new NotImplementedException();
+			return await Task.Run(() =>
+			{
+				return DeckList.Instance.Decks
+					.Where(d => !d.Archived && d.TagList.ToLower().Contains("archetype"))
+					.Select(d => new ArchetypeDeck(d.Name, d.GetClass))
+					.ToList();
+			}).ConfigureAwait(false);
 		}
 
 		public Task GetGameNote()
