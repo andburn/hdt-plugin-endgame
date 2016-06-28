@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Controls;
+using HDT.Plugins.EndGame.Views;
 using Hearthstone_Deck_Tracker.Plugins;
 
-namespace EndGame
+namespace HDT.Plugins.EndGame
 {
 	public class EndGamePlugin : IPlugin
 	{
@@ -57,6 +58,7 @@ namespace EndGame
 
 		public void OnButtonPress()
 		{
+			new NoteView().Show();
 		}
 
 		public void OnLoad()
