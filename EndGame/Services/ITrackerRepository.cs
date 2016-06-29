@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HDT.Plugins.EndGame.Models;
 
 namespace HDT.Plugins.EndGame.Services
 {
 	public interface ITrackerRepository
 	{
-		Task<PlayedDeck> GetOpponentDeck();
+		Deck GetOpponentDeck();
 
-		Task GetGameNote();
+		string GetGameNote();
 
-		Task UpdateGameNote(string text);
+		void UpdateGameNote(string text);
 
-		Task<List<ArchetypeDeck>> GetAllArchetypeDecks();
+		List<ArchetypeDeck> GetAllArchetypeDecks();
 	}
 }

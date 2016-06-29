@@ -1,14 +1,18 @@
 ﻿namespace HDT.Plugins.EndGame.Models
 {
-	public class ArchetypeDeck
+	public class ArchetypeDeck : Deck
 	{
-		public string Hero { get; set; }
 		public string Name { get; set; }
 
-		public ArchetypeDeck(string name, string hero)
+		public ArchetypeDeck()
+			: base()
+		{
+		}
+
+		public ArchetypeDeck(string name, string format, string klass)
+			: base(format, klass)
 		{
 			Name = name;
-			Hero = hero;
 		}
 	}
 }

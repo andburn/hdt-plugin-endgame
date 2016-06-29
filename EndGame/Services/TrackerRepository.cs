@@ -1,65 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HDT.Plugins.EndGame.Models;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 
 namespace HDT.Plugins.EndGame.Services
 {
 	public class TrackerRepository : ITrackerRepository
 	{
-		public async Task<List<ArchetypeDeck>> GetAllArchetypeDecks()
+		public List<ArchetypeDeck> GetAllArchetypeDecks()
 		{
-			return await Task.Run(() =>
+			// TODO allow to be archived?
+			var decks = DeckList.Instance.Decks
+				.Where(d => !d.Archived && d.TagList.ToLower().Contains("archetype"))
+				.ToList();
+			var archetypes = new List<ArchetypeDeck>();
+			foreach (var d in decks)
 			{
-				return DeckList.Instance.Decks
-					.Where(d => !d.Archived && d.TagList.ToLower().Contains("archetype"))
-					.Select(d => new ArchetypeDeck(d.Name, d.GetClass))
+				var ad = new ArchetypeDeck(d.Name, d.StandardViable ? "Standard" : "Wild", d.Class);
+				ad.Cards = d.Cards
+					.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background.Clone()))
 					.ToList();
-			}).ConfigureAwait(false);
+				archetypes.Add(ad);
+			}
+			return archetypes;
 		}
 
-		public Task GetGameNote()
+		public Models.Deck GetOpponentDeck()
 		{
-			throw new NotImplementedException();
-		}
-
-		public async Task<PlayedDeck> GetOpponentDeck()
-		{
-			return await Task.Run(() =>
+			var deck = new Models.Deck();
+			if (Core.Game.IsRunning)
 			{
-				var deck = new PlayedDeck();
-				if (Core.Game.IsRunning)// && !Core.Game.IsInMenu)
+				var game = Core.Game.CurrentGameStats;
+				if (game != null && game.CanGetOpponentDeck)
 				{
-					var game = Core.Game.CurrentGameStats;
-
-					if (game != null && game.CanGetOpponentDeck)
+					Log.Info("oppoent deck available");
+					foreach (var card in game.OpponentCards)
 					{
-						foreach (var card in game.OpponentCards)
+						var c = Database.GetCardFromId(card.Id);
+						if (c != null && c != Database.UnknownCard)
 						{
-							var c = Database.GetCardFromId(card.Id);
-							if (c != null && c != Database.UnknownCard)
-							{
-								c.Count = card.Count;
-								deck.Cards.Add(new Models.Card(c.Id, c.LocalizedName, c.Count, c.Background));
-							}
+							deck.Cards.Add(
+								new Models.Card(c.Id, c.LocalizedName, card.Count, c.Background.Clone()));
 						}
 					}
-					else
-					{
-						var live = Core.Game.Opponent.OpponentCardList; // includes created etc.
-						deck.Cards = live.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background)).ToList();
-					}
 				}
-				return deck;
-			}).ConfigureAwait(false);
+				else
+				{
+					// TODO Remove
+					deck.Cards = GetLiveDeck();
+				}
+			}
+			return deck;
 		}
 
-		public Task UpdateGameNote(string text)
+		public string GetGameNote()
 		{
-			throw new NotImplementedException();
+			if (Core.Game.IsRunning && Core.Game.CurrentGameStats != null)
+			{
+				return Core.Game.CurrentGameStats.Note;
+			}
+			return null;
+		}
+
+		public void UpdateGameNote(string text)
+		{
+			if (Core.Game.IsRunning && Core.Game.CurrentGameStats != null)
+			{
+				Core.Game.CurrentGameStats.Note = text;
+			}
+		}
+
+		private List<Models.Card> GetLiveDeck()
+		{
+			Log.Info("using live deck");
+			var live = Core.Game.Opponent.OpponentCardList; // includes created etc.
+			return live.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background.Clone())).ToList();
 		}
 	}
 }

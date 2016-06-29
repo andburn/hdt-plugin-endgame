@@ -16,5 +16,30 @@ namespace HDT.Plugins.EndGame.Models
 			Count = count;
 			Image = image;
 		}
+
+		public Card()
+		{
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+
+			Card c = obj as Card;
+			if (c == null)
+			{
+				return false;
+			}
+
+			return Id == c.Id;
+		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 	}
 }
