@@ -54,3 +54,6 @@ This would make the file name be something like:
 ```
 Player1 (Mage) VS Player2 (Warlock) 12.08.2015_22:00.png
 ```
+
+### Font Icons
+- Uses [IcoMoon](https://icomoon.io/) free font ioncs under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
