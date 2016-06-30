@@ -6,8 +6,8 @@ namespace HDT.Plugins.EndGame.Models
 {
 	public class Deck
 	{
-		public string Klass { get; set; }
-		public string Format { get; set; }
+		public Klass Klass { get; set; }
+		public bool IsStandard { get; set; }
 		public List<Card> Cards { get; set; }
 
 		public Deck()
@@ -15,22 +15,36 @@ namespace HDT.Plugins.EndGame.Models
 			Cards = new List<Card>();
 		}
 
-		public Deck(string format, string klass)
+		public Deck(Klass klass, bool standard)
 			: this()
 		{
 			Klass = klass;
-			Format = format;
+			IsStandard = standard;
 		}
 
 		public float Similarity(Deck deck)
 		{
-			float count = (float)deck.Cards.Count;
-			if (count <= 0)
+			if (deck == null)
 				return 0;
-			float contained = deck.Cards
-				.Where(c => Cards.Contains(c))
-				.Count();
-			return (float)Math.Round(contained / count, 2);
+
+			var lenA = Cards.Sum(x => x.Count);
+			var lenB = deck.Cards.Sum(x => x.Count);
+			var lenAnB = 0; // intersection
+			foreach (var i in Cards)
+			{
+				foreach (var j in deck.Cards)
+				{
+					if (i.Equals(j))
+					{
+						lenAnB += Math.Min(i.Count, j.Count);
+					}
+				}
+			}
+
+			if (lenA == 0 && lenB == 0)
+				return 1;
+
+			return (float)Math.Round((float)lenAnB / (lenA + lenB - lenAnB), 2);
 		}
 	}
 }

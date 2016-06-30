@@ -9,8 +9,8 @@
 		{
 		}
 
-		public ArchetypeDeck(string name, string format, string klass)
-			: base(format, klass)
+		public ArchetypeDeck(string name, Klass klass, bool standard)
+			: base(klass, standard)
 		{
 			Name = name;
 		}

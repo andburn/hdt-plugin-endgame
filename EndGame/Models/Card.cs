@@ -9,6 +9,10 @@ namespace HDT.Plugins.EndGame.Models
 		public int Count { get; set; }
 		public ImageBrush Image { get; set; }
 
+		public Card()
+		{
+		}
+
 		public Card(string id, string name, int count, ImageBrush image)
 		{
 			Id = id;
@@ -17,10 +21,7 @@ namespace HDT.Plugins.EndGame.Models
 			Image = image;
 		}
 
-		public Card()
-		{
-		}
-
+		// two cards are equal once the ids are the same
 		public override bool Equals(object obj)
 		{
 			if (obj == null)
