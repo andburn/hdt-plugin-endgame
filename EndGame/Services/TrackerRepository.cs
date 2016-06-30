@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using HDT.Plugins.EndGame.Models;
 using Hearthstone_Deck_Tracker;
@@ -11,14 +12,19 @@ namespace HDT.Plugins.EndGame.Services
 	{
 		public List<ArchetypeDeck> GetAllArchetypeDecks()
 		{
-			// TODO allow to be archived?
 			var decks = DeckList.Instance.Decks
-				.Where(d => !d.Archived && d.TagList.ToLower().Contains("archetype"))
+				.Where(d => d.TagList.ToLowerInvariant().Contains("archetype"))
 				.ToList();
 			var archetypes = new List<ArchetypeDeck>();
 			foreach (var d in decks)
 			{
-				var ad = new ArchetypeDeck(d.Name, d.StandardViable ? "Standard" : "Wild", d.Class);
+				// get the newest version of the deck
+				var v = d.VersionsIncludingSelf.OrderByDescending(x => x).FirstOrDefault();
+				Log.Info($"Selecting version {v} of {d.Name}");
+				d.SelectVersion(v);
+				if (d == null)
+					continue;
+				var ad = new ArchetypeDeck(d.Name, KlassKonverter.FromString(d.Class), d.StandardViable);
 				ad.Cards = d.Cards
 					.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background.Clone()))
 					.ToList();
@@ -36,19 +42,30 @@ namespace HDT.Plugins.EndGame.Services
 				if (game != null && game.CanGetOpponentDeck)
 				{
 					Log.Info("oppoent deck available");
+					// hero class
+					deck.Klass = KlassKonverter.FromString(game.OpponentHero);
+					// standard viable, use temp HDT deck
+					var hdtDeck = new Hearthstone_Deck_Tracker.Hearthstone.Deck();
 					foreach (var card in game.OpponentCards)
 					{
 						var c = Database.GetCardFromId(card.Id);
+						c.Count = card.Count;
+						hdtDeck.Cards.Add(c);
 						if (c != null && c != Database.UnknownCard)
 						{
 							deck.Cards.Add(
-								new Models.Card(c.Id, c.LocalizedName, card.Count, c.Background.Clone()));
+								new Models.Card(c.Id, c.LocalizedName, c.Count, c.Background.Clone()));
 						}
 					}
+					deck.IsStandard = hdtDeck.StandardViable;
 				}
 				else
 				{
 					// TODO Remove
+					deck.Klass = KlassKonverter.FromString(Core.Game.Opponent.Class);
+					var tempDeck = new Hearthstone_Deck_Tracker.Hearthstone.Deck();
+					tempDeck.Cards = new ObservableCollection<Hearthstone_Deck_Tracker.Hearthstone.Card>(Core.Game.Opponent.OpponentCardList);
+					deck.IsStandard = tempDeck.StandardViable;
 					deck.Cards = GetLiveDeck();
 				}
 			}

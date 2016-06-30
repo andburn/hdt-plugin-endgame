@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -11,8 +12,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 	{
 		private ITrackerRepository _repository;
 
-		public List<Card> Cards { get; set; }
-		public List<string> Decks { get; set; }
+		public ObservableCollection<Card> Cards { get; set; }
+		public ObservableCollection<MatchResult> Decks { get; set; }
 
 		private string _note;
 
@@ -22,6 +23,22 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => Note, ref _note, value); }
 		}
 
+		private string _playerClass;
+
+		public string PlayerClass
+		{
+			get { return _playerClass; }
+			set { Set(() => PlayerClass, ref _playerClass, value); }
+		}
+
+		private MatchResult _selectedDeck;
+
+		public MatchResult SelectedDeck
+		{
+			get { return _selectedDeck; }
+			set { Set(() => SelectedDeck, ref _selectedDeck, value); }
+		}
+
 		public RelayCommand<string> NoteTextChangeCommand { get; private set; }
 
 		public NoteViewModel()
@@ -29,12 +46,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 			_repository = new TrackerRepository();
 
 			var deck = _repository.GetOpponentDeck();
-			Cards = new List<Card>(deck.Cards);
+			Cards = new ObservableCollection<Card>(deck.Cards);
+			PlayerClass = deck.Klass.ToString();
+			Log.Info(PlayerClass);
 			var alldecks = _repository.GetAllArchetypeDecks();
-			Decks = alldecks
-				.OrderByDescending(x => x.Similarity(deck))
-				.Select(d => $"{d.Name} {d.Klass} {d.Similarity(deck)}")
-				.ToList();
+			Decks = new ObservableCollection<MatchResult>(ViewModelHelper.MatchArchetypes(deck, alldecks));
+
+			SelectedDeck = Decks.FirstOrDefault();
+
 			Note = _repository.GetGameNote()?.ToString();
 
 			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));

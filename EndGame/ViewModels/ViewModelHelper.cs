@@ -11,9 +11,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			return archetypes
 				.Where(a => (a.Klass == deck.Klass || deck.Klass == Klass.Any)
-					// archetype must be standard if deck is, else wild or standard ok
+					// archetype must be standard if deck is, else either wild or standard ok
 					&& (deck.IsStandard && a.IsStandard || !deck.IsStandard))
 				.Select(a => new MatchResult(a, deck.Similarity(a)))
+				.OrderByDescending(r => r.Similarity).ThenBy(r => r.Deck.Name)
 				.ToList();
 		}
 	}
@@ -31,7 +32,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public int CompareTo(MatchResult other)
 		{
-			return other.Similarity.CompareTo(Similarity);
+			return Similarity.CompareTo(other.Similarity);
 		}
 	}
 }

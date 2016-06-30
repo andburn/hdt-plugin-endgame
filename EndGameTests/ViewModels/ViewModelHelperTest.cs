@@ -64,5 +64,17 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 			Assert.AreEqual(3, results.Count);
 			Assert.AreEqual(0.25f, results.First().Similarity);
 		}
+
+		[TestMethod]
+		public void SortedBySimilarity()
+		{
+			var deck = TestHelper.CreateDeck(Klass.Any, false, "DR_123:1;NT_001:1");
+			var results = MatchArchetypes(deck, _archetypes);
+			Assert.AreEqual(4, results.Count);
+			Assert.AreEqual("one", results[0].Deck.Name);
+			Assert.AreEqual("four", results[1].Deck.Name);
+			Assert.AreEqual("two", results[2].Deck.Name);
+			Assert.AreEqual("three", results[3].Deck.Name);
+		}
 	}
 }

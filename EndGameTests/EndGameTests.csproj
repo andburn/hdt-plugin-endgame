@@ -85,6 +85,8 @@
     <Compile Include="Models\CardTest.cs" />
     <Compile Include="Models\DeckTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="ViewModels\ViewModelHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EndGame\EndGame.csproj">

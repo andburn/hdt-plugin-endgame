@@ -72,5 +72,12 @@ namespace HDT.Plugins.EndGame.Tests.Models
 		{
 			Assert.AreEqual(1.0f, _empty.Similarity(_empty));
 		}
+
+		[TestMethod]
+		public void SimilarityOfZeroCount()
+		{
+			var deck = TestHelper.CreateDeck(Klass.Any, false, "NT_001:0");
+			Assert.AreEqual(0, deck.Similarity(_deck4));
+		}
 	}
 }
