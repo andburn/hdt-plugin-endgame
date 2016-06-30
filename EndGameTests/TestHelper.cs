@@ -34,14 +34,14 @@ namespace HDT.Plugins.EndGame.Tests
 			return deck;
 		}
 
-		internal static Deck CreateDeck(Klass klass, string str)
+		internal static ArchetypeDeck CreateDeck(string name, Klass klass, bool standard, string str)
 		{
-			return CreateDeck(klass, true, str);
-		}
-
-		internal static Deck CreateDeck(string str)
-		{
-			return CreateDeck(Klass.Any, true, str);
+			var deck = new ArchetypeDeck();
+			deck.Name = name;
+			deck.Klass = klass;
+			deck.IsStandard = standard;
+			deck.Cards = CreateCards(str);
+			return deck;
 		}
 	}
 }
