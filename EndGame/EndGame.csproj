@@ -54,6 +54,9 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -83,7 +86,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\HttpRequest.cs" />
+    <Compile Include="Services\IArchetypeImporter.cs" />
+    <Compile Include="Services\IHttpRequest.cs" />
+    <Compile Include="EndGameExceptions.cs" />
     <Compile Include="Services\ITrackerRepository.cs" />
+    <Compile Include="Services\TempoStorm\DeckSnapshot.cs" />
+    <Compile Include="Services\TempoStorm\Error.cs" />
+    <Compile Include="Services\TempoStorm\Slugs.cs" />
+    <Compile Include="Services\TempoStorm\SnapshotResponse.cs" />
+    <Compile Include="Services\TempoStorm\SnapshotImporter.cs" />
+    <Compile Include="Services\TempoStorm\Include.cs" />
+    <Compile Include="Services\TempoStorm\SnapshotRequest.cs" />
     <Compile Include="Services\TrackerRepository.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
     <Compile Include="ViewModels\ViewModelHelper.cs" />

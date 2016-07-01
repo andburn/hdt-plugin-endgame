@@ -6,6 +6,8 @@ using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using Hearthstone_Deck_Tracker.Utility.Logging;
 
+using HDTDeck = Hearthstone_Deck_Tracker.Hearthstone.Deck;
+
 namespace HDT.Plugins.EndGame.Services
 {
 	public class TrackerRepository : ITrackerRepository
@@ -94,6 +96,15 @@ namespace HDT.Plugins.EndGame.Services
 			Log.Info("using live deck");
 			var live = Core.Game.Opponent.OpponentCardList; // includes created etc.
 			return live.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background.Clone())).ToList();
+		}
+
+		public void AddDeck(HDTDeck deck)
+		{
+			DeckList.Instance.Decks.Add(deck);
+		}
+
+		public void AddDeck(Models.Deck deck)
+		{
 		}
 	}
 }

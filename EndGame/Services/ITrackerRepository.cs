@@ -12,5 +12,7 @@ namespace HDT.Plugins.EndGame.Services
 		void UpdateGameNote(string text);
 
 		List<ArchetypeDeck> GetAllArchetypeDecks();
+
+		void AddDeck(Deck deck);
 	}
 }
