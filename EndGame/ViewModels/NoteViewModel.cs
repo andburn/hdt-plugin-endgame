@@ -4,7 +4,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
-using Hearthstone_Deck_Tracker.Utility.Logging;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -40,23 +39,37 @@ namespace HDT.Plugins.EndGame.ViewModels
 		}
 
 		public RelayCommand<string> NoteTextChangeCommand { get; private set; }
+		public RelayCommand UpdateCommand { get; private set; }
 
 		public NoteViewModel()
 		{
 			_repository = new TrackerRepository();
 
+			Cards = new ObservableCollection<Card>();
+			Decks = new ObservableCollection<MatchResult>();
+
+			Update();
+
+			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
+			UpdateCommand = new RelayCommand(() => Update());
+		}
+
+		private void Update()
+		{
 			var deck = _repository.GetOpponentDeck();
-			Cards = new ObservableCollection<Card>(deck.Cards);
+
+			Cards.Clear();
+			deck.Cards.ForEach(c => Cards.Add(c));
 			PlayerClass = deck.Klass.ToString();
-			Log.Info(PlayerClass);
+
+			Decks.Clear();
 			var alldecks = _repository.GetAllArchetypeDecks();
-			Decks = new ObservableCollection<MatchResult>(ViewModelHelper.MatchArchetypes(deck, alldecks));
+			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
+			results.ForEach(r => Decks.Add(r));
 
 			SelectedDeck = Decks.FirstOrDefault();
 
 			Note = _repository.GetGameNote()?.ToString();
-
-			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
 		}
 	}
 }

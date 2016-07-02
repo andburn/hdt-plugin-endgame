@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:mah.convert="clr-namespace:MahApps.Metro.Converters"
         xmlns:vm="clr-namespace:HDT.Plugins.EndGame.ViewModels"
         mc:Ignorable="d"
         Width="600" Height="400"
@@ -52,24 +53,35 @@
         </TextBox>
 
         <Border x:Name="DeckListContainer" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"
-                BorderBrush="Black" BorderThickness="1" Margin="10">
-            <StackPanel>
-                <DockPanel>
-                    <TextBlock DockPanel.Dock="Right"
-                               FontFamily="pack://application:,,,/EndGame;component/Resources/#icomoon-min"
-                               Text="&#xe984;" Margin="4" FontSize="18" />
-                    <TextBlock Text="{Binding PlayerClass}" />
+                BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" Background="{DynamicResource AccentColorBrush}">
+                    <Button Width="68" Height="20" Margin="4"
+                            DockPanel.Dock="Right"
+                            Command="{Binding UpdateCommand}">
+                        <TextBlock FontFamily="pack://application:,,,/EndGame;component/Resources/#icomoon-min"
+                            Text="&#xea2e; REFRESH" FontSize="10" />
+                    </Button>
+                    <TextBlock Text="{Binding PlayerClass}"
+                               Margin="4,0"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               Foreground="White" />
                 </DockPanel>
-                <ListView ItemsSource="{Binding Cards}">
+                <ListView ItemsSource="{Binding Cards}" Grid.Row="1"
+                          ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Rectangle Fill="{Binding Image}" Height="34" Width="217" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </StackPanel>
+            </Grid>
         </Border>
-
-        <Button Grid.Column="0" Grid.Row="3" Content="Set" />
     </Grid>
 </mah:MetroWindow>

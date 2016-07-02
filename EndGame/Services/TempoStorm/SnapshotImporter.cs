@@ -99,11 +99,9 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 				deck.Name = dt.Name;
 				deck.Class = dt.Deck.PlayerClass;
 				deck.Url = BaseDeckUrl + dt.Deck.Slugs.SingleOrDefault()?.Slug;
-				deck.Tags.AddRange(new string[] { "Archetype", "TempoStorm" });
-				//Console.WriteLine($"{dt.Name} [{dt.Tier}]");
+				deck.Tags.AddRange(new string[] { "Archetype", "EndGame" });
 				foreach (var cd in dt.Deck.Cards)
 				{
-					//Console.WriteLine($"{cd.Quantity}x {cd.Detail.Name}");
 					var card = Database.GetCardFromName(cd.Detail.Name);
 					// TODO check this comparison
 					if (card != null || card == Database.UnknownCard)
