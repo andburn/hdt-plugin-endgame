@@ -2,7 +2,7 @@
 
 namespace HDT.Plugins.EndGame.Services
 {
-	public interface IHttpRequest
+	public interface IHttpClient
 	{
 		Task<string> JsonGet(string url);
 

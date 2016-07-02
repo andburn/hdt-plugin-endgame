@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
-	internal class Slugs
+	public class Slugs
 	{
 		[JsonProperty("slugs")]
 		public List<SlugItem> Items { get; set; }
@@ -14,7 +14,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		}
 	}
 
-	internal class SlugItem
+	public class SlugItem
 	{
 		[JsonProperty("slug")]
 		public string Slug { get; set; }

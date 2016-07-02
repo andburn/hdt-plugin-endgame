@@ -2,7 +2,7 @@
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
-	internal class Error
+	public class Error
 	{
 		[JsonProperty("name")]
 		public string Name { get; set; }

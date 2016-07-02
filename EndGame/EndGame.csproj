@@ -86,9 +86,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\HttpRequest.cs" />
+    <Compile Include="Services\HttpClient.cs" />
     <Compile Include="Services\IArchetypeImporter.cs" />
-    <Compile Include="Services\IHttpRequest.cs" />
+    <Compile Include="Services\IHttpClient.cs" />
     <Compile Include="EndGameExceptions.cs" />
     <Compile Include="Services\ITrackerRepository.cs" />
     <Compile Include="Services\TempoStorm\DeckSnapshot.cs" />

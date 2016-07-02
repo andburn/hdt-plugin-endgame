@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
-	internal class SnapshotRequest
+	public class SnapshotRequest
 	{
 		[JsonProperty("order")]
 		public string SortOrder { get; set; }

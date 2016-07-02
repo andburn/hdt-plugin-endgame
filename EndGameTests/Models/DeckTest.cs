@@ -1,19 +1,19 @@
 ﻿using HDT.Plugins.EndGame.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace HDT.Plugins.EndGame.Tests.Models
 {
-	[TestClass]
+	[TestFixture]
 	public class DeckTest
 	{
-		private static Deck _deck1 = new Deck();
-		private static Deck _deck2 = new Deck();
-		private static Deck _deck3 = new Deck();
-		private static Deck _deck4 = new Deck();
-		private static Deck _empty = new Deck();
+		private Deck _deck1 = new Deck();
+		private Deck _deck2 = new Deck();
+		private Deck _deck3 = new Deck();
+		private Deck _deck4 = new Deck();
+		private Deck _empty = new Deck();
 
-		[ClassInitialize]
-		public static void Setup(TestContext context)
+		[OneTimeSetUp]
+		public void Init()
 		{
 			_deck1.Cards = TestHelper.CreateCards("AB_123:1;AB_456:1");
 			_deck2.Cards = TestHelper.CreateCards("AB_789:1;AB_456:1;AB_123:1");
@@ -21,59 +21,59 @@ namespace HDT.Plugins.EndGame.Tests.Models
 			_deck4.Cards = TestHelper.CreateCards("AB_123:2;NT_001:1");
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithSelf()
 		{
 			Assert.AreEqual(1.0f, _deck1.Similarity(_deck1));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithNoneInCommon()
 		{
 			Assert.AreEqual(0.0f, _deck1.Similarity(_deck3));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithSingleInCommon()
 		{
 			Assert.AreEqual(0.2f, _deck2.Similarity(_deck3));
 			Assert.AreEqual(0.2f, _deck3.Similarity(_deck2));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithTwoInCommon()
 		{
 			Assert.AreEqual(0.67f, _deck1.Similarity(_deck2));
 			Assert.AreEqual(0.67f, _deck2.Similarity(_deck1));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithOneInCommonAndCountTwo()
 		{
 			Assert.AreEqual(0.25f, _deck1.Similarity(_deck4));
 			Assert.AreEqual(0.25f, _deck4.Similarity(_deck1));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithEmpty()
 		{
 			Assert.AreEqual(0.0f, _deck1.Similarity(_empty));
 			Assert.AreEqual(0.0f, _empty.Similarity(_deck1));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityWithNull()
 		{
 			Assert.AreEqual(0.0f, _deck1.Similarity(null));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityEmptyAndEmpty()
 		{
 			Assert.AreEqual(1.0f, _empty.Similarity(_empty));
 		}
 
-		[TestMethod]
+		[Test]
 		public void SimilarityOfZeroCount()
 		{
 			var deck = TestHelper.CreateDeck(Klass.Any, false, "NT_001:0");

@@ -15,10 +15,10 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		private const string BaseDeckUrl = "https://tempostorm.com/hearthstone/decks/";
 		private const string BaseSnapshotUrl = "https://tempostorm.com/api/snapshots/findOne?filter=";
 
-		private IHttpRequest _http;
+		private IHttpClient _http;
 		private JsonSerializerSettings _settings;
 
-		public SnapshotImporter(IHttpRequest http)
+		public SnapshotImporter(IHttpClient http)
 		{
 			_http = http;
 			_settings = new JsonSerializerSettings() {
@@ -44,7 +44,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			// the slug needed to request the full snapshot (e.g. '2016-06-19')
 			// should be a single item, unless wild is added
 			if (metaResponse.Slugs.Count != 1)
-				throw new ImportException("Snapshot slug count greater than one.");
+				throw new ImportException("Snapshot slug count greater than one");
 
 			return new Tuple<string, string>(
 				metaResponse.Slugs.Single().Slug,
@@ -77,6 +77,9 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			// make the request and deserialize
 			var snapRespJson = await _http.JsonGet(BaseSnapshotUrl + JsonConvert.SerializeObject(snapReq, _settings));
 			var snapResponse = JsonConvert.DeserializeObject<SnapshotResponse>(snapRespJson);
+			// check there are no errors
+			if (snapResponse.Error != null)
+				throw new ImportException($"Getting the snapshot failed ({snapResponse.Error.Status})");
 
 			return snapResponse;
 		}

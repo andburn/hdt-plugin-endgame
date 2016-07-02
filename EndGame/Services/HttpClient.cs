@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.Services
 {
-	public class HttpRequest : IHttpRequest
+	public class HttpClient : IHttpClient
 	{
 		private async Task<string> JsonRequest(string url, string data = null)
 		{

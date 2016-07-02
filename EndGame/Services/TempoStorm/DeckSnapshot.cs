@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
-	internal class DeckSnapshot
+	public class DeckSnapshot
 	{
 		[JsonProperty("name")]
 		public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		public Deck Deck { get; set; }
 	}
 
-	internal class Deck
+	public class Deck
 	{
 		[JsonProperty("playerClass")]
 		public string PlayerClass { get; set; }
@@ -33,7 +33,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		public List<Card> Cards { get; set; }
 	}
 
-	internal class Card
+	public class Card
 	{
 		[JsonProperty("cardQuantity")]
 		public int Quantity { get; set; }
@@ -51,7 +51,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		public CardDetail Detail { get; set; }
 	}
 
-	internal class CardDetail
+	public class CardDetail
 	{
 		[JsonProperty("cardId")]
 		public string CardId { get; set; }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
-	internal class Include
+	public class Include
 	{
 		[JsonProperty("fields")]
 		public List<string> Fields { get; set; }
@@ -26,7 +26,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		}
 	}
 
-	internal class IncludeItem
+	public class IncludeItem
 	{
 		[JsonProperty("relation")]
 		public string Relation { get; set; }
