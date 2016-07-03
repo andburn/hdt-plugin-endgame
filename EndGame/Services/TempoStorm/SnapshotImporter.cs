@@ -15,6 +15,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		private const string ArchetypeTag = "Archetype";
 		private const string PluginTag = "EndGame";
 		private const bool RemovePlayerClassFromName = true;
+		private const bool DeleteOldDecksBeforeUpdate = true;
 
 		private IHttpClient _http;
 		private ITrackerRepository _tracker;
@@ -89,6 +90,9 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 
 		public async Task ImportDecks()
 		{
+			// delete previous snapshot decks
+			if (DeleteOldDecksBeforeUpdate)
+				_tracker.DeleteAllDecksWithTag(PluginTag);
 			// get the lastest meta snapshot slug/date
 			var slug = await GetSnapshotSlug();
 			// use the slug to request the actual snapshot details

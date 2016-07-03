@@ -22,7 +22,7 @@ namespace HDT.Plugins.EndGame.Services
 			{
 				// get the newest version of the deck
 				var v = d.VersionsIncludingSelf.OrderByDescending(x => x).FirstOrDefault();
-				Log.Info($"Selecting version {v} of {d.Name}");
+				Log.Debug($"Selecting version {v} of {d.Name}");
 				d.SelectVersion(v);
 				if (d == null)
 					continue;
@@ -136,7 +136,20 @@ namespace HDT.Plugins.EndGame.Services
 					}
 				}
 				DeckList.Instance.Decks.Add(deck);
+				DeckList.Save();
 			}
+		}
+
+		public void DeleteAllDecksWithTag(string tag)
+		{
+			if (string.IsNullOrWhiteSpace(tag))
+				return;
+			var decks = DeckList.Instance.Decks.Where(d => d.Tags.Contains(tag)).ToList();
+			Log.Info($"Deleting {decks.Count} archetype decks");
+			foreach (var d in decks)
+				DeckList.Instance.Decks.Remove(d);
+			if (decks.Any())
+				DeckList.Save();
 		}
 	}
 }
