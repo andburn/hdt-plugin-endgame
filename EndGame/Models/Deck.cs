@@ -22,14 +22,22 @@ namespace HDT.Plugins.EndGame.Models
 			IsStandard = standard;
 		}
 
-		public float Similarity(Deck deck)
+		/// <summary>
+		/// Uses the Jaccard index to give a indication of similarity
+		/// between the two decks. </summary>
+		/// <returns>Returns a float between 0 and 1 inclusive </returns>
+		public virtual float Similarity(Deck deck)
 		{
 			if (deck == null)
 				return 0;
 
 			var lenA = Cards.Sum(x => x.Count);
 			var lenB = deck.Cards.Sum(x => x.Count);
-			var lenAnB = 0; // intersection
+			var lenAnB = 0;
+
+			if (lenA == 0 && lenB == 0)
+				return 1;
+
 			foreach (var i in Cards)
 			{
 				foreach (var j in deck.Cards)
@@ -40,9 +48,6 @@ namespace HDT.Plugins.EndGame.Models
 					}
 				}
 			}
-
-			if (lenA == 0 && lenB == 0)
-				return 1;
 
 			return (float)Math.Round((float)lenAnB / (lenA + lenB - lenAnB), 2);
 		}
