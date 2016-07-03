@@ -75,6 +75,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EndGame.cs" />
+    <Compile Include="EndGameMenu.xaml.cs">
+      <DependentUpon>EndGameMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EndGamePlugin.cs" />
     <Compile Include="Models\ArchetypeDeck.cs" />
     <Compile Include="Models\Card.cs" />
@@ -104,6 +108,9 @@
     <Compile Include="Views\NoteView.xaml.cs">
       <DependentUpon>NoteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -112,7 +119,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="EndGameMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NoteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

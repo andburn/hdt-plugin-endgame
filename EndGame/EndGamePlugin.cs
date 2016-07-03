@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
-using HDT.Plugins.EndGame.Views;
 using Hearthstone_Deck_Tracker.Plugins;
 
 namespace HDT.Plugins.EndGame
 {
 	public class EndGamePlugin : IPlugin
 	{
+		private MenuItem _menu;
+
 		public string Author
 		{
 			get
@@ -37,7 +36,9 @@ namespace HDT.Plugins.EndGame
 		{
 			get
 			{
-				return null;
+				if (_menu == null)
+					_menu = new EndGameMenu();
+				return _menu;
 			}
 		}
 
@@ -60,12 +61,7 @@ namespace HDT.Plugins.EndGame
 
 		public void OnButtonPress()
 		{
-			// close any already open note windows
-			Application.Current.Windows.OfType<NoteView>()
-				.ToList()
-				.ForEach(x => x.Close());
-			// TODO use a single instance and update, show/hide?
-			new NoteView().Show();
+			EndGame.ShowSettings();
 		}
 
 		public void OnLoad()
@@ -74,6 +70,8 @@ namespace HDT.Plugins.EndGame
 
 		public void OnUnload()
 		{
+			EndGame.CloseSettings();
+			//EndGame.CloseNoteDialog();
 		}
 
 		public void OnUpdate()
