@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HDT.Plugins.EndGame.Models;
-using Hearthstone_Deck_Tracker.Hearthstone;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
-
-using HDTDeck = Hearthstone_Deck_Tracker.Hearthstone.Deck;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
@@ -15,12 +12,18 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		private const string BaseDeckUrl = "https://tempostorm.com/hearthstone/decks/";
 		private const string BaseSnapshotUrl = "https://tempostorm.com/api/snapshots/findOne?filter=";
 
+		private const string ArchetypeTag = "Archetype";
+		private const string PluginTag = "EndGame";
+		private const bool RemovePlayerClassFromName = true;
+
 		private IHttpClient _http;
+		private ITrackerRepository _tracker;
 		private JsonSerializerSettings _settings;
 
-		public SnapshotImporter(IHttpClient http)
+		public SnapshotImporter(IHttpClient http, ITrackerRepository tracker)
 		{
 			_http = http;
+			_tracker = tracker;
 			_settings = new JsonSerializerSettings() {
 				NullValueHandling = NullValueHandling.Ignore
 			};
@@ -84,36 +87,37 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return snapResponse;
 		}
 
-		public async Task<List<ArchetypeDeck>> GetArchetypes()
+		public async Task ImportDecks()
 		{
-			// first, get the lastest meta snapshot slug/date
+			// get the lastest meta snapshot slug/date
 			var slug = await GetSnapshotSlug();
-			// next, use the slug to request the actual snapshot details
+			// use the slug to request the actual snapshot details
 			var snapshot = await GetSnapshot(slug);
-
-			var repo = new TrackerRepository();
+			// add all decks to the tracker
 			foreach (var dt in snapshot.DeckTiers)
 			{
-				HDTDeck deck = new HDTDeck();
-				// TODO tags, note, url
-				deck.Name = dt.Name;
-				deck.Class = dt.Deck.PlayerClass;
-				deck.Url = BaseDeckUrl + dt.Deck.Slugs.SingleOrDefault()?.Slug;
-				deck.Tags.AddRange(new string[] { "Archetype", "EndGame" });
+				var cards = "";
+				Log.Info($"Importing deck ({dt.Name})");
 				foreach (var cd in dt.Deck.Cards)
 				{
-					var card = Database.GetCardFromName(cd.Detail.Name);
-					// TODO check this comparison
-					if (card != null || card == Database.UnknownCard)
-					{
-						card.Count = cd.Quantity;
-						deck.Cards.Add(card);
-					}
+					cards += cd.Detail.Name;
+					// don't add count if only one
+					if (cd.Quantity > 1)
+						cards += $" x {cd.Quantity}";
+					cards += "\n";
 				}
-				repo.AddDeck(deck);
-			}
+				// remove trailing newline
+				if (cards.Length > 1)
+					cards = cards.Substring(0, cards.Length - 1);
 
-			return null;
+				// optionally remove player class from deck name
+				// e.g. 'Control Warrior' => 'Control'
+				var deckName = dt.Name;
+				if (RemovePlayerClassFromName)
+					deckName = deckName.Replace(dt.Deck.PlayerClass, "").Trim();
+
+				_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, ArchetypeTag, PluginTag);
+			}
 		}
 	}
 }

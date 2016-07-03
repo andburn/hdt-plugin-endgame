@@ -14,5 +14,7 @@ namespace HDT.Plugins.EndGame.Services
 		List<ArchetypeDeck> GetAllArchetypeDecks();
 
 		void AddDeck(Deck deck);
+
+		void AddDeck(string name, string playerClass, string cards, params string[] tags);
 	}
 }

@@ -5,7 +5,7 @@ using HDT.Plugins.EndGame.Models;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using Hearthstone_Deck_Tracker.Utility.Logging;
-
+using HDTCard = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using HDTDeck = Hearthstone_Deck_Tracker.Hearthstone.Deck;
 
 namespace HDT.Plugins.EndGame.Services
@@ -98,13 +98,45 @@ namespace HDT.Plugins.EndGame.Services
 			return live.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background.Clone())).ToList();
 		}
 
-		public void AddDeck(HDTDeck deck)
-		{
-			DeckList.Instance.Decks.Add(deck);
-		}
-
 		public void AddDeck(Models.Deck deck)
 		{
+			HDTDeck d = new HDTDeck();
+			var arch = deck as ArchetypeDeck;
+			if (arch != null)
+				d.Name = arch.Name;
+			d.Class = deck.Klass.ToString();
+			d.Cards = new ObservableCollection<HDTCard>(deck.Cards.Select(c => Database.GetCardFromId(c.Id)));
+			DeckList.Instance.Decks.Add(d);
+		}
+
+		public void AddDeck(string name, string playerClass, string cards, params string[] tags)
+		{
+			var deck = Helper.ParseCardString(cards);
+			if (deck != null)
+			{
+				deck.Name = name;
+				if (deck.Class != playerClass)
+					deck.Class = playerClass;
+				if (tags.Any())
+				{
+					var reloadTags = false;
+					foreach (var t in tags)
+					{
+						if (!DeckList.Instance.AllTags.Contains(t))
+						{
+							DeckList.Instance.AllTags.Add(t);
+							reloadTags = true;
+						}
+						deck.Tags.Add(t);
+					}
+					if (reloadTags)
+					{
+						DeckList.Save();
+						Core.MainWindow.ReloadTags();
+					}
+				}
+				DeckList.Instance.Decks.Add(deck);
+			}
 		}
 	}
 }

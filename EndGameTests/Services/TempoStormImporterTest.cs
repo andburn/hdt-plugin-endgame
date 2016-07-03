@@ -16,7 +16,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 			mock.Setup(x => x.JsonGet(It.IsAny<string>()))
 				.ReturnsAsync(@"{""snapshotType"":""standard"",""slugs"":[{""slug"":""2016-07-10""}]}");
 
-			var importer = new SnapshotImporter(mock.Object);
+			var importer = new SnapshotImporter(mock.Object, null);
 
 			Assert.That(async () => await importer.GetSnapshotSlug(),
 				Is.EqualTo(new Tuple<string, string>("2016-07-10", "standard")));
@@ -29,7 +29,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 			mock.Setup(x => x.JsonGet(It.IsAny<string>()))
 				.ReturnsAsync(@"{""error"":{""status"":500}}");
 
-			var importer = new SnapshotImporter(mock.Object);
+			var importer = new SnapshotImporter(mock.Object, null);
 
 			Assert.That(async () => await importer.GetSnapshotSlug(),
 				Throws.TypeOf<ImportException>()
@@ -43,7 +43,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 			mock.Setup(x => x.JsonGet(It.IsAny<string>()))
 				.ReturnsAsync(@"{""snapshotType"":""standard"",""slugs"":[{""slug"":""2016-07-10""},{""slug"":""2016-06-10""}]}");
 
-			var importer = new SnapshotImporter(mock.Object);
+			var importer = new SnapshotImporter(mock.Object, null);
 
 			Assert.That(async () => await importer.GetSnapshotSlug(),
 				Throws.TypeOf<ImportException>()
@@ -56,7 +56,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 			var mock = new Mock<IHttpClient>();
 			mock.Setup(x => x.JsonGet(It.IsAny<string>()))
 				.ReturnsAsync(@"{""title"":""Salt for all""}");
-			var importer = new SnapshotImporter(mock.Object);
+			var importer = new SnapshotImporter(mock.Object, null);
 
 			var result = importer.GetSnapshot(new Tuple<string, string>("standard", "2016-09-10")).Result;
 
@@ -69,7 +69,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 			var mock = new Mock<IHttpClient>();
 			mock.Setup(x => x.JsonGet(It.IsAny<string>()))
 				.ReturnsAsync(@"{""error"":{""status"":500}}");
-			var importer = new SnapshotImporter(mock.Object);
+			var importer = new SnapshotImporter(mock.Object, null);
 
 			Assert.That(async () => await importer.GetSnapshot(new Tuple<string, string>("standard", "2016-09-10")),
 				Throws.TypeOf<ImportException>()

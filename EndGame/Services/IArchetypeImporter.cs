@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using HDT.Plugins.EndGame.Models;
+﻿using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.Services
 {
 	public interface IArchetypeImporter
 	{
-		Task<List<ArchetypeDeck>> GetArchetypes();
+		Task ImportDecks();
 	}
 }
