@@ -215,5 +215,77 @@ namespace HDT.Plugins.EndGame.Properties {
                 this["FileNamePattern"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ScreenshotEnabled {
+            get {
+                return ((bool)(this["ScreenshotEnabled"]));
+            }
+            set {
+                this["ScreenshotEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ArchetypesEnabled {
+            get {
+                return ((bool)(this["ArchetypesEnabled"]));
+            }
+            set {
+                this["ArchetypesEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoArchiveArchetypes {
+            get {
+                return ((bool)(this["AutoArchiveArchetypes"]));
+            }
+            set {
+                this["AutoArchiveArchetypes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DeletePreviouslyImported {
+            get {
+                return ((bool)(this["DeletePreviouslyImported"]));
+            }
+            set {
+                this["DeletePreviouslyImported"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AddArchetypeToNote {
+            get {
+                return ((bool)(this["AddArchetypeToNote"]));
+            }
+            set {
+                this["AddArchetypeToNote"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CloseNoteWithEnter {
+            get {
+                return ((bool)(this["CloseNoteWithEnter"]));
+            }
+            set {
+                this["CloseNoteWithEnter"] = value;
+            }
+        }
     }
 }

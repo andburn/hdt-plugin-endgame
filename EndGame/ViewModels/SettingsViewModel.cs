@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using HDT.Plugins.EndGame.Properties;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -20,10 +21,19 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => ArchetypeSettings, ref _archetypeSettings, value); }
 		}
 
+		private Settings _settings;
+
+		public Settings Settings
+		{
+			get { return _settings; }
+			set { Set(() => Settings, ref _settings, value); }
+		}
+
 		public SettingsViewModel()
 		{
 			ScreenshotSettings = new SettingsScreenshotViewModel();
 			ArchetypeSettings = new SettingsArchetypeViewModel();
+			Settings = Settings.Default;
 		}
 	}
 }

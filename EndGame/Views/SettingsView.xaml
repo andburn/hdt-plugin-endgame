@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:viewmodels="clr-namespace:HDT.Plugins.EndGame.ViewModels"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="300">
     <UserControl.DataContext>
         <viewmodels:SettingsViewModel />
     </UserControl.DataContext>
@@ -17,13 +18,28 @@
         <DataTemplate DataType="{x:Type viewmodels:SettingsArchetypeViewModel}">
             <views:SettingsArchetypeView />
         </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
     <TabControl>
-        <TabItem Header="Archetypes">
-            <ContentControl Content="{Binding ArchetypeSettings}" />
-        </TabItem>
         <TabItem Header="Screenshot">
-            <ContentControl Content="{Binding ScreenshotSettings}" />
+            <StackPanel>
+                <mah:ToggleSwitch OnLabel="Enabled" OffLabel="Disabled"
+                                  Margin="20,4"
+                                  IsChecked="{Binding Settings.ScreenshotEnabled}"
+                                  ToolTip="Enable/Disable end game screen capture functionality" />
+                <ContentControl Content="{Binding ScreenshotSettings}"
+                                Visibility="{Binding Settings.ScreenshotEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Archetypes">
+            <StackPanel>
+                <mah:ToggleSwitch OnLabel="Enabled" OffLabel="Disabled"
+                                  Margin="20,4"
+                                  IsChecked="{Binding Settings.ArchetypesEnabled}"
+                                  ToolTip="Enable/Disable end game screen capture functionality" />
+                <ContentControl Content="{Binding ArchetypeSettings}"
+                                Visibility="{Binding Settings.ArchetypesEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+            </StackPanel>
         </TabItem>
     </TabControl>
 </UserControl>

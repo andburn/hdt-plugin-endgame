@@ -59,7 +59,7 @@
                     </i:Interaction.Triggers>
                 </TextBox>
                 <DockPanel Margin="0,6,0,4">
-                    <TextBlock Text="Preview:" DockPanel.Dock="Left" />
+                    <TextBlock Text="Preview:" FontWeight="Bold" DockPanel.Dock="Left" />
                     <TextBlock Text="{Binding PatternPreview}" Margin="5,0"
                                MaxWidth="180"
                                TextTrimming="CharacterEllipsis"
