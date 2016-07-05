@@ -38,6 +38,24 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => SelectedDeck, ref _selectedDeck, value); }
 		}
 
+		private double _windowWidth;
+
+		public double WindowWidth
+		{
+			get { return _windowWidth; }
+			set { Set(() => WindowWidth, ref _windowWidth, value); }
+		}
+
+		private bool _hasScreenshots;
+
+		public bool HasScreenshots
+		{
+			get { return _hasScreenshots; }
+			set { Set(() => HasScreenshots, ref _hasScreenshots, value); }
+		}
+
+		public ObservableCollection<Screenshot> Screenshots { get; set; }
+
 		public RelayCommand<string> NoteTextChangeCommand { get; private set; }
 		public RelayCommand UpdateCommand { get; private set; }
 
@@ -47,11 +65,22 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
+			WindowWidth = 600;
+			HasScreenshots = false;
 
 			Update();
 
 			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
 			UpdateCommand = new RelayCommand(() => Update());
+		}
+
+		public NoteViewModel(ObservableCollection<Screenshot> screenshots)
+			: this()
+		{
+			Screenshots = screenshots;
+			HasScreenshots = Screenshots != null && Screenshots.Any();
+			if (HasScreenshots)
+				WindowWidth = 700;
 		}
 
 		private void Update()

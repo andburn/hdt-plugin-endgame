@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker.Plugins;
 
 namespace HDT.Plugins.EndGame
@@ -61,17 +62,21 @@ namespace HDT.Plugins.EndGame
 
 		public void OnButtonPress()
 		{
-			EndGame.ShowSettings();
+			//EndGame.ShowSettings();
+			EndGame.Run();
 		}
 
 		public void OnLoad()
 		{
+			//EndGame.SaveSettings();
+			GameEvents.OnGameEnd.Add(EndGame.Run);
 		}
 
 		public void OnUnload()
 		{
 			EndGame.CloseSettings();
 			//EndGame.CloseNoteDialog();
+			//EndGame.RestoreSettings();
 		}
 
 		public void OnUpdate()
