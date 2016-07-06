@@ -151,5 +151,14 @@ namespace HDT.Plugins.EndGame.Services
 			if (decks.Any())
 				DeckList.Save();
 		}
+
+		public string GetGameMode()
+		{
+			if (Core.Game.IsRunning && Core.Game.CurrentGameStats != null)
+			{
+				return Core.Game.CurrentGameStats.GameMode.ToString().ToLowerInvariant();
+			}
+			return null;
+		}
 	}
 }

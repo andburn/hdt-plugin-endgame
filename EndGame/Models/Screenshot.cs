@@ -6,8 +6,6 @@ namespace HDT.Plugins.EndGame.Models
 {
 	public class Screenshot : ObservableObject
 	{
-		private bool isSelected;
-
 		public Bitmap Full { get; private set; }
 		public BitmapImage Thumbnail { get; private set; }
 
@@ -19,8 +17,17 @@ namespace HDT.Plugins.EndGame.Models
 			set { Set(() => IsSelected, ref _isSelected, value); }
 		}
 
-		public Screenshot(Bitmap image, BitmapImage thumb)
+		private int _index;
+
+		public int Index
 		{
+			get { return _index; }
+			set { Set(() => Index, ref _index, value); }
+		}
+
+		public Screenshot(Bitmap image, BitmapImage thumb, int index)
+		{
+			Index = index;
 			Full = image;
 			Thumbnail = thumb;
 			IsSelected = false;

@@ -18,10 +18,12 @@ namespace HDT.Plugins.EndGame
 	{
 		private static Flyout _settingsFlyout;
 		private static IImageCaptureService _capture;
+		private static ITrackerRepository _repository;
 
 		static EndGame()
 		{
 			_capture = new TrackerCapture();
+			_repository = new TrackerRepository();
 		}
 
 		public async static void Run()
@@ -32,7 +34,7 @@ namespace HDT.Plugins.EndGame
 				.ForEach(x => x.Close());
 
 			ObservableCollection<Screenshot> screenshots = null;
-			if (Settings.Default.ScreenshotEnabled)
+			if (Settings.Default.ScreenshotEnabled && IsEnabledForMode(_repository.GetGameMode()))
 			{
 				screenshots = await _capture.CaptureSequence(
 					Settings.Default.Delay,
@@ -45,6 +47,37 @@ namespace HDT.Plugins.EndGame
 			var view = new NoteView();
 			view.DataContext = viewModel;
 			view.Show();
+		}
+
+		private static bool IsEnabledForMode(string mode)
+		{
+			switch (mode.ToLowerInvariant())
+			{
+				case "ranked":
+					return Settings.Default.RecordRanked;
+
+				case "casual":
+					return Settings.Default.RecordCasual;
+
+				case "arena":
+					return Settings.Default.RecordArena;
+
+				case "brawl":
+					return Settings.Default.RecordBrawl;
+
+				case "friendly":
+					return Settings.Default.RecordFriendly;
+
+				case "practice":
+					return Settings.Default.RecordPractice;
+
+				case "spectator":
+				case "none":
+					return Settings.Default.RecordOther;
+
+				default:
+					return false;
+			}
 		}
 
 		public static void ShowSettings()

@@ -31,7 +31,7 @@ namespace HDT.Plugins.EndGame.Services
 				if (img != null)
 				{
 					var thumb = ResizeImage(img);
-					screenshots.Add(new Screenshot(img, ToMediaImage(thumb)));
+					screenshots.Add(new Screenshot(img, ToMediaImage(thumb), i + 1));
 					Log.Debug($"Saving image #{i}");
 					thumb.Save(@"E:\Dump\screen_" + i + ".bmp");
 				}

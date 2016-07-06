@@ -9,6 +9,8 @@ namespace HDT.Plugins.EndGame.Services
 
 		string GetGameNote();
 
+		string GetGameMode();
+
 		void UpdateGameNote(string text);
 
 		List<ArchetypeDeck> GetAllArchetypeDecks();
