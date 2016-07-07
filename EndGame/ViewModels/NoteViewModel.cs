@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
+using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -61,12 +62,21 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public NoteViewModel()
 		{
-			_repository = new TrackerRepository();
-
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
 			WindowWidth = 600;
 			HasScreenshots = false;
+
+			if (IsInDesignMode)
+			{
+				_repository = new DesignerRepository();
+				Screenshots = DesignerData.GenerateScreenshots();
+				HasScreenshots = true;
+			}
+			else
+			{
+				_repository = new TrackerRepository();
+			}
 
 			Update();
 

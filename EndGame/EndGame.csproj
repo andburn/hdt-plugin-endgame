@@ -93,6 +93,8 @@
       <DependentUpon>EndGameMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="EndGamePlugin.cs" />
+    <Compile Include="Utilities\DesignerCapture.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Models\ArchetypeDeck.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Deck.cs" />
@@ -109,6 +111,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DesignerRepository.cs" />
     <Compile Include="Services\HttpClient.cs" />
     <Compile Include="Services\IArchetypeImporter.cs" />
     <Compile Include="Services\IHttpClient.cs" />
@@ -181,6 +184,10 @@
     <Resource Include="Resources\icomoon-min.ttf" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\card_sample.bmp" />
+    <Resource Include="Resources\thumb_sample.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

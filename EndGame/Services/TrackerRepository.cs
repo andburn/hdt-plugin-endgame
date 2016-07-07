@@ -158,7 +158,7 @@ namespace HDT.Plugins.EndGame.Services
 			{
 				return Core.Game.CurrentGameStats.GameMode.ToString().ToLowerInvariant();
 			}
-			return null;
+			return string.Empty;
 		}
 	}
 }
