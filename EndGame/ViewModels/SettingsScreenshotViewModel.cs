@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.EndGame.Properties;
+using HDT.Plugins.EndGame.Utilities;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace HDT.Plugins.EndGame.ViewModels

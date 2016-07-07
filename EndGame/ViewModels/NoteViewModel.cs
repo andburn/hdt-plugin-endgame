@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.EndGame.Models;
@@ -11,6 +13,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 	public class NoteViewModel : ViewModelBase
 	{
 		private ITrackerRepository _repository;
+		private IImageCaptureService _cap;
+		private ILoggingService _log;
 
 		public ObservableCollection<Card> Cards { get; set; }
 		public ObservableCollection<MatchResult> Decks { get; set; }
@@ -39,14 +43,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => SelectedDeck, ref _selectedDeck, value); }
 		}
 
-		private double _windowWidth;
-
-		public double WindowWidth
-		{
-			get { return _windowWidth; }
-			set { Set(() => WindowWidth, ref _windowWidth, value); }
-		}
-
 		private bool _hasScreenshots;
 
 		public bool HasScreenshots
@@ -59,12 +55,13 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public RelayCommand<string> NoteTextChangeCommand { get; private set; }
 		public RelayCommand UpdateCommand { get; private set; }
+		public RelayCommand WindowClosingCommand { get; private set; }
+		public RelayCommand<MatchResult> DeckSelectedCommand { get; private set; }
 
 		public NoteViewModel()
 		{
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
-			WindowWidth = 600;
 			HasScreenshots = false;
 
 			if (IsInDesignMode)
@@ -77,11 +74,15 @@ namespace HDT.Plugins.EndGame.ViewModels
 			{
 				_repository = new TrackerRepository();
 			}
+			_cap = new TrackerCapture();
+			_log = new TrackerLogger();
 
 			Update();
 
 			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
 			UpdateCommand = new RelayCommand(() => Update());
+			WindowClosingCommand = new RelayCommand(() => Closing());
+			DeckSelectedCommand = new RelayCommand<MatchResult>(x => AddDeckToNote(x.Deck.Name));
 		}
 
 		public NoteViewModel(ObservableCollection<Screenshot> screenshots)
@@ -89,8 +90,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			Screenshots = screenshots;
 			HasScreenshots = Screenshots != null && Screenshots.Any();
-			if (HasScreenshots)
-				WindowWidth = 700;
 		}
 
 		private void Update()
@@ -109,6 +108,47 @@ namespace HDT.Plugins.EndGame.ViewModels
 			SelectedDeck = Decks.FirstOrDefault();
 
 			Note = _repository.GetGameNote()?.ToString();
+		}
+
+		private void Closing()
+		{
+			var screenshot = Screenshots?.FirstOrDefault(s => s.IsSelected);
+			if (screenshot != null)
+			{
+				_log.Debug($"Attempting to save screenshot #{screenshot.Index}");
+				try
+				{
+					_cap.SaveImage(screenshot);
+				}
+				catch (Exception e)
+				{
+					_log.Error(e.Message);
+				}
+			}
+			else
+			{
+				_log.Debug($"No screenshot selected (len={Screenshots?.Count})");
+			}
+			// should update with binding, but just in case
+			_repository.UpdateGameNote(Note);
+		}
+
+		private void AddDeckToNote(string name)
+		{
+			if (Note == null)
+				Note = string.Empty;
+			_log.Debug($"Adding {name} to note");
+			const string regex = "\\[(?<tag>(.*?))\\]";
+			var match = Regex.Match(Note, regex);
+			if (match.Success)
+			{
+				var tag = match.Groups["tag"].Value;
+				Note = Note.Replace(match.Value, $"[{name}]");
+			}
+			else
+			{
+				Note = $"[{name}] {Note}";
+			}
 		}
 	}
 }

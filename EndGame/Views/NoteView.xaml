@@ -13,6 +13,12 @@
         Title="EndGame"
         Topmost="True"
         Loaded="Window_Loaded">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosingCommand}">
+            </i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <mah:MetroWindow.Resources>
         <!-- checkbox-checked | http://icomoon.io | GPL / CC BY 4.0 -->
         <Canvas x:Key="CheckedIcon" Clip="M 72,72 L 136,72 136,136 72,136 72,72 Z">
@@ -44,7 +50,7 @@
 
         <GroupBox Grid.Column="0" Grid.Row="0" Margin="10"
                   Header="Archetypes">
-            <ListBox ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck}">
+            <ListBox x:Name="DeckList" ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel>
@@ -54,6 +60,14 @@
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction
+                            Command="{Binding DeckSelectedCommand}"
+                            CommandParameter="{Binding ElementName=DeckList, Path=SelectedItem}">
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </ListBox>
         </GroupBox>
 

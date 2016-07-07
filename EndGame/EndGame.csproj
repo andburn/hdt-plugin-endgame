@@ -93,7 +93,9 @@
       <DependentUpon>EndGameMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="EndGamePlugin.cs" />
-    <Compile Include="Utilities\DesignerCapture.cs" />
+    <Compile Include="Services\ILoggingService.cs" />
+    <Compile Include="Services\TrackerLogger.cs" />
+    <Compile Include="Utilities\DesignerData.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Models\ArchetypeDeck.cs" />
     <Compile Include="Models\Card.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Services\TrackerCapture.cs" />
     <Compile Include="Services\TrackerRepository.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Utilities\NamingPattern.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
     <Compile Include="ViewModels\SettingsArchetypeViewModel.cs" />
     <Compile Include="ViewModels\SettingsScreenshotViewModel.cs" />

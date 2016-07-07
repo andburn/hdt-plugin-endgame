@@ -7,5 +7,7 @@ namespace HDT.Plugins.EndGame.Services
 	public interface IImageCaptureService
 	{
 		Task<ObservableCollection<Screenshot>> CaptureSequence(int delay, string dir, int num, int delayBetween);
+
+		Task SaveImage(Screenshot img);
 	}
 }
