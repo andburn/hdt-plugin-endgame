@@ -242,7 +242,7 @@ namespace HDT.Plugins.EndGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool AutoArchiveArchetypes {
             get {
                 return ((bool)(this["AutoArchiveArchetypes"]));
@@ -266,18 +266,6 @@ namespace HDT.Plugins.EndGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AddArchetypeToNote {
-            get {
-                return ((bool)(this["AddArchetypeToNote"]));
-            }
-            set {
-                this["AddArchetypeToNote"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool CloseNoteWithEnter {
             get {
@@ -285,6 +273,78 @@ namespace HDT.Plugins.EndGame.Properties {
             }
             set {
                 this["CloseNoteWithEnter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordBrawlArchetypes {
+            get {
+                return ((bool)(this["RecordBrawlArchetypes"]));
+            }
+            set {
+                this["RecordBrawlArchetypes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordCasualArchetypes {
+            get {
+                return ((bool)(this["RecordCasualArchetypes"]));
+            }
+            set {
+                this["RecordCasualArchetypes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordFriendlyArchetypes {
+            get {
+                return ((bool)(this["RecordFriendlyArchetypes"]));
+            }
+            set {
+                this["RecordFriendlyArchetypes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RecordRankedArchetypes {
+            get {
+                return ((bool)(this["RecordRankedArchetypes"]));
+            }
+            set {
+                this["RecordRankedArchetypes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordOtherArchetypes {
+            get {
+                return ((bool)(this["RecordOtherArchetypes"]));
+            }
+            set {
+                this["RecordOtherArchetypes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RemoveClassFromName {
+            get {
+                return ((bool)(this["RemoveClassFromName"]));
+            }
+            set {
+                this["RemoveClassFromName"] = value;
             }
         }
     }

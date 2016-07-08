@@ -9,6 +9,7 @@ namespace HDT.Plugins.EndGame.Views
 		public BasicNoteView()
 		{
 			InitializeComponent();
+			NoteTextBox.Focus();
 		}
 
 		private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)

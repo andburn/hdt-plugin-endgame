@@ -4,6 +4,6 @@ namespace HDT.Plugins.EndGame.Services
 {
 	public interface IArchetypeImporter
 	{
-		Task ImportDecks();
+		Task ImportDecks(bool archive, bool delete, bool removeClass);
 	}
 }

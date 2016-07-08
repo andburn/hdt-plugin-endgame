@@ -109,12 +109,13 @@ namespace HDT.Plugins.EndGame.Services
 			DeckList.Instance.Decks.Add(d);
 		}
 
-		public void AddDeck(string name, string playerClass, string cards, params string[] tags)
+		public void AddDeck(string name, string playerClass, string cards, bool archive, params string[] tags)
 		{
 			var deck = Helper.ParseCardString(cards);
 			if (deck != null)
 			{
 				deck.Name = name;
+				deck.Archived = archive;
 				if (deck.Class != playerClass)
 					deck.Class = playerClass;
 				if (tags.Any())

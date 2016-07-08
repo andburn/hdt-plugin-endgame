@@ -17,7 +17,7 @@ namespace HDT.Plugins.EndGame.Services
 
 		void AddDeck(Deck deck);
 
-		void AddDeck(string name, string playerClass, string cards, params string[] tags);
+		void AddDeck(string name, string playerClass, string cards, bool archive, params string[] tags);
 
 		void DeleteAllDecksWithTag(string tag);
 	}

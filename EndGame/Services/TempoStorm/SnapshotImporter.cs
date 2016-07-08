@@ -14,8 +14,6 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 
 		private const string ArchetypeTag = "Archetype";
 		private const string PluginTag = "EndGame";
-		private const bool RemovePlayerClassFromName = true;
-		private const bool DeleteOldDecksBeforeUpdate = true;
 
 		private IHttpClient _http;
 		private ITrackerRepository _tracker;
@@ -88,10 +86,10 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return snapResponse;
 		}
 
-		public async Task ImportDecks()
+		public async Task ImportDecks(bool archive, bool deletePrevious, bool removeClass)
 		{
 			// delete previous snapshot decks
-			if (DeleteOldDecksBeforeUpdate)
+			if (deletePrevious)
 				_tracker.DeleteAllDecksWithTag(PluginTag);
 			// get the lastest meta snapshot slug/date
 			var slug = await GetSnapshotSlug();
@@ -117,10 +115,10 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 				// optionally remove player class from deck name
 				// e.g. 'Control Warrior' => 'Control'
 				var deckName = dt.Name;
-				if (RemovePlayerClassFromName)
+				if (removeClass)
 					deckName = deckName.Replace(dt.Deck.PlayerClass, "").Trim();
 
-				_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, ArchetypeTag, PluginTag);
+				_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, archive, ArchetypeTag, PluginTag);
 			}
 		}
 	}

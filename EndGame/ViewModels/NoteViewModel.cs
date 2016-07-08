@@ -94,6 +94,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		private void Update()
 		{
+			Note = _repository.GetGameNote()?.ToString();
+
 			var deck = _repository.GetOpponentDeck();
 
 			Cards.Clear();
@@ -104,8 +106,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			var alldecks = _repository.GetAllArchetypeDecks();
 			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
 			results.ForEach(r => Decks.Add(r));
-
-			Note = _repository.GetGameNote()?.ToString();
 
 			SelectedDeck = Decks.FirstOrDefault();
 			if (SelectedDeck != null)
@@ -131,8 +131,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			{
 				_log.Debug($"No screenshot selected (len={Screenshots?.Count})");
 			}
-			// should update with binding, but just in case
-			_repository.UpdateGameNote(Note);
 		}
 
 		private void DeckSelected(MatchResult item)

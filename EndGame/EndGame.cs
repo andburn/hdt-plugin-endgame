@@ -29,29 +29,38 @@ namespace HDT.Plugins.EndGame
 
 		public async static void Run()
 		{
+			var mode = _repository.GetGameMode();
+
 			// close any already open note windows
 			foreach (var x in Application.Current.Windows.OfType<NoteView>())
 				x.Close();
 			foreach (var x in Application.Current.Windows.OfType<BasicNoteView>())
 				x.Close();
 
+			// take the screenshots
+			var screenshots = await Capture(mode);
 			// check what features are enabled
-			if (Settings.Default.ArchetypesEnabled)
+			if (Settings.Default.ArchetypesEnabled && IsModeEnabledForArchetypes(mode))
 			{
-				await SetUpView(new NoteView());
+				var viewModel = new NoteViewModel(screenshots);
+				var view = new NoteView();
+				view.DataContext = viewModel;
+				view.Show();
 			}
 			else if (Settings.Default.ScreenshotEnabled)
 			{
-				// show only note and screenshot
-				await SetUpView(new BasicNoteView());
+				var viewModel = new BasicNoteViewModel(screenshots);
+				var view = new BasicNoteView();
+				view.DataContext = viewModel;
+				view.Show();
 			}
 			// else both disabled, do nothing
 		}
 
-		private static async Task SetUpView(Window view)
+		private static async Task<ObservableCollection<Screenshot>> Capture(string mode)
 		{
 			ObservableCollection<Screenshot> screenshots = null;
-			if (Settings.Default.ScreenshotEnabled && IsEnabledForMode(_repository.GetGameMode()))
+			if (Settings.Default.ScreenshotEnabled && IsModeEnabledForScreenshots(mode))
 			{
 				screenshots = await _capture.CaptureSequence(
 					Settings.Default.Delay,
@@ -59,13 +68,31 @@ namespace HDT.Plugins.EndGame
 					Settings.Default.NumberOfImages,
 					Settings.Default.DelayBetweenShots);
 			}
-
-			var viewModel = new NoteViewModel(screenshots);
-			view.DataContext = viewModel;
-			view.Show();
+			return screenshots;
 		}
 
-		private static bool IsEnabledForMode(string mode)
+		private static bool IsModeEnabledForArchetypes(string mode)
+		{
+			switch (mode.ToLowerInvariant())
+			{
+				case "ranked":
+					return Settings.Default.RecordRankedArchetypes;
+
+				case "casual":
+					return Settings.Default.RecordCasualArchetypes;
+
+				case "brawl":
+					return Settings.Default.RecordBrawlArchetypes;
+
+				case "friendly":
+					return Settings.Default.RecordFriendlyArchetypes;
+
+				default:
+					return Settings.Default.RecordOtherArchetypes;
+			}
+		}
+
+		private static bool IsModeEnabledForScreenshots(string mode)
 		{
 			switch (mode.ToLowerInvariant())
 			{
@@ -116,7 +143,10 @@ namespace HDT.Plugins.EndGame
 			Log.Debug("Importing Meta Decks");
 			IArchetypeImporter importer =
 				new SnapshotImporter(new HttpClient(), new TrackerRepository());
-			importer.ImportDecks();
+			importer.ImportDecks(
+				Settings.Default.AutoArchiveArchetypes,
+				Settings.Default.DeletePreviouslyImported,
+				Settings.Default.RemoveClassFromName);
 		}
 
 		private static Flyout CreateSettingsFlyout()

@@ -53,7 +53,7 @@ namespace HDT.Plugins.EndGame.Utilities
 		{
 		}
 
-		public void AddDeck(string name, string playerClass, string cards, params string[] tags)
+		public void AddDeck(string name, string playerClass, string cards, bool archive, params string[] tags)
 		{
 		}
 

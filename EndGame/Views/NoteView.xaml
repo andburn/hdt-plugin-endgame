@@ -72,8 +72,9 @@
         </GroupBox>
 
         <GroupBox Grid.Column="0" Grid.Row="1" Margin="10,0,10,10"
-                  x:Name="NoteTextBox" Header="Game Notes">
-            <TextBox TextWrapping="Wrap"
+                  Header="Game Notes">
+            <TextBox x:Name="NoteTextBox"
+                     TextWrapping="Wrap"
                      mah:TextBoxHelper.Watermark="Add note text here..."
                      PreviewKeyDown="TextBox_PreviewKeyDown"
                      Text="{Binding Note}" Style="{StaticResource NoBorder}">

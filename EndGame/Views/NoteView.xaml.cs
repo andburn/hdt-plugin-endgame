@@ -10,6 +10,7 @@ namespace HDT.Plugins.EndGame.Views
 		public NoteView()
 		{
 			InitializeComponent();
+			NoteTextBox.Focus();
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
