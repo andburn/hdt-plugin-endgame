@@ -82,7 +82,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
 			UpdateCommand = new RelayCommand(() => Update());
 			WindowClosingCommand = new RelayCommand(() => Closing());
-			DeckSelectedCommand = new RelayCommand<MatchResult>(x => AddDeckToNote(x.Deck.Name));
+			DeckSelectedCommand = new RelayCommand<MatchResult>(x => DeckSelected(x));
 		}
 
 		public NoteViewModel(ObservableCollection<Screenshot> screenshots)
@@ -105,9 +105,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
 			results.ForEach(r => Decks.Add(r));
 
-			SelectedDeck = Decks.FirstOrDefault();
-
 			Note = _repository.GetGameNote()?.ToString();
+
+			SelectedDeck = Decks.FirstOrDefault();
+			if (SelectedDeck != null)
+				DeckSelected(SelectedDeck);
 		}
 
 		private void Closing()
@@ -133,21 +135,30 @@ namespace HDT.Plugins.EndGame.ViewModels
 			_repository.UpdateGameNote(Note);
 		}
 
-		private void AddDeckToNote(string name)
+		private void DeckSelected(MatchResult item)
 		{
-			if (Note == null)
-				Note = string.Empty;
-			_log.Debug($"Adding {name} to note");
+			SelectedDeck = item ?? SelectedDeck;
+			if (SelectedDeck == null)
+				return;
+			AddDeckToNote(SelectedDeck.Deck.Name);
+		}
+
+		private void AddDeckToNote(string text)
+		{
+			if (string.IsNullOrWhiteSpace(text))
+				return;
+			Note = Note ?? string.Empty;
+			_log.Debug($"Adding {text} to note");
 			const string regex = "\\[(?<tag>(.*?))\\]";
 			var match = Regex.Match(Note, regex);
 			if (match.Success)
 			{
 				var tag = match.Groups["tag"].Value;
-				Note = Note.Replace(match.Value, $"[{name}]");
+				Note = Note.Replace(match.Value, $"[{text}]");
 			}
 			else
 			{
-				Note = $"[{name}] {Note}";
+				Note = $"[{text}] {Note}";
 			}
 		}
 	}

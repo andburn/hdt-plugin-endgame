@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using HDT.Plugins.EndGame.Models;
@@ -29,10 +30,26 @@ namespace HDT.Plugins.EndGame
 		public async static void Run()
 		{
 			// close any already open note windows
-			Application.Current.Windows.OfType<NoteView>()
-				.ToList()
-				.ForEach(x => x.Close());
+			foreach (var x in Application.Current.Windows.OfType<NoteView>())
+				x.Close();
+			foreach (var x in Application.Current.Windows.OfType<BasicNoteView>())
+				x.Close();
 
+			// check what features are enabled
+			if (Settings.Default.ArchetypesEnabled)
+			{
+				await SetUpView(new NoteView());
+			}
+			else if (Settings.Default.ScreenshotEnabled)
+			{
+				// show only note and screenshot
+				await SetUpView(new BasicNoteView());
+			}
+			// else both disabled, do nothing
+		}
+
+		private static async Task SetUpView(Window view)
+		{
 			ObservableCollection<Screenshot> screenshots = null;
 			if (Settings.Default.ScreenshotEnabled && IsEnabledForMode(_repository.GetGameMode()))
 			{
@@ -44,7 +61,6 @@ namespace HDT.Plugins.EndGame
 			}
 
 			var viewModel = new NoteViewModel(screenshots);
-			var view = new NoteView();
 			view.DataContext = viewModel;
 			view.Show();
 		}

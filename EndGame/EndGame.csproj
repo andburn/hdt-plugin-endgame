@@ -136,6 +136,9 @@
     <Compile Include="ViewModels\SettingsScreenshotViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelHelper.cs" />
+    <Compile Include="Views\BasicNoteView.xaml.cs">
+      <DependentUpon>BasicNoteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NoteView.xaml.cs">
       <DependentUpon>NoteView.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
     <Page Include="EndGameMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BasicNoteView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NoteView.xaml">
       <SubType>Designer</SubType>
