@@ -78,11 +78,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 			_cap = capture;
 			_log = logger;
 
-			Update();
-
 			PropertyChanged += NoteViewModel_PropertyChanged;
 
 			WindowClosingCommand = new RelayCommand(() => Closing());
+
+			Update();
 		}
 
 		public NoteViewModel(ObservableCollection<Screenshot> screenshots)

@@ -61,15 +61,6 @@ namespace HDT.Plugins.EndGame.Services
 					}
 					deck.IsStandard = hdtDeck.StandardViable;
 				}
-				else
-				{
-					// TODO Remove
-					deck.Klass = KlassKonverter.FromString(Core.Game.Opponent.Class);
-					var tempDeck = new Hearthstone_Deck_Tracker.Hearthstone.Deck();
-					tempDeck.Cards = new ObservableCollection<Hearthstone_Deck_Tracker.Hearthstone.Card>(Core.Game.Opponent.OpponentCardList);
-					deck.IsStandard = tempDeck.StandardViable;
-					deck.Cards = GetLiveDeck();
-				}
 			}
 			return deck;
 		}
@@ -89,13 +80,6 @@ namespace HDT.Plugins.EndGame.Services
 			{
 				Core.Game.CurrentGameStats.Note = text;
 			}
-		}
-
-		private List<Models.Card> GetLiveDeck()
-		{
-			Log.Info("using live deck");
-			var live = Core.Game.Opponent.OpponentCardList; // includes created etc.
-			return live.Select(x => new Models.Card(x.Id, x.LocalizedName, x.Count, x.Background.Clone())).ToList();
 		}
 
 		public void AddDeck(Models.Deck deck)

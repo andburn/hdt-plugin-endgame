@@ -67,16 +67,14 @@ namespace HDT.Plugins.EndGame
 
 		public void OnLoad()
 		{
-			//EndGame.SaveSettings();
 			GameEvents.OnGameEnd.Add(EndGame.Run);
 		}
 
 		public void OnUnload()
 		{
+			EndGame.CloseOpenNoteWindows();
 			EndGame.CloseSettings();
-			// TODO and any other open windows
-			//EndGame.CloseNoteDialog();
-			//EndGame.RestoreSettings();
+			EndGame.CloseNotification();
 		}
 
 		public void OnUpdate()

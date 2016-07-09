@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
@@ -17,12 +16,14 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 
 		private IHttpClient _http;
 		private ITrackerRepository _tracker;
+		private ILoggingService _logger;
 		private JsonSerializerSettings _settings;
 
 		public SnapshotImporter(IHttpClient http, ITrackerRepository tracker)
 		{
 			_http = http;
 			_tracker = tracker;
+			_logger = new TrackerLogger();
 			_settings = new JsonSerializerSettings() {
 				NullValueHandling = NullValueHandling.Ignore
 			};
@@ -88,10 +89,14 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 
 		public async Task<int> ImportDecks(bool archive, bool deletePrevious, bool removeClass)
 		{
+			_logger.Info("Starting meta deck import");
 			int deckCount = 0;
 			// delete previous snapshot decks
 			if (deletePrevious)
+			{
+				_logger.Info("Deleting previous meta decks");
 				_tracker.DeleteAllDecksWithTag(PluginTag);
+			}
 			// get the lastest meta snapshot slug/date
 			var slug = await GetSnapshotSlug();
 			// use the slug to request the actual snapshot details
@@ -100,7 +105,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			foreach (var dt in snapshot.DeckTiers)
 			{
 				var cards = "";
-				Log.Info($"Importing deck ({dt.Name})");
+				_logger.Info($"Importing deck ({dt.Name})");
 				foreach (var cd in dt.Deck.Cards)
 				{
 					cards += cd.Detail.Name;

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Properties;
@@ -16,14 +18,14 @@ namespace HDT.Plugins.EndGame.Services
 {
 	public class TrackerCapture : IImageCaptureService
 	{
-		public async Task<ObservableCollection<Screenshot>> CaptureSequence(int delay, string dir, int num, int delayBetween)
+		public async Task<ObservableCollection<Screenshot>> CaptureSequence(int delaySeconds, string dir, int num, int delayBetween)
 		{
-			Log.Info("Capture Screen @ " + delay + "/" + delayBetween);
+			Log.Info($"Capture Screen @ {delaySeconds}s then {delayBetween}ms");
 
-			ObservableCollection<Screenshot> screenshots = new ObservableCollection<Screenshot>();
+			List<Screenshot> screenshots = new List<Screenshot>();
 
 			// initial delay, after end of game is triggered
-			await Task.Delay(delay);
+			await Task.Delay(delaySeconds * 1000);
 
 			// take num screenshots
 			for (int i = 0; i < num; i++)
@@ -38,7 +40,8 @@ namespace HDT.Plugins.EndGame.Services
 				await Task.Delay(delayBetween);
 			}
 
-			return screenshots;
+			// sort in reverse, last first
+			return new ObservableCollection<Screenshot>(screenshots.OrderByDescending(s => s.Index));
 		}
 
 		private static async Task<Bitmap> CaptureScreenShot()

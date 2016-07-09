@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,44 +33,111 @@ namespace HDT.Plugins.EndGame
 
 		public async static void Run()
 		{
-			var mode = _repository.GetGameMode();
+			try
+			{
+				var mode = _repository.GetGameMode();
 
-			// close any already open note windows
+				// close any already open note windows
+				CloseOpenNoteWindows();
+
+				// take the screenshots
+				var screenshots = await Capture(mode);
+				// check what features are enabled
+				if (Settings.Default.ArchetypesEnabled && IsModeEnabledForArchetypes(mode))
+				{
+					var viewModel = new NoteViewModel(screenshots);
+					var view = new NoteView();
+					view.DataContext = viewModel;
+					view.Show();
+				}
+				else if (Settings.Default.ScreenshotEnabled)
+				{
+					var viewModel = new BasicNoteViewModel(screenshots);
+					var view = new BasicNoteView();
+					view.DataContext = viewModel;
+					view.Show();
+				}
+				// else both disabled, do nothing
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				Notify("EndGame Error", e.Message, 15);
+			}
+		}
+
+		public static void CloseOpenNoteWindows()
+		{
 			foreach (var x in Application.Current.Windows.OfType<NoteView>())
 				x.Close();
 			foreach (var x in Application.Current.Windows.OfType<BasicNoteView>())
 				x.Close();
+		}
 
-			// take the screenshots
-			var screenshots = await Capture(mode);
-			// check what features are enabled
-			if (Settings.Default.ArchetypesEnabled && IsModeEnabledForArchetypes(mode))
+		public static void ShowSettings()
+		{
+			if (_settingsFlyout == null)
+				_settingsFlyout = CreateSettingsFlyout();
+			_settingsFlyout.IsOpen = true;
+		}
+
+		public static void CloseSettings()
+		{
+			if (_settingsFlyout != null)
+				_settingsFlyout.IsOpen = false;
+		}
+
+		public static void CloseNotification()
+		{
+			if (_notificationFlyout != null)
+				_notificationFlyout.IsOpen = false;
+		}
+
+		public static void Notify(string title, string message, int autoClose)
+		{
+			if (_notificationFlyout == null)
+				_notificationFlyout = CreateDialogFlyout();
+			_notificationFlyout.Content = new DialogView(_notificationFlyout, title, message, autoClose);
+			_notificationFlyout.IsOpen = true;
+		}
+
+		public static async Task ImportMetaDecks()
+		{
+			try
 			{
-				var viewModel = new NoteViewModel(screenshots);
-				var view = new NoteView();
-				view.DataContext = viewModel;
-				view.Show();
+				IArchetypeImporter importer =
+				new SnapshotImporter(new HttpClient(), new TrackerRepository());
+				var count = await importer.ImportDecks(
+					Settings.Default.AutoArchiveArchetypes,
+					Settings.Default.DeletePreviouslyImported,
+					Settings.Default.RemoveClassFromName);
+				Notify("Import Complete", $"{count} decks imported", 10);
 			}
-			else if (Settings.Default.ScreenshotEnabled)
+			catch (Exception e)
 			{
-				var viewModel = new BasicNoteViewModel(screenshots);
-				var view = new BasicNoteView();
-				view.DataContext = viewModel;
-				view.Show();
+				Log.Error(e);
+				Notify("Import Failed", e.Message, 10);
 			}
-			// else both disabled, do nothing
 		}
 
 		private static async Task<ObservableCollection<Screenshot>> Capture(string mode)
 		{
 			ObservableCollection<Screenshot> screenshots = null;
-			if (Settings.Default.ScreenshotEnabled && IsModeEnabledForScreenshots(mode))
+			try
 			{
-				screenshots = await _capture.CaptureSequence(
-					Settings.Default.Delay,
-					Settings.Default.OutputDir,
-					Settings.Default.NumberOfImages,
-					Settings.Default.DelayBetweenShots);
+				if (Settings.Default.ScreenshotEnabled && IsModeEnabledForScreenshots(mode))
+				{
+					screenshots = await _capture.CaptureSequence(
+						Settings.Default.Delay,
+						Settings.Default.OutputDir,
+						Settings.Default.NumberOfImages,
+						Settings.Default.DelayBetweenShots);
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				Notify("Screen Capture Failed", e.Message, 15);
 			}
 			return screenshots;
 		}
@@ -126,42 +194,6 @@ namespace HDT.Plugins.EndGame
 			}
 		}
 
-		public static void ShowSettings()
-		{
-			Log.Debug("Show Settings");
-			if (_settingsFlyout == null)
-				_settingsFlyout = CreateSettingsFlyout();
-			_settingsFlyout.IsOpen = true;
-		}
-
-		public static void CloseSettings()
-		{
-			Log.Debug("Close Settings");
-			if (_settingsFlyout != null)
-				_settingsFlyout.IsOpen = false;
-		}
-
-		public static void Notify(string title, string message, int autoClose)
-		{
-			if (_notificationFlyout == null)
-				_notificationFlyout = CreateDialogFlyout();
-			_notificationFlyout.Content = new DialogView(_notificationFlyout,
-				title, message, autoClose);
-			_notificationFlyout.IsOpen = true;
-		}
-
-		public static async Task ImportMetaDecks()
-		{
-			Log.Debug("Importing Meta Decks");
-			IArchetypeImporter importer =
-				new SnapshotImporter(new HttpClient(), new TrackerRepository());
-			var count = await importer.ImportDecks(
-				Settings.Default.AutoArchiveArchetypes,
-				Settings.Default.DeletePreviouslyImported,
-				Settings.Default.RemoveClassFromName);
-			Notify("Import Complete", $"{count} decks imported", 10);
-		}
-
 		private static Flyout CreateSettingsFlyout()
 		{
 			var settings = new Flyout();
@@ -184,7 +216,7 @@ namespace HDT.Plugins.EndGame
 			dialog.CloseButtonVisibility = Visibility.Collapsed;
 			dialog.IsPinned = false;
 			dialog.Height = 50;
-			Panel.SetZIndex(dialog, 100);
+			Panel.SetZIndex(dialog, 1000);
 			Core.MainWindow.Flyouts.Items.Add(dialog);
 			return dialog;
 		}
