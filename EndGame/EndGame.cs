@@ -106,7 +106,7 @@ namespace HDT.Plugins.EndGame
 			try
 			{
 				IArchetypeImporter importer =
-				new SnapshotImporter(new HttpClient(), new TrackerRepository());
+					new SnapshotImporter(new HttpClient(), new TrackerRepository());
 				var count = await importer.ImportDecks(
 					Settings.Default.AutoArchiveArchetypes,
 					Settings.Default.DeletePreviouslyImported,
@@ -116,7 +116,7 @@ namespace HDT.Plugins.EndGame
 			catch (Exception e)
 			{
 				Log.Error(e);
-				Notify("Import Failed", e.Message, 10);
+				Notify("Import Failed", e.Message, 15);
 			}
 		}
 

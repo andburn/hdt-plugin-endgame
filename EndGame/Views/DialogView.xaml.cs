@@ -1,5 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Navigation;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using MahApps.Metro.Controls;
 
 namespace HDT.Plugins.EndGame.Views
@@ -7,6 +13,7 @@ namespace HDT.Plugins.EndGame.Views
 	public partial class DialogView : UserControl
 	{
 		private Flyout _container;
+		private Regex regex = new Regex(@"(?<pre>[^\[]*)\[(?<text>[^\]\(]+)\]\((?<url>[^\)]+)\)\s*(?<post>.*)", RegexOptions.Compiled);
 
 		public DialogView(Flyout container, string title, string message, int autoClose)
 		{
@@ -15,9 +22,33 @@ namespace HDT.Plugins.EndGame.Views
 			_container = container;
 
 			TitleText.Text = title;
-			MessageText.Text = message;
+
+			var match = regex.Match(message);
+			if (match.Success)
+			{
+				Log.Debug("matched: ");
+				MessageText.Inlines.Clear();
+				MessageText.Inlines.Add(match.Groups["pre"].Value);
+				Hyperlink hyperLink = new Hyperlink() {
+					Foreground = System.Windows.Media.Brushes.White,
+					NavigateUri = new Uri(match.Groups["url"].Value)
+				};
+				hyperLink.Inlines.Add(match.Groups["text"].Value);
+				hyperLink.RequestNavigate += HyperLink_RequestNavigate;
+				MessageText.Inlines.Add(hyperLink);
+				MessageText.Inlines.Add(" " + match.Groups["post"].Value);
+			}
+			else
+			{
+				MessageText.Text = message;
+			}
 
 			AutoClose(autoClose);
+		}
+
+		private void HyperLink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+		{
+			Process.Start(e.Uri.ToString());
 		}
 
 		private async Task AutoClose(int seconds)
