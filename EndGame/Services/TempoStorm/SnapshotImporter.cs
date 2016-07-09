@@ -86,8 +86,9 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return snapResponse;
 		}
 
-		public async Task ImportDecks(bool archive, bool deletePrevious, bool removeClass)
+		public async Task<int> ImportDecks(bool archive, bool deletePrevious, bool removeClass)
 		{
+			int deckCount = 0;
 			// delete previous snapshot decks
 			if (deletePrevious)
 				_tracker.DeleteAllDecksWithTag(PluginTag);
@@ -119,7 +120,9 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 					deckName = deckName.Replace(dt.Deck.PlayerClass, "").Trim();
 
 				_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, archive, ArchetypeTag, PluginTag);
+				deckCount++;
 			}
+			return deckCount;
 		}
 	}
 }

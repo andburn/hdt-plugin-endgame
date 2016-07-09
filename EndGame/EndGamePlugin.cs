@@ -62,8 +62,7 @@ namespace HDT.Plugins.EndGame
 
 		public void OnButtonPress()
 		{
-			//EndGame.ShowSettings();
-			EndGame.Run();
+			EndGame.ShowSettings();
 		}
 
 		public void OnLoad()
@@ -75,6 +74,7 @@ namespace HDT.Plugins.EndGame
 		public void OnUnload()
 		{
 			EndGame.CloseSettings();
+			// TODO and any other open windows
 			//EndGame.CloseNoteDialog();
 			//EndGame.RestoreSettings();
 		}

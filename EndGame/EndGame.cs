@@ -18,6 +18,7 @@ namespace HDT.Plugins.EndGame
 	public class EndGame
 	{
 		private static Flyout _settingsFlyout;
+		private static Flyout _notificationFlyout;
 		private static IImageCaptureService _capture;
 		private static ITrackerRepository _repository;
 
@@ -25,6 +26,8 @@ namespace HDT.Plugins.EndGame
 		{
 			_capture = new TrackerCapture();
 			_repository = new TrackerRepository();
+			_notificationFlyout = CreateDialogFlyout();
+			_settingsFlyout = CreateSettingsFlyout();
 		}
 
 		public async static void Run()
@@ -138,15 +141,25 @@ namespace HDT.Plugins.EndGame
 				_settingsFlyout.IsOpen = false;
 		}
 
-		public static void ImportMetaDecks()
+		public static void Notify(string title, string message, int autoClose)
+		{
+			if (_notificationFlyout == null)
+				_notificationFlyout = CreateDialogFlyout();
+			_notificationFlyout.Content = new DialogView(_notificationFlyout,
+				title, message, autoClose);
+			_notificationFlyout.IsOpen = true;
+		}
+
+		public static async Task ImportMetaDecks()
 		{
 			Log.Debug("Importing Meta Decks");
 			IArchetypeImporter importer =
 				new SnapshotImporter(new HttpClient(), new TrackerRepository());
-			importer.ImportDecks(
+			var count = await importer.ImportDecks(
 				Settings.Default.AutoArchiveArchetypes,
 				Settings.Default.DeletePreviouslyImported,
 				Settings.Default.RemoveClassFromName);
+			Notify("Import Complete", $"{count} decks imported", 10);
 		}
 
 		private static Flyout CreateSettingsFlyout()
@@ -157,10 +170,23 @@ namespace HDT.Plugins.EndGame
 			Panel.SetZIndex(settings, 100);
 			settings.Header = "End Game Settings";
 			settings.Content = new SettingsView();
-			//newflyout.Width = 250;
-			//settings.Theme = FlyoutTheme.Accent;
 			Core.MainWindow.Flyouts.Items.Add(settings);
 			return settings;
+		}
+
+		private static Flyout CreateDialogFlyout()
+		{
+			var dialog = new Flyout();
+			dialog.Name = "EndGameDialogFlyout";
+			dialog.Theme = FlyoutTheme.Accent;
+			dialog.Position = Position.Bottom;
+			dialog.TitleVisibility = Visibility.Collapsed;
+			dialog.CloseButtonVisibility = Visibility.Collapsed;
+			dialog.IsPinned = false;
+			dialog.Height = 50;
+			Panel.SetZIndex(dialog, 100);
+			Core.MainWindow.Flyouts.Items.Add(dialog);
+			return dialog;
 		}
 	}
 }

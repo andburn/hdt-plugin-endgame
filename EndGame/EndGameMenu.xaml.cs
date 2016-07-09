@@ -19,9 +19,9 @@ namespace HDT.Plugins.EndGame
 			EndGame.ShowSettings();
 		}
 
-		private void Menu_ImportDecks_Click(object sender, RoutedEventArgs e)
+		private async void Menu_ImportDecks_Click(object sender, RoutedEventArgs e)
 		{
-			EndGame.ImportMetaDecks();
+			await EndGame.ImportMetaDecks();
 		}
 	}
 }

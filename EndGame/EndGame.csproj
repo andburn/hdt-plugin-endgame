@@ -140,6 +140,9 @@
     <Compile Include="Views\BasicNoteView.xaml.cs">
       <DependentUpon>BasicNoteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DialogView.xaml.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NoteView.xaml.cs">
       <DependentUpon>NoteView.xaml</DependentUpon>
     </Compile>
@@ -167,6 +170,10 @@
     <Page Include="Views\BasicNoteView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NoteView.xaml">
       <SubType>Designer</SubType>
