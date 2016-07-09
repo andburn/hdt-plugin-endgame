@@ -60,14 +60,6 @@
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction
-                            Command="{Binding DeckSelectedCommand}"
-                            CommandParameter="{Binding ElementName=DeckList, Path=SelectedItem}">
-                        </i:InvokeCommandAction>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
             </ListBox>
         </GroupBox>
 
@@ -78,14 +70,6 @@
                      mah:TextBoxHelper.Watermark="Add note text here..."
                      PreviewKeyDown="TextBox_PreviewKeyDown"
                      Text="{Binding Note}" Style="{StaticResource NoBorder}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="TextChanged">
-                        <i:InvokeCommandAction
-                            Command="{Binding NoteTextChangeCommand}"
-                            CommandParameter="{Binding ElementName=NoteTextBox, Path=Text}">
-                        </i:InvokeCommandAction>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
             </TextBox>
         </GroupBox>
 

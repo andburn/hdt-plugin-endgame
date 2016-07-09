@@ -18,6 +18,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public ObservableCollection<Card> Cards { get; set; }
 		public ObservableCollection<MatchResult> Decks { get; set; }
+		public ObservableCollection<Screenshot> Screenshots { get; set; }
 
 		private string _note;
 
@@ -51,14 +52,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => HasScreenshots, ref _hasScreenshots, value); }
 		}
 
-		public ObservableCollection<Screenshot> Screenshots { get; set; }
-
-		public RelayCommand<string> NoteTextChangeCommand { get; private set; }
-		public RelayCommand UpdateCommand { get; private set; }
 		public RelayCommand WindowClosingCommand { get; private set; }
-		public RelayCommand<MatchResult> DeckSelectedCommand { get; private set; }
 
 		public NoteViewModel()
+			: this(new TrackerRepository(), new TrackerLogger(), new TrackerCapture())
+		{
+		}
+
+		public NoteViewModel(ITrackerRepository track, ILoggingService logger, IImageCaptureService capture)
 		{
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
@@ -72,17 +73,16 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 			else
 			{
-				_repository = new TrackerRepository();
+				_repository = track;
 			}
-			_cap = new TrackerCapture();
-			_log = new TrackerLogger();
+			_cap = capture;
+			_log = logger;
 
 			Update();
 
-			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
-			UpdateCommand = new RelayCommand(() => Update());
+			PropertyChanged += NoteViewModel_PropertyChanged;
+
 			WindowClosingCommand = new RelayCommand(() => Closing());
-			DeckSelectedCommand = new RelayCommand<MatchResult>(x => DeckSelected(x));
 		}
 
 		public NoteViewModel(ObservableCollection<Screenshot> screenshots)
@@ -109,6 +109,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 			SelectedDeck = Decks.FirstOrDefault();
 			if (SelectedDeck != null)
+				DeckSelected(SelectedDeck);
+		}
+
+		private void NoteViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "Note")
+				_repository.UpdateGameNote(Note);
+			else if (e.PropertyName == "SelectedDeck")
 				DeckSelected(SelectedDeck);
 		}
 

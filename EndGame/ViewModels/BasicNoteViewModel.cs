@@ -15,12 +15,22 @@ namespace HDT.Plugins.EndGame.ViewModels
 		private IImageCaptureService _cap;
 		private ILoggingService _log;
 
+		public ObservableCollection<Screenshot> Screenshots { get; set; }
+
 		private string _note;
 
 		public string Note
 		{
 			get { return _note; }
 			set { Set(() => Note, ref _note, value); }
+		}
+
+		private string _playerClass;
+
+		public string PlayerClass
+		{
+			get { return _playerClass; }
+			set { Set(() => PlayerClass, ref _playerClass, value); }
 		}
 
 		private bool _hasScreenshots;
@@ -31,12 +41,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => HasScreenshots, ref _hasScreenshots, value); }
 		}
 
-		public ObservableCollection<Screenshot> Screenshots { get; set; }
-
-		public RelayCommand<string> NoteTextChangeCommand { get; private set; }
 		public RelayCommand WindowClosingCommand { get; private set; }
 
 		public BasicNoteViewModel()
+			: this(new TrackerRepository(), new TrackerLogger(), new TrackerCapture())
+		{
+		}
+
+		public BasicNoteViewModel(ITrackerRepository track, ILoggingService logger, IImageCaptureService capture)
 		{
 			HasScreenshots = false;
 
@@ -48,14 +60,15 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 			else
 			{
-				_repository = new TrackerRepository();
+				_repository = track;
 			}
-			_cap = new TrackerCapture();
-			_log = new TrackerLogger();
+			_cap = capture;
+			_log = logger;
 
-			Note = _repository.GetGameNote()?.ToString();
+			Update();
 
-			NoteTextChangeCommand = new RelayCommand<string>(x => _repository.UpdateGameNote(x));
+			PropertyChanged += NoteViewModel_PropertyChanged;
+
 			WindowClosingCommand = new RelayCommand(() => Closing());
 		}
 
@@ -64,6 +77,17 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			Screenshots = screenshots;
 			HasScreenshots = Screenshots != null && Screenshots.Any();
+		}
+
+		private void Update()
+		{
+			Note = _repository.GetGameNote()?.ToString();
+		}
+
+		private void NoteViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "Note")
+				_repository.UpdateGameNote(Note);
 		}
 
 		private void Closing()
