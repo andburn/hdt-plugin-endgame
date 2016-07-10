@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using HDT.Plugins.EndGame.Utilities;
 using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker.Plugins;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 
 namespace HDT.Plugins.EndGame
 {
@@ -55,8 +59,7 @@ namespace HDT.Plugins.EndGame
 		{
 			get
 			{
-				// TODO: move this to config/build file
-				return new Version(0, 3, 2);
+				return new Version(0, 3, 0);
 			}
 		}
 
@@ -65,8 +68,9 @@ namespace HDT.Plugins.EndGame
 			EndGame.ShowSettings();
 		}
 
-		public void OnLoad()
+		public async void OnLoad()
 		{
+			await CheckForUpdate();
 			GameEvents.OnGameEnd.Add(EndGame.Run);
 		}
 
@@ -79,6 +83,17 @@ namespace HDT.Plugins.EndGame
 
 		public void OnUpdate()
 		{
+		}
+
+		public async Task CheckForUpdate()
+		{
+			var latest = await Github.CheckForUpdate("andburn", "hdt-plugin-endgame", Version);
+			if (latest != null)
+			{
+				EndGame.Notify("Plugin Update Available", $"[DOWNLOAD]({latest.html_url}) EndGame v{latest.tag_name}", 0,
+					"download", () => Process.Start(latest.html_url));
+				Log.Info("Update available: v" + latest.tag_name, "EndGame");
+			}
 		}
 	}
 }

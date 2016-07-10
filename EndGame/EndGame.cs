@@ -62,7 +62,7 @@ namespace HDT.Plugins.EndGame
 			catch (Exception e)
 			{
 				Log.Error(e);
-				Notify("EndGame Error", e.Message, 15);
+				Notify("EndGame Error", e.Message, 15, "error", null);
 			}
 		}
 
@@ -93,11 +93,16 @@ namespace HDT.Plugins.EndGame
 				_notificationFlyout.IsOpen = false;
 		}
 
-		public static void Notify(string title, string message, int autoClose)
+		public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
 		{
 			if (_notificationFlyout == null)
 				_notificationFlyout = CreateDialogFlyout();
-			_notificationFlyout.Content = new DialogView(_notificationFlyout, title, message, autoClose);
+			var view = new DialogView(_notificationFlyout, title, message, autoClose);
+			if (!string.IsNullOrEmpty(icon))
+			{
+				view.SetUtilityButton(action, icon);
+			}
+			_notificationFlyout.Content = view;
 			_notificationFlyout.IsOpen = true;
 		}
 
@@ -116,7 +121,7 @@ namespace HDT.Plugins.EndGame
 			catch (Exception e)
 			{
 				Log.Error(e);
-				Notify("Import Failed", e.Message, 15);
+				Notify("Import Failed", e.Message, 15, "error", null);
 			}
 		}
 
@@ -137,7 +142,7 @@ namespace HDT.Plugins.EndGame
 			catch (Exception e)
 			{
 				Log.Error(e);
-				Notify("Screen Capture Failed", e.Message, 15);
+				Notify("Screen Capture Failed", e.Message, 15, "error", null);
 			}
 			return screenshots;
 		}

@@ -46,6 +46,31 @@ namespace HDT.Plugins.EndGame.Views
 			AutoClose(autoClose);
 		}
 
+		public void SetUtilityButton(Action action, string icon)
+		{
+			var unicode = string.Empty;
+			switch (icon.ToLower())
+			{
+				case "download":
+					unicode = "\ue9c5"; break;
+				case "error":
+					unicode = "\uea0e"; break;
+				case "github":
+					unicode = "\ueab0"; break;
+				case "info":
+				default:
+					unicode = "\uea08"; break;
+			}
+
+			UtilityButton.Content = unicode;
+			UtilityButton.IsEnabled = true;
+			if (action != null)
+				UtilityButton.Click += (s, e) => { action.Invoke(); };
+			else
+				UtilityButton.IsEnabled = false;
+			UtilityButton.UpdateLayout();
+		}
+
 		private void HyperLink_RequestNavigate(object sender, RequestNavigateEventArgs e)
 		{
 			Process.Start(e.Uri.ToString());

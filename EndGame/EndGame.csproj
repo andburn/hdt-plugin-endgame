@@ -130,6 +130,7 @@
     <Compile Include="Services\TrackerCapture.cs" />
     <Compile Include="Services\TrackerRepository.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Utilities\GitHub.cs" />
     <Compile Include="Utilities\NamingPattern.cs" />
     <Compile Include="ViewModels\BasicNoteViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
