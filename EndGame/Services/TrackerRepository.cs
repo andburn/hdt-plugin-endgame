@@ -12,6 +12,11 @@ namespace HDT.Plugins.EndGame.Services
 {
 	public class TrackerRepository : ITrackerRepository
 	{
+		public bool IsInMenu()
+		{
+			return Core.Game?.IsInMenu ?? false;
+		}
+
 		public List<ArchetypeDeck> GetAllArchetypeDecks()
 		{
 			var decks = DeckList.Instance.Decks

@@ -5,6 +5,8 @@ namespace HDT.Plugins.EndGame.Services
 {
 	public interface ITrackerRepository
 	{
+		bool IsInMenu();
+
 		Deck GetOpponentDeck();
 
 		string GetGameNote();

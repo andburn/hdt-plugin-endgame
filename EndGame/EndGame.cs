@@ -48,6 +48,7 @@ namespace HDT.Plugins.EndGame
 					var viewModel = new NoteViewModel(screenshots);
 					var view = new NoteView();
 					view.DataContext = viewModel;
+					await WaitUntilInMenu();
 					view.Show();
 				}
 				else if (Settings.Default.ScreenshotEnabled)
@@ -55,6 +56,7 @@ namespace HDT.Plugins.EndGame
 					var viewModel = new BasicNoteViewModel(screenshots);
 					var view = new BasicNoteView();
 					view.DataContext = viewModel;
+					await WaitUntilInMenu();
 					view.Show();
 				}
 				// else both disabled, do nothing
@@ -196,6 +198,20 @@ namespace HDT.Plugins.EndGame
 
 				default:
 					return false;
+			}
+		}
+
+		private static async Task WaitUntilInMenu()
+		{
+			var timeout = 30000;
+			var wait = 1000;
+			var elapsed = 0;
+			while (!_repository.IsInMenu())
+			{
+				await Task.Delay(wait);
+				elapsed += wait;
+				if (elapsed >= timeout)
+					return;
 			}
 		}
 

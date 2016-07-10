@@ -64,5 +64,10 @@ namespace HDT.Plugins.EndGame.Utilities
 		public void UpdateGameNote(string text)
 		{
 		}
+
+		public bool IsInMenu()
+		{
+			return false;
+		}
 	}
 }
