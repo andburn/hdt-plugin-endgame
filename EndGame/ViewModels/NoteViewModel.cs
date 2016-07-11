@@ -106,6 +106,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 			var alldecks = _repository.GetAllArchetypeDecks();
 			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
 			results.ForEach(r => Decks.Add(r));
+			results.ForEach(r => _log.Debug($"{r.Deck.Name} [{r.Similarity}, {r.Containment}]"));
 
 			SelectedDeck = Decks.FirstOrDefault();
 			if (SelectedDeck != null)
@@ -146,7 +147,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 			SelectedDeck = item ?? SelectedDeck;
 			if (SelectedDeck == null)
 				return;
-			AddDeckToNote(SelectedDeck.Deck.Name);
+			if (SelectedDeck.Similarity > MatchResult.THRESHOLD)
+				AddDeckToNote(SelectedDeck.Deck.Name);
 		}
 
 		private void AddDeckToNote(string text)

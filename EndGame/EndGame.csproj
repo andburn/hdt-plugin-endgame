@@ -93,6 +93,7 @@
       <DependentUpon>EndGameMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="EndGamePlugin.cs" />
+    <Compile Include="Models\MatchResult.cs" />
     <Compile Include="Services\ILoggingService.cs" />
     <Compile Include="Services\TrackerLogger.cs" />
     <Compile Include="Utilities\DesignerData.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Services\TrackerRepository.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities\GitHub.cs" />
+    <Compile Include="Utilities\MatchResultToStarRatingConverter.cs" />
     <Compile Include="Utilities\NamingPattern.cs" />
     <Compile Include="ViewModels\BasicNoteViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HDT.Plugins.EndGame.Models;
 
@@ -16,31 +15,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				.Select(a => new MatchResult(a, deck.Similarity(a), a.Similarity(deck)))
 				.OrderByDescending(r => r.Similarity).ThenBy(r => r.Deck.Name)
 				.ToList();
-		}
-	}
-
-	public class MatchResult : IComparable<MatchResult>
-	{
-		public ArchetypeDeck Deck { get; private set; }
-		public float Similarity { get; private set; }
-		public float SimilarityAlt { get; private set; }
-
-		public MatchResult(ArchetypeDeck deck, float similarity)
-		{
-			Deck = deck;
-			Similarity = similarity;
-		}
-
-		public MatchResult(ArchetypeDeck deck, float similarity, float similarityAlt)
-		{
-			Deck = deck;
-			Similarity = similarity;
-			SimilarityAlt = similarityAlt;
-		}
-
-		public int CompareTo(MatchResult other)
-		{
-			return Similarity.CompareTo(other.Similarity);
 		}
 	}
 }

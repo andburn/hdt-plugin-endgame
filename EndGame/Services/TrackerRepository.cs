@@ -27,7 +27,6 @@ namespace HDT.Plugins.EndGame.Services
 			{
 				// get the newest version of the deck
 				var v = d.VersionsIncludingSelf.OrderByDescending(x => x).FirstOrDefault();
-				Log.Debug($"Selecting version {v} of {d.Name}");
 				d.SelectVersion(v);
 				if (d == null)
 					continue;
@@ -52,7 +51,7 @@ namespace HDT.Plugins.EndGame.Services
 					// hero class
 					deck.Klass = KlassKonverter.FromString(game.OpponentHero);
 					// standard viable, use temp HDT deck
-					var hdtDeck = new Hearthstone_Deck_Tracker.Hearthstone.Deck();
+					var hdtDeck = new HDTDeck();
 					foreach (var card in game.OpponentCards)
 					{
 						var c = Database.GetCardFromId(card.Id);
