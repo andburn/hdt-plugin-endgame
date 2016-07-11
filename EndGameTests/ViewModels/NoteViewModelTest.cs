@@ -51,13 +51,26 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		}
 
 		[Test]
-		public void DeckSelectedChange_WritesToNote()
+		public void DeckSelectedChange_WritesToNote_IfSimilarityAboveThreshold()
 		{
 			viewModel.SelectedDeck = new MatchResult(
-				new ArchetypeDeck("A Deck", Klass.Druid, false), 0);
+				new ArchetypeDeck("A Deck", Klass.Druid, false),
+				MatchResult.THRESHOLD + 0.1f);
 
 			Assert.That(() =>
 				trackMock.Verify(x => x.UpdateGameNote("[A Deck] Note Text")),
+				Throws.Nothing);
+		}
+
+		[Test]
+		public void DeckSelectedChange_DoesNotWriteToNote_IfSimilarityLessOrEqualThreshold()
+		{
+			viewModel.SelectedDeck = new MatchResult(
+				new ArchetypeDeck("A Deck", Klass.Druid, false),
+				MatchResult.THRESHOLD);
+
+			Assert.That(() =>
+				trackMock.Verify(x => x.UpdateGameNote("[A Deck] Note Text"), Times.Never),
 				Throws.Nothing);
 		}
 
@@ -71,11 +84,12 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		}
 
 		[Test]
-		public void DeckSelectedChange_ReplacesPreviousDeckNote()
+		public void DeckSelectedChange_ReplacesPreviousDeckNote_IfSimilarityAboveThreshold()
 		{
 			viewModel.Note = "[Previous Deck] Other notes";
 			viewModel.SelectedDeck = new MatchResult(
-				new ArchetypeDeck("A Deck", Klass.Druid, false), 0);
+				new ArchetypeDeck("A Deck", Klass.Druid, false),
+				MatchResult.THRESHOLD + 0.1f);
 
 			Assert.That(() =>
 				trackMock.Verify(x => x.UpdateGameNote("[A Deck] Other notes")),
