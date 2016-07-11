@@ -1,0 +1,1 @@
+nunit3-console.exe --noheader --noresult "%~dp0..\EndGameTests\EndGameTests.csproj"

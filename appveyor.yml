@@ -1,0 +1,13 @@
+version: 1.0.{build}
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: w6yF8ULdQfsRMAv7vq3yFZ/d/7ZQSbL0PZUZRHvpszoW5vIDAyQiemXyfcJu6Sp3
+install:
+- ps: .\Scripts\ci_install_hdt.ps1
+before_build:
+- ps: nuget restore
+build:
+  project: EndGame.sln
+  verbosity: minimal
+after_test:
+- ps: .\Scripts\ci_coverage.ps1
