@@ -16,7 +16,7 @@ namespace HDT.Plugins.EndGame.Utilities
 				var num = (float)value;
 				if (num >= 0.03 && num < MatchResult.THRESHOLD)
 					rating = "\ue9d9\ue9d7\ue9d7";
-				else if (num >= 0.1 && num < 0.3)
+				else if (num >= MatchResult.THRESHOLD && num < 0.3)
 					rating = "\ue9d9\ue9d9\ue9d7";
 				else if (num >= 0.3)
 					rating = "\ue9d9\ue9d9\ue9d9";

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using HDT.Plugins.EndGame.Utilities;
+using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker.Plugins;
 using Hearthstone_Deck_Tracker.Utility.Logging;
@@ -59,7 +60,7 @@ namespace HDT.Plugins.EndGame
 		{
 			get
 			{
-				return new Version(0, 3, 0);
+				return new Version(0, 3, 2);
 			}
 		}
 
@@ -70,6 +71,7 @@ namespace HDT.Plugins.EndGame
 
 		public async void OnLoad()
 		{
+			Config.Instance.ShowNoteDialogAfterGame = false;
 			await CheckForUpdate();
 			GameEvents.OnGameEnd.Add(EndGame.Run);
 		}

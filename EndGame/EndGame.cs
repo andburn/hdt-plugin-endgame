@@ -51,7 +51,7 @@ namespace HDT.Plugins.EndGame
 					await WaitUntilInMenu();
 					view.Show();
 				}
-				else if (Settings.Default.ScreenshotEnabled)
+				else if (Settings.Default.ScreenshotEnabled && IsModeEnabledForScreenshots(mode))
 				{
 					var viewModel = new BasicNoteViewModel(screenshots);
 					var view = new BasicNoteView();
