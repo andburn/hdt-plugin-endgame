@@ -10,7 +10,14 @@ namespace HDT.Plugins.EndGame.Views
 		public NoteView()
 		{
 			InitializeComponent();
+			FocusNoteBox();
+		}
+
+		private void FocusNoteBox()
+		{
 			NoteTextBox.Focus();
+			if (!string.IsNullOrEmpty(NoteTextBox.Text))
+				NoteTextBox.CaretIndex = NoteTextBox.Text.Length;
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -26,6 +33,11 @@ namespace HDT.Plugins.EndGame.Views
 				e.Handled = true;
 				Close();
 			}
+		}
+
+		private void NoteTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			FocusNoteBox();
 		}
 	}
 }

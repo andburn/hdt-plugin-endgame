@@ -68,7 +68,8 @@
                      TextWrapping="Wrap"
                      mah:TextBoxHelper.Watermark="Add note text here..."
                      PreviewKeyDown="TextBox_PreviewKeyDown"
-                     Text="{Binding Note}" Style="{StaticResource NoBorder}">
+                     Text="{Binding Note}" Style="{StaticResource NoBorder}"
+                     TextChanged="NoteTextBox_TextChanged">
             </TextBox>
         </GroupBox>
 
