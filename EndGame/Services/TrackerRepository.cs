@@ -95,6 +95,7 @@ namespace HDT.Plugins.EndGame.Services
 			d.Class = deck.Klass.ToString();
 			d.Cards = new ObservableCollection<HDTCard>(deck.Cards.Select(c => Database.GetCardFromId(c.Id)));
 			DeckList.Instance.Decks.Add(d);
+			// doesn't refresh the deck picker view
 		}
 
 		public void AddDeck(string name, string playerClass, string cards, bool archive, params string[] tags)
@@ -103,7 +104,6 @@ namespace HDT.Plugins.EndGame.Services
 			if (deck != null)
 			{
 				deck.Name = name;
-				deck.Archived = archive;
 				if (deck.Class != playerClass)
 					deck.Class = playerClass;
 				if (tags.Any())
@@ -124,8 +124,16 @@ namespace HDT.Plugins.EndGame.Services
 						Core.MainWindow.ReloadTags();
 					}
 				}
+				// hack time!
+				// use MainWindow.ArchiveDeck to update
+				// set deck archive to opposite of desired
+				deck.Archived = !archive;
+				// add and save
 				DeckList.Instance.Decks.Add(deck);
 				DeckList.Save();
+				// now reverse 'archive' of the deck
+				// this should refresh all ui elements
+				Core.MainWindow.ArchiveDeck(deck, archive);
 			}
 		}
 
