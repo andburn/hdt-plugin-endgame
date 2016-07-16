@@ -63,18 +63,6 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		}
 
 		[Test]
-		public void DeckSelectedChange_DoesNotWriteToNote_IfSimilarityLessOrEqualThreshold()
-		{
-			viewModel.SelectedDeck = new MatchResult(
-				new ArchetypeDeck("A Deck", Klass.Druid, false),
-				MatchResult.THRESHOLD);
-
-			Assert.That(() =>
-				trackMock.Verify(x => x.UpdateGameNote("[A Deck] Note Text"), Times.Never),
-				Throws.Nothing);
-		}
-
-		[Test]
 		public void EmptyDeckName_DoesNotChangeNote()
 		{
 			viewModel.SelectedDeck = new MatchResult(

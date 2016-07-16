@@ -10,7 +10,7 @@ $CoverallsPath = Package-Path('coveralls')
 & "$OpenCoverPath\tools\OpenCover.Console.exe" `
     -register:user `
     -target:"$NunitPath\tools\nunit3-console.exe" `
-    -targetargs:"--noheader /domain:single EndGameTests/bin/release/EndGameTests.dll" `
+    -targetargs:"--noheader /domain:single EndGameTests/bin/x86/release/EndGameTests.dll" `
     -filter:"+[EndGame]*" -mergebyhash -skipautoprops `
     -output:"coverage.xml"
 

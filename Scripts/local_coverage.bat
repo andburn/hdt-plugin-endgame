@@ -1,7 +1,7 @@
 OpenCover.Console.exe ^
 -register:user ^
 -target:nunit3-console.exe ^
--targetargs:"--noheader --noresult %~dp0..\EndGameTests\EndGameTests.csproj" ^
+-targetargs:"--noheader --noresult /domain:single %~dp0..\EndGameTests\bin\x86\release\EndGameTests.dll" ^
 -filter:"+[EndGame]*" ^
 -mergebyhash ^
 -skipautoprops ^

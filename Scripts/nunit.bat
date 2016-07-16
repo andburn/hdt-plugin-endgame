@@ -1,1 +1,1 @@
-nunit3-console.exe --noheader --noresult "%~dp0..\EndGameTests\EndGameTests.csproj"
+nunit3-console.exe --noheader --noresult /domain:single "%~dp0..\EndGameTests\bin\x86\release\EndGameTests.dll"
