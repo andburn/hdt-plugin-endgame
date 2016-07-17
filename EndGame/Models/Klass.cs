@@ -18,7 +18,7 @@
 	{
 		public static Klass FromString(string s)
 		{
-			switch (s.ToLowerInvariant())
+			switch (s?.ToLowerInvariant())
 			{
 				case "druid": return Klass.Druid;
 				case "hunter": return Klass.Hunter;
@@ -31,11 +31,6 @@
 				case "warrior": return Klass.Warrior;
 				default: return Klass.Any;
 			}
-		}
-
-		public static string ToString(Klass k)
-		{
-			return k.ToString();
 		}
 	}
 }

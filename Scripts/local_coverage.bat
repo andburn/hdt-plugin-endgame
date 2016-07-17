@@ -8,4 +8,3 @@ OpenCover.Console.exe ^
 -output:"%~dp0..\coverage\opencover.results.xml"
 
 ReportGenerator.exe -reports:"%~dp0..\coverage\opencover.results.xml" -targetdir:"%~dp0..\coverage" -reporttypes:TextSummary;Html
-cat "%~dp0..\coverage\Summary.txt"
