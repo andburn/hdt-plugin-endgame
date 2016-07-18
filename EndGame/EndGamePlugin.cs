@@ -34,7 +34,7 @@ namespace HDT.Plugins.EndGame
 		{
 			get
 			{
-				return "Takes a screenshot of the end game screen.";
+				return "Adds extra functionality to the built-in end of game note window. Including, victory/defeat screenshots and opponent deck archetypes.";
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace HDT.Plugins.EndGame
 		{
 			get
 			{
-				return new Version(0, 3, 2);
+				return new Version(0, 4, 0);
 			}
 		}
 
