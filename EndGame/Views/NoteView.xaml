@@ -13,7 +13,8 @@
         d:DesignWidth="600" d:DesignHeight="400"
         Title="EndGame"
         Topmost="True"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding WindowClosingCommand}">
