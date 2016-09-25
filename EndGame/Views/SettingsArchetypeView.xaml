@@ -37,6 +37,10 @@
                           IsChecked="{Binding Settings.RecordRankedArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckboxRecordArena" Content="Arena"
+                          IsChecked="{Binding Settings.RecordArenaArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl"
                           IsChecked="{Binding Settings.RecordBrawlArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"

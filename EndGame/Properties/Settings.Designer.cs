@@ -347,5 +347,17 @@ namespace HDT.Plugins.EndGame.Properties {
                 this["RemoveClassFromName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RecordArenaArchetypes {
+            get {
+                return ((bool)(this["RecordArenaArchetypes"]));
+            }
+            set {
+                this["RecordArenaArchetypes"] = value;
+            }
+        }
     }
 }

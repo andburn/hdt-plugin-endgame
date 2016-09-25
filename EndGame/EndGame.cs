@@ -165,6 +165,9 @@ namespace HDT.Plugins.EndGame
 				case "friendly":
 					return Settings.Default.RecordFriendlyArchetypes;
 
+				case "arena":
+					return Settings.Default.RecordArenaArchetypes;
+
 				default:
 					return Settings.Default.RecordOtherArchetypes;
 			}
