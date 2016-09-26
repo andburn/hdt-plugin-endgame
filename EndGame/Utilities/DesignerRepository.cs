@@ -41,11 +41,12 @@ namespace HDT.Plugins.EndGame.Utilities
 			bmp.EndInit();
 
 			var deck = new Deck(Klass.Druid, true);
-			deck.Cards = new List<Card>() {
-				new Card("OG_280", "C'thun", 1, new ImageBrush(bmp)),
-				new Card("OG_280", "C'thun", 1, new ImageBrush(bmp)),
-				new Card("OG_280", "C'thun", 1, new ImageBrush(bmp))
-			};
+			// FIXME need to use DrawingBrush
+			//deck.Cards = new List<Card>() {
+			//	new Card("OG_280", "C'thun", 1, new ImageBrush(bmp)),
+			//	new Card("OG_280", "C'thun", 1, new ImageBrush(bmp)),
+			//	new Card("OG_280", "C'thun", 1, new ImageBrush(bmp))
+			//};
 			return deck;
 		}
 
