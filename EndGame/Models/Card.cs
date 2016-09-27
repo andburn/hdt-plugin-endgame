@@ -7,13 +7,13 @@ namespace HDT.Plugins.EndGame.Models
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public int Count { get; set; }
-		public ImageBrush Image { get; set; }
+		public DrawingBrush Image { get; set; }
 
 		public Card()
 		{
 		}
 
-		public Card(string id, string name, int count, ImageBrush image)
+		public Card(string id, string name, int count, DrawingBrush image)
 		{
 			Id = id;
 			Name = name;
