@@ -60,8 +60,8 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hearthstone Deck Tracker">
-      <HintPath>..\..\build\Hearthstone Deck Tracker.exe</HintPath>
+    <Reference Include="HearthstoneDeckTracker">
+      <HintPath>..\..\build\HearthstoneDeckTracker.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MahApps.Metro">

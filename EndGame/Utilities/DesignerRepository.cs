@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -41,12 +42,15 @@ namespace HDT.Plugins.EndGame.Utilities
 			bmp.EndInit();
 
 			var deck = new Deck(Klass.Druid, true);
-			// FIXME need to use DrawingBrush
-			//deck.Cards = new List<Card>() {
-			//	new Card("OG_280", "C'thun", 1, new ImageBrush(bmp)),
-			//	new Card("OG_280", "C'thun", 1, new ImageBrush(bmp)),
-			//	new Card("OG_280", "C'thun", 1, new ImageBrush(bmp))
-			//};
+			var drawingGroup = new DrawingGroup();
+			drawingGroup.Children.Add(new ImageDrawing(bmp, new Rect(0, 0, 217, 34)));
+
+			var img = new DrawingBrush(new DrawingImage(drawingGroup).Drawing;
+			deck.Cards = new List<Card>() {
+				new Card("OG_280", "C'thun", 1, img),
+				new Card("OG_280", "C'thun", 1, img),
+				new Card("OG_280", "C'thun", 1, img)
+			};
 			return deck;
 		}
 
