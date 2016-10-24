@@ -35,7 +35,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			var metaReq = new SnapshotRequest();
 			metaReq.SortOrder = "createdDate DESC";
 			metaReq.SetFields("id", "snapshotType", "isActive");
-			metaReq.SetQuery("isActive:true");
+			metaReq.SetQuery("isActive:true", "snapshotType:standard");
 			metaReq.Includes.Add(new IncludeItem("slugs"));
 			// make the request and deserialize Json result
 			var metaRespJson = await _http.JsonGet(
@@ -45,7 +45,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			if (metaResponse.Error != null)
 				throw new ImportException($"Getting the snapshot slug failed ({metaResponse.Error.Status})");
 			// the slug needed to request the full snapshot (e.g. '2016-06-19')
-			// should be a single item, unless wild is added
+			// only want standard
 			if (metaResponse.Slugs.Count != 1)
 				throw new ImportException("Snapshot slug count greater than one");
 

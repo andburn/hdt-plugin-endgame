@@ -45,7 +45,7 @@ namespace HDT.Plugins.EndGame.Utilities
 			var drawingGroup = new DrawingGroup();
 			drawingGroup.Children.Add(new ImageDrawing(bmp, new Rect(0, 0, 217, 34)));
 
-			var img = new DrawingBrush(new DrawingImage(drawingGroup).Drawing;
+			var img = new DrawingBrush(new DrawingImage(drawingGroup).Drawing);
 			deck.Cards = new List<Card>() {
 				new Card("OG_280", "C'thun", 1, img),
 				new Card("OG_280", "C'thun", 1, img),
