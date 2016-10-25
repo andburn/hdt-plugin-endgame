@@ -16,7 +16,7 @@ namespace HDT.Plugins.EndGame.Views
 		private void FocusNoteBox()
 		{
 			NoteTextBox.Focus();
-			if (!string.IsNullOrEmpty(NoteTextBox.Text))
+			if (!string.IsNullOrEmpty(NoteTextBox.Text) && NoteTextBox.CaretIndex <= 0)
 				NoteTextBox.CaretIndex = NoteTextBox.Text.Length;
 		}
 
