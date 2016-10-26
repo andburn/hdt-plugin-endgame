@@ -60,7 +60,7 @@ namespace HDT.Plugins.EndGame
 		{
 			get
 			{
-				return new Version(0, 4, 1);
+				return new Version(0, 4, 2);
 			}
 		}
 
