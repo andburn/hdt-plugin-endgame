@@ -1,0 +1,6 @@
+HDT.Plugins.Common
+
+group Test
+	NUnit
+	Moq
+	coveralls.io
