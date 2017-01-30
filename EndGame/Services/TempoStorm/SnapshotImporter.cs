@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HDT.Plugins.Common.Services;
 using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
@@ -15,15 +16,15 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		private const string PluginTag = "EndGame";
 
 		private IHttpClient _http;
-		private ITrackerRepository _tracker;
+		private IDataRepository _tracker;
 		private ILoggingService _logger;
 		private JsonSerializerSettings _settings;
 
-		public SnapshotImporter(IHttpClient http, ITrackerRepository tracker)
+		public SnapshotImporter(IHttpClient http, IDataRepository tracker)
 		{
 			_http = http;
 			_tracker = tracker;
-			_logger = new TrackerLogger();
+			_logger = EndGame.Logger;
 			_settings = new JsonSerializerSettings() {
 				NullValueHandling = NullValueHandling.Ignore
 			};

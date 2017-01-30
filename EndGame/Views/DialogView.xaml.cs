@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
-using Hearthstone_Deck_Tracker.Utility.Logging;
 using MahApps.Metro.Controls;
 
 namespace HDT.Plugins.EndGame.Views
@@ -26,7 +25,7 @@ namespace HDT.Plugins.EndGame.Views
 			var match = regex.Match(message);
 			if (match.Success)
 			{
-				Log.Debug("matched: ");
+				EndGame.Logger.Debug("matched: ");
 				MessageText.Inlines.Clear();
 				MessageText.Inlines.Add(match.Groups["pre"].Value);
 				Hyperlink hyperLink = new Hyperlink() {

@@ -7,6 +7,8 @@ nuget HDT.Plugins.Common
 nuget Ookii.Dialogs >= 1.0
 nuget Costura.Fody 1.3.3
 nuget MvvmLightLibs >= 5.3
+nuget Newtonsoft.Json 6.0.8 copy_local: false
+nuget MahApps.Metro 1.1.2.0 copy_local: false
 
 group Test
 	source https://api.nuget.org/v3/index.json

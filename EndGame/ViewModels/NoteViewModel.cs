@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Utilities;
@@ -12,7 +14,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class NoteViewModel : ViewModelBase
 	{
-		private ITrackerRepository _repository;
+		private IDataRepository _repository;
 		private IImageCaptureService _cap;
 		private ILoggingService _log;
 
@@ -55,11 +57,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public RelayCommand WindowClosingCommand { get; private set; }
 
 		public NoteViewModel()
-			: this(new TrackerRepository(), new TrackerLogger(), new TrackerCapture())
+			: this(EndGame.Data, EndGame.Logger, new TrackerCapture())
 		{
 		}
 
-		public NoteViewModel(ITrackerRepository track, ILoggingService logger, IImageCaptureService capture)
+		public NoteViewModel(IDataRepository track, ILoggingService logger, IImageCaptureService capture)
 		{
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
@@ -100,10 +102,13 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 			Cards.Clear();
 			deck.Cards.ForEach(c => Cards.Add(c));
-			PlayerClass = deck.Klass.ToString();
+			PlayerClass = deck.Class.ToString();
 
 			Decks.Clear();
-			var alldecks = _repository.GetAllArchetypeDecks();
+			var alldecks = _repository
+				.GetAllDecksWithTag("archetype")
+				.Select(d => new ArchetypeDeck(d))
+				.ToList();
 			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
 			results.ForEach(r => Decks.Add(r));
 			results.ForEach(r => _log.Info($"{r.Deck.Name} [{r.Similarity}, {r.Containment}]"));

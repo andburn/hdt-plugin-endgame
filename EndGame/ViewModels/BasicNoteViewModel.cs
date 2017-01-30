@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Utilities;
@@ -11,7 +12,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class BasicNoteViewModel : ViewModelBase
 	{
-		private ITrackerRepository _repository;
+		private IDataRepository _repository;
 		private IImageCaptureService _cap;
 		private ILoggingService _log;
 
@@ -44,11 +45,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public RelayCommand WindowClosingCommand { get; private set; }
 
 		public BasicNoteViewModel()
-			: this(new TrackerRepository(), new TrackerLogger(), new TrackerCapture())
+			: this(EndGame.Data, EndGame.Logger, new TrackerCapture())
 		{
 		}
 
-		public BasicNoteViewModel(ITrackerRepository track, ILoggingService logger, IImageCaptureService capture)
+		public BasicNoteViewModel(IDataRepository track, ILoggingService logger, IImageCaptureService capture)
 		{
 			HasScreenshots = false;
 

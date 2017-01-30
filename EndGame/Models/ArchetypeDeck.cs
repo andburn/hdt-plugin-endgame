@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Linq;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Util;
 
 namespace HDT.Plugins.EndGame.Models
 {
 	public class ArchetypeDeck : Deck
 	{
-		public string Name { get; set; }
-
 		public ArchetypeDeck()
 			: base()
 		{
 		}
 
-		public ArchetypeDeck(string name, Klass klass, bool standard)
+		public ArchetypeDeck(string name, PlayerClass klass, bool standard)
 			: base(klass, standard)
 		{
 			Name = name;
+		}
+
+		public ArchetypeDeck(Deck d)
+			: base(d)
+		{
 		}
 
 		/// <summary>

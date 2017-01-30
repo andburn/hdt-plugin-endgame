@@ -1,49 +1,106 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using HDT.Plugins.Common.Controls.SlidePanels;
+using HDT.Plugins.Common.Plugin;
+using HDT.Plugins.Common.Providers;
+using HDT.Plugins.Common.Services;
+using HDT.Plugins.Common.Settings;
 using HDT.Plugins.EndGame.Models;
-using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
 using HDT.Plugins.EndGame.ViewModels;
 using HDT.Plugins.EndGame.Views;
-using Hearthstone_Deck_Tracker.API;
-using Hearthstone_Deck_Tracker.Utility.Logging;
 using MahApps.Metro.Controls;
 
 namespace HDT.Plugins.EndGame
 {
-	public class EndGame
+	[Name("End Game")]
+	[Description("Adds extra functionality to the built-in end of game note window. Including, victory/defeat screenshots and opponent deck archetypes.")]
+	public class EndGame : PluginBase
 	{
+		public static readonly IUpdateService Updater;
+		public static readonly ILoggingService Logger;
+		public static readonly IDataRepository Data;
+		public static readonly IEventsService Events;
+		public static readonly IGameClientService Client;
+		public static readonly IConfigurationRepository Config;
+		public static readonly Settings Settings;
+
+		private MenuItem _menuItem;
+
 		private static Flyout _settingsFlyout;
 		private static Flyout _notificationFlyout;
 		private static IImageCaptureService _capture;
-		private static ITrackerRepository _repository;
 
 		static EndGame()
 		{
+			// initialize services
+			Updater = ServiceFactory.CreateUpdateService();
+			Logger = ServiceFactory.CreateLoggingService();
+			Data = ServiceFactory.CreateDataRepository();
+			Events = ServiceFactory.CreateEventService();
+			Client = ServiceFactory.CreateGameClientService();
+			Config = ServiceFactory.CreateConfigRepository();
+			// load settings
+			var assembly = Assembly.GetExecutingAssembly();
+			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
+			Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
+			// other
 			_capture = new TrackerCapture();
-			_repository = new TrackerRepository();
 			_notificationFlyout = CreateDialogFlyout();
 			_settingsFlyout = CreateSettingsFlyout();
+		}
+
+		public override MenuItem MenuItem
+		{
+			get { return _menuItem; }
+		}
+
+		private void CreatePluginMenu()
+		{
+			PluginMenu pm = new PluginMenu("End Game", "pie-chart");
+			_menuItem = pm.Menu;
+		}
+
+		public override void OnButtonPress()
+		{
+			EndGame.ShowSettings();
+		}
+
+		public override async void OnLoad()
+		{
+			// FIXME
+			//Config.Set("ShowNoteDialogAfterGame", false);
+			await UpdateCheck("EndGame", "hdt-plugin-endgame");
+			Events.OnGameEnd(EndGame.Run);
+		}
+
+		public override void OnUnload()
+		{
+			EndGame.CloseOpenNoteWindows();
+			EndGame.CloseSettings();
+			EndGame.CloseNotification();
 		}
 
 		public async static void Run()
 		{
 			try
 			{
-				var mode = _repository.GetGameMode();
+				var mode = Data.GetGameMode();
 
 				// close any already open note windows
 				CloseOpenNoteWindows();
-
+				
 				// take the screenshots
 				var screenshots = await Capture(mode);
 				// check what features are enabled
-				if (Settings.Default.ArchetypesEnabled && IsModeEnabledForArchetypes(mode))
+				if (Settings.Get("Archetypes", "ArchetypesEnabled").Bool && IsModeEnabledForArchetypes(mode))
 				{
 					var viewModel = new NoteViewModel(screenshots);
 					var view = new NoteView();
@@ -51,7 +108,7 @@ namespace HDT.Plugins.EndGame
 					await WaitUntilInMenu();
 					view.Show();
 				}
-				else if (Settings.Default.ScreenshotEnabled && IsModeEnabledForScreenshots(mode))
+				else if (Settings.Get("ScreenShot", "ScreenshotEnabled").Bool && IsModeEnabledForScreenshots(mode))
 				{
 					var viewModel = new BasicNoteViewModel(screenshots);
 					var view = new BasicNoteView();
@@ -63,7 +120,7 @@ namespace HDT.Plugins.EndGame
 			}
 			catch (Exception e)
 			{
-				Log.Error(e);
+				Logger.Error(e);
 				Notify("EndGame Error", e.Message, 15, "error", null);
 			}
 		}
@@ -97,15 +154,9 @@ namespace HDT.Plugins.EndGame
 
 		public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
 		{
-			if (_notificationFlyout == null)
-				_notificationFlyout = CreateDialogFlyout();
-			var view = new DialogView(_notificationFlyout, title, message, autoClose);
-			if (!string.IsNullOrEmpty(icon))
-			{
-				view.SetUtilityButton(action, icon);
-			}
-			_notificationFlyout.Content = view;
-			_notificationFlyout.IsOpen = true;
+			SlidePanelManager
+				.Notification(title, message, icon, action)
+				.AutoClose(autoClose);
 		}
 
 		public static async Task ImportMetaDecks()
@@ -113,16 +164,16 @@ namespace HDT.Plugins.EndGame
 			try
 			{
 				IArchetypeImporter importer =
-					new SnapshotImporter(new HttpClient(), new TrackerRepository());
+					new SnapshotImporter(new HttpClient(), Data);
 				var count = await importer.ImportDecks(
-					Settings.Default.AutoArchiveArchetypes,
-					Settings.Default.DeletePreviouslyImported,
-					Settings.Default.RemoveClassFromName);
+					Settings.Get("Archetypes", "AutoArchiveArchetypes").Bool,
+					Settings.Get("Archetypes", "DeletePreviouslyImported").Bool,
+					Settings.Get("Archetypes", "RemoveClassFromName").Bool);
 				Notify("Import Complete", $"{count} decks imported", 10);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e);
+				Logger.Error(e);
 				Notify("Import Failed", e.Message, 15, "error", null);
 			}
 		}
@@ -132,18 +183,18 @@ namespace HDT.Plugins.EndGame
 			ObservableCollection<Screenshot> screenshots = null;
 			try
 			{
-				if (Settings.Default.ScreenshotEnabled && IsModeEnabledForScreenshots(mode))
+				if (Settings.Get("ScreenShot", "ScreenshotEnabled").Bool && IsModeEnabledForScreenshots(mode))
 				{
 					screenshots = await _capture.CaptureSequence(
-						Settings.Default.Delay,
-						Settings.Default.OutputDir,
-						Settings.Default.NumberOfImages,
-						Settings.Default.DelayBetweenShots);
+						Settings.Get("ScreenShot", "Delay").Int,
+						Settings.Get("ScreenShot", "OutputDir"),
+						Settings.Get("ScreenShot", "NumberOfImages").Int,
+						Settings.Get("ScreenShot", "DelayBetweenShots").Int);
 				}
 			}
 			catch (Exception e)
 			{
-				Log.Error(e);
+				Logger.Error(e);
 				Notify("Screen Capture Failed", e.Message, 15, "error", null);
 			}
 			return screenshots;
@@ -154,22 +205,22 @@ namespace HDT.Plugins.EndGame
 			switch (mode.ToLowerInvariant())
 			{
 				case "ranked":
-					return Settings.Default.RecordRankedArchetypes;
+					return Settings.Get("Archetypes", "RecordRankedArchetypes").Bool;
 
 				case "casual":
-					return Settings.Default.RecordCasualArchetypes;
+					return Settings.Get("Archetypes", "RecordCasualArchetypes").Bool;
 
 				case "brawl":
-					return Settings.Default.RecordBrawlArchetypes;
+					return Settings.Get("Archetypes", "RecordBrawlArchetypes").Bool;
 
 				case "friendly":
-					return Settings.Default.RecordFriendlyArchetypes;
+					return Settings.Get("Archetypes", "RecordFriendlyArchetypes").Bool;
 
 				case "arena":
-					return Settings.Default.RecordArenaArchetypes;
+					return Settings.Get("Archetypes", "RecordArenaArchetypes").Bool;
 
 				default:
-					return Settings.Default.RecordOtherArchetypes;
+					return Settings.Get("Archetypes", "RecordOtherArchetypes").Bool;
 			}
 		}
 
@@ -178,26 +229,26 @@ namespace HDT.Plugins.EndGame
 			switch (mode.ToLowerInvariant())
 			{
 				case "ranked":
-					return Settings.Default.RecordRanked;
+					return Settings.Get("ScreenShot", "RecordRanked").Bool;
 
 				case "casual":
-					return Settings.Default.RecordCasual;
+					return Settings.Get("ScreenShot", "RecordCasual").Bool;
 
 				case "arena":
-					return Settings.Default.RecordArena;
+					return Settings.Get("ScreenShot", "RecordArena").Bool;
 
 				case "brawl":
-					return Settings.Default.RecordBrawl;
+					return Settings.Get("ScreenShot", "RecordBrawl").Bool;
 
 				case "friendly":
-					return Settings.Default.RecordFriendly;
+					return Settings.Get("ScreenShot", "RecordFriendly").Bool;
 
 				case "practice":
-					return Settings.Default.RecordPractice;
+					return Settings.Get("ScreenShot", "RecordPractice").Bool;
 
 				case "spectator":
 				case "none":
-					return Settings.Default.RecordOther;
+					return Settings.Get("ScreenShot", "RecordOther").Bool;
 
 				default:
 					return false;
@@ -209,7 +260,7 @@ namespace HDT.Plugins.EndGame
 			var timeout = 30000;
 			var wait = 1000;
 			var elapsed = 0;
-			while (!_repository.IsInMenu())
+			while (!Client.IsInMenu())
 			{
 				await Task.Delay(wait);
 				elapsed += wait;
@@ -226,7 +277,8 @@ namespace HDT.Plugins.EndGame
 			Panel.SetZIndex(settings, 100);
 			settings.Header = "End Game Settings";
 			settings.Content = new SettingsView();
-			Core.MainWindow.Flyouts.Items.Add(settings);
+			var metroWindow = Client.MainWindow() as MetroWindow;
+			metroWindow.Flyouts.Items.Add(settings);
 			return settings;
 		}
 
@@ -241,8 +293,33 @@ namespace HDT.Plugins.EndGame
 			dialog.IsPinned = false;
 			dialog.Height = 50;
 			Panel.SetZIndex(dialog, 1000);
-			Core.MainWindow.Flyouts.Items.Add(dialog);
+			var metroWindow = Client.MainWindow() as MetroWindow;
+			metroWindow.Flyouts.Items.Add(dialog);
 			return dialog;
+		}
+
+		private async Task UpdateCheck(string name, string repo)
+		{
+			var uri = new Uri($"https://api.github.com/repos/andburn/{repo}/releases");
+			Logger.Debug("update uri = " + uri);
+			try
+			{
+				var latest = await Updater.CheckForUpdate(uri, Version);
+				if (latest.HasUpdate)
+				{
+					Logger.Info($"Plugin Update available ({latest.Version})");
+					SlidePanelManager
+						.Notification("Plugin Update Available",
+							$"[DOWNLOAD]({latest.DownloadUrl}) {name} v{latest.Version}",
+							"download3",
+							() => Process.Start(latest.DownloadUrl))
+						.AutoClose(10);
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.Error(e);
+			}
 		}
 	}
 }

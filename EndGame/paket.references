@@ -2,3 +2,5 @@ HDT.Plugins.Common
 Ookii.Dialogs
 MvvmLightLibs
 Costura.Fody
+Newtonsoft.Json
+MahApps.Metro

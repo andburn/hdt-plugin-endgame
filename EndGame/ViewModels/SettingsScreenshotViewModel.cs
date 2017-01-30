@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Utilities;
-using Microsoft.WindowsAPICodePack.Dialogs;
+using Ookii.Dialogs.Wpf;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -41,36 +41,40 @@ namespace HDT.Plugins.EndGame.ViewModels
 		}
 
 		private void ChooseOuputDir()
-		{
-			var dialog = new CommonOpenFileDialog();
-			dialog.IsFolderPicker = true;
-			if (Directory.Exists(Settings.OutputDir))
-				dialog.DefaultDirectory = Settings.OutputDir;
+		{			
+			VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+			dialog.Description = "Select a folder";
+			dialog.UseDescriptionForTitle = true;
 
-			CommonFileDialogResult result = dialog.ShowDialog();
-			if (result == CommonFileDialogResult.Ok)
-				Settings.OutputDir = dialog.FileName;
+			// TODO set initial directory to setting if exists
+			// var current = EndGame.Settings.Get("ScreenShot", "OutputDir");
+			//if (Directory.Exists(current))
+			//	dialog.RootFolder = current;
+
+			if ((bool)dialog.ShowDialog())
+				EndGame.Settings.Set("ScreenShot", "OutputDir", dialog.SelectedPath);
 		}
 
-		private string OpenBrowseDialog(bool folderSelect = false, string filter = null)
-		{
-			var dialog = new CommonOpenFileDialog();
-			dialog.IsFolderPicker = folderSelect;
+		// TODO where was this suppose to be used?
+		//private string OpenBrowseDialog(bool folderSelect = false, string filter = null)
+		//{
+		//	var dialog = new CommonOpenFileDialog();
+		//	dialog.IsFolderPicker = folderSelect;
 
-			if (!string.IsNullOrEmpty(filter))
-			{
-				var fs = filter.Split(new char[] { ';' }, 2);
-				if (fs.Length >= 2)
-					dialog.Filters.Add(new CommonFileDialogFilter(fs[0], fs[1]));
-			}
+		//	if (!string.IsNullOrEmpty(filter))
+		//	{
+		//		var fs = filter.Split(new char[] { ';' }, 2);
+		//		if (fs.Length >= 2)
+		//			dialog.Filters.Add(new CommonFileDialogFilter(fs[0], fs[1]));
+		//	}
 
-			CommonFileDialogResult result = dialog.ShowDialog();
+		//	CommonFileDialogResult result = dialog.ShowDialog();
 
-			if (result == CommonFileDialogResult.Ok)
-				return dialog.FileName;
-			else
-				return null;
-		}
+		//	if (result == CommonFileDialogResult.Ok)
+		//		return dialog.FileName;
+		//	else
+		//		return null;
+		//}
 
 		private void UpdatePattern(string x)
 		{

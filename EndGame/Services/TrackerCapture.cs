@@ -9,10 +9,6 @@ using System.Threading.Tasks;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Utilities;
-using Hearthstone_Deck_Tracker;
-using Hearthstone_Deck_Tracker.Utility;
-using Hearthstone_Deck_Tracker.Utility.Logging;
-using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
 
 namespace HDT.Plugins.EndGame.Services
 {
@@ -20,7 +16,7 @@ namespace HDT.Plugins.EndGame.Services
 	{
 		public async Task<ObservableCollection<Screenshot>> CaptureSequence(int delaySeconds, string dir, int num, int delayBetween)
 		{
-			Log.Info($"Capture Screen @ {delaySeconds}s then {delayBetween}ms");
+			EndGame.Logger.Info($"Capture Screen @ {delaySeconds}s then {delayBetween}ms");
 
 			List<Screenshot> screenshots = new List<Screenshot>();
 
@@ -35,7 +31,7 @@ namespace HDT.Plugins.EndGame.Services
 				{
 					var thumb = img.ResizeImage();
 					screenshots.Add(new Screenshot(img, thumb.ToMediaImage(), i + 1));
-					Log.Debug($"Saving image #{i}");
+					EndGame.Logger.Debug($"Saving image #{i}");
 				}
 				await Task.Delay(delayBetween);
 			}
@@ -46,8 +42,7 @@ namespace HDT.Plugins.EndGame.Services
 
 		private static async Task<Bitmap> CaptureScreenShot()
 		{
-			var rect = Helper.GetHearthstoneRect(true);
-			return await ScreenCapture.CaptureHearthstoneAsync(new Point(0, 0), rect.Width, rect.Height, altScreenCapture: true);
+			return await EndGame.Client.GameScreenshot(true);
 		}
 
 		public async Task SaveImage(Screenshot screenshot)
@@ -57,20 +52,21 @@ namespace HDT.Plugins.EndGame.Services
 				var dir = Settings.Default.OutputDir;
 				if (!Directory.Exists(dir))
 				{
-					Log.Info($"Output dir does not exist ({dir}), using desktop");
+					EndGame.Logger.Info($"Output dir does not exist ({dir}), using desktop");
 					dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 				}
 				var filename = DateTime.Now.ToString("dd.MM.yyyy_HH.mm");
 
-				var stats = CoreAPI.Game?.CurrentGameStats;
-				if (stats != null)
+				var gameInfo = EndGame.Client.CurrentGameInfo();
+				if (gameInfo.Length != 4)
 				{
 					// save with game details
 					var pattern = Settings.Default.FileNamePattern;
 					NamingPattern np = null;
 					if (!NamingPattern.TryParse(pattern, out np))
-						Log.Info("Invalid file name pattern, using default");
-					filename = np.Apply(stats.PlayerHero, stats.OpponentHero, stats.PlayerName, stats.OpponentName);
+						EndGame.Logger.Info("Invalid file name pattern, using default");
+					// TODO a cleaner way here
+					filename = np.Apply(gameInfo[0], gameInfo[1], gameInfo[2], gameInfo[3]);
 				}
 				await SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
 			}
@@ -82,7 +78,7 @@ namespace HDT.Plugins.EndGame.Services
 
 		private static async Task SaveAsPng(Bitmap bmp, string file)
 		{
-			Log.Info($"Saving screenshot to '{file}'");
+			EndGame.Logger.Info($"Saving screenshot to '{file}'");
 			await Task.Run(() => bmp.Save(file + ".png", ImageFormat.Png));
 		}
 	}
