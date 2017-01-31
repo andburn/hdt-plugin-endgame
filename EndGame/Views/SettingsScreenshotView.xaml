@@ -14,7 +14,7 @@
                 <DockPanel Margin="0,4,0,4">
                     <Label Content="Delay (s)" Width="100" />
                     <TextBox x:Name="TextBox_Delay"
-                             Text="{Binding Settings.Delay}"
+                             Text="{Binding Delay}"
                              ToolTip="Set the delay from game end detection to taking screenshot, in seconds" />
                 </DockPanel>
                 <DockPanel Margin="0,4,0,4">
@@ -28,7 +28,7 @@
                             Margin="0,0,5,0"
                             Maximum="10"
                             Minimum="1"
-                            Value="{Binding Settings.NumberOfImages}"
+                            Value="{Binding NumberOfImages}"
                             TickPlacement="BottomRight"
                             TickFrequency="1"
                             IsSnapToTickEnabled="True"
@@ -37,7 +37,7 @@
                 <DockPanel Margin="0,4,0,4">
                     <Label Content="Spacing (ms)" Width="100" />
                     <TextBox x:Name="TextBox_DelayBetween"
-                             Text="{Binding Settings.DelayBetweenShots}"
+                             Text="{Binding DelayBetweenShots}"
                              ToolTip="Set the time spacing between each screenshot, in milliseconds" />
                 </DockPanel>
                 <Button Content="Set Output Directory"
@@ -48,7 +48,7 @@
         </GroupBox>
         <GroupBox x:Name="FileNameGroup" Header="FILENAME PATTERN">
             <StackPanel Margin="4,3,4,2">
-                <TextBox x:Name="PatternTextBox" Text="{Binding Settings.FileNamePattern}" MaxWidth="240">
+                <TextBox x:Name="PatternTextBox" Text="{Binding FileNamePattern}" MaxWidth="240">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="TextChanged">
                             <i:InvokeCommandAction
@@ -70,31 +70,31 @@
         <GroupBox x:Name="ModeGroup" Header="GAME MODES">
             <StackPanel>
                 <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked"
-                          IsChecked="{Binding Settings.RecordRanked}"
+                          IsChecked="{Binding RecordRanked}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordArena" Content="Arena"
-                          IsChecked="{Binding Settings.RecordArena}"
+                          IsChecked="{Binding RecordArena}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl"
-                          IsChecked="{Binding Settings.RecordBrawl}"
+                          IsChecked="{Binding RecordBrawl}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordCasual" Content="Casual"
-                          IsChecked="{Binding Settings.RecordCasual}"
+                          IsChecked="{Binding RecordCasual}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordFriendly" Content="Friendly"
-                          IsChecked="{Binding Settings.RecordFriendly}"
+                          IsChecked="{Binding RecordFriendly}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordPractice" Content="Practice"
-                          IsChecked="{Binding Settings.RecordPractice}"
+                          IsChecked="{Binding RecordPractice}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordOther" Content="Other"
-                          IsChecked="{Binding Settings.RecordOther}"
+                          IsChecked="{Binding RecordOther}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
             </StackPanel>

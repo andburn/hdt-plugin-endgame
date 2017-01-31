@@ -28,7 +28,7 @@ namespace HDT.Plugins.EndGame.Views
 
 		private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Enter && Settings.Default.CloseNoteWithEnter)
+			if (e.Key == Key.Enter && EndGame.Settings.Get("ScreenShot", "CloseNoteWithEnter").Bool)
 			{
 				e.Handled = true;
 				Close();

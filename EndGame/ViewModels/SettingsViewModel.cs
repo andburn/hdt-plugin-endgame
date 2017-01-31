@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using HDT.Plugins.EndGame.Properties;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -21,19 +20,36 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => ArchetypeSettings, ref _archetypeSettings, value); }
 		}
 
-		private Settings _settings;
-
-		public Settings Settings
+		public bool ArchetypesEnabled
 		{
-			get { return _settings; }
-			set { Set(() => Settings, ref _settings, value); }
+			get
+			{
+				return EndGame.Settings.Get("Archetypes", "ArchetypesEnabled").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("Archetypes", "ArchetypesEnabled", value);
+				RaisePropertyChanged("ArchetypesEnabled");
+			}
+		}
+
+		public bool ScreenshotEnabled
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "ScreenshotEnabled").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "ScreenshotEnabled", value);
+				RaisePropertyChanged("ScreenshotEnabled");
+			}
 		}
 
 		public SettingsViewModel()
 		{
 			ScreenshotSettings = new SettingsScreenshotViewModel();
 			ArchetypeSettings = new SettingsArchetypeViewModel();
-			Settings = Settings.Default;
 		}
 	}
 }

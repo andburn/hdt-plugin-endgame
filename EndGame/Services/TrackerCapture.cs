@@ -49,7 +49,7 @@ namespace HDT.Plugins.EndGame.Services
 		{
 			if (screenshot != null)
 			{
-				var dir = Settings.Default.OutputDir;
+				var dir = EndGame.Settings.Get("Archetypes", "OutputDir").ToString();
 				if (!Directory.Exists(dir))
 				{
 					EndGame.Logger.Info($"Output dir does not exist ({dir}), using desktop");
@@ -61,7 +61,7 @@ namespace HDT.Plugins.EndGame.Services
 				if (gameInfo.Length != 4)
 				{
 					// save with game details
-					var pattern = Settings.Default.FileNamePattern;
+					var pattern = EndGame.Settings.Get("ScreenShot", "FileNamePattern").ToString();
 					NamingPattern np = null;
 					if (!NamingPattern.TryParse(pattern, out np))
 						EndGame.Logger.Info("Invalid file name pattern, using default");

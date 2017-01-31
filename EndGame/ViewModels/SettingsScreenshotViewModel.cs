@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using HDT.Plugins.Common.Settings;
 using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Utilities;
 using Ookii.Dialogs.Wpf;
@@ -9,12 +10,241 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class SettingsScreenshotViewModel : ViewModelBase
 	{
-		private Settings _settings;
-
-		public Settings Settings
+		public string OutputDir
 		{
-			get { return _settings; }
-			set { Set(() => Settings, ref _settings, value); }
+			get
+			{
+				return EndGame.Settings.Get("OutputDir").ToString();
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "OutputDir", value);
+				RaisePropertyChanged("OutputDir");
+			}
+		}
+
+
+		public int Delay
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "Delay").Int;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "Delay", value);
+				RaisePropertyChanged("Delay");
+			}
+		}
+
+
+		public bool UseAdvancedShot
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "UseAdvancedShot").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "UseAdvancedShot", value);
+				RaisePropertyChanged("UseAdvancedShot");
+			}
+		}
+
+
+		public int NumberOfImages
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "NumberOfImages").Int;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "NumberOfImages", value);
+				RaisePropertyChanged("NumberOfImages");
+			}
+		}
+
+
+		public bool WasNoteDialogOn
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "WasNoteDialogOn").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "WasNoteDialogOn", value);
+				RaisePropertyChanged("WasNoteDialogOn");
+			}
+		}
+
+
+		public bool WasNoteDialogDelayed
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "WasNoteDialogDelayed").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "WasNoteDialogDelayed", value);
+				RaisePropertyChanged("WasNoteDialogDelayed");
+			}
+		}
+
+
+		public bool WasNoteEnterChecked
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "WasNoteEnterChecked").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "WasNoteEnterChecked", value);
+				RaisePropertyChanged("WasNoteEnterChecked");
+			}
+		}
+
+
+		public int DelayBetweenShots
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "DelayBetweenShots").Int;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "DelayBetweenShots", value);
+				RaisePropertyChanged("DelayBetweenShots");
+			}
+		}
+
+
+		public bool RecordArena
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordArena").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordArena", value);
+				RaisePropertyChanged("RecordArena");
+			}
+		}
+
+
+		public bool RecordBrawl
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordBrawl").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordBrawl", value);
+				RaisePropertyChanged("RecordBrawl");
+			}
+		}
+
+
+		public bool RecordCasual
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordCasual").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordCasual", value);
+				RaisePropertyChanged("RecordCasual");
+			}
+		}
+
+
+		public bool RecordFriendly
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordFriendly").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordFriendly", value);
+				RaisePropertyChanged("RecordFriendly");
+			}
+		}
+
+
+		public bool RecordOther
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordOther").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordOther", value);
+				RaisePropertyChanged("RecordOther");
+			}
+		}
+
+
+		public bool RecordPractice
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordPractice").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordPractice", value);
+				RaisePropertyChanged("RecordPractice");
+			}
+		}
+
+
+		public bool RecordRanked
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "RecordRanked").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "RecordRanked", value);
+				RaisePropertyChanged("RecordRanked");
+			}
+		}
+
+
+		public string FileNamePattern
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "FileNamePattern").ToString();
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "FileNamePattern", value);
+				RaisePropertyChanged("FileNamePattern");
+			}
+		}
+
+
+		public bool ScreenshotEnabled
+		{
+			get
+			{
+				return EndGame.Settings.Get("ScreenShot", "ScreenshotEnabled").Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set("ScreenShot", "ScreenshotEnabled", value);
+				RaisePropertyChanged("ScreenshotEnabled");
+			}
 		}
 
 		private string _patternPreview;
@@ -30,11 +260,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public SettingsScreenshotViewModel()
 		{
-			Settings = Settings.Default;
-
-			Settings.PropertyChanged += Settings_PropertyChanged;
-
-			UpdatePattern(Settings.FileNamePattern);
+			UpdatePattern(FileNamePattern);
 
 			PatternChangedCommand = new RelayCommand<string>(x => UpdatePattern(x));
 			ChooseDirCommand = new RelayCommand(() => ChooseOuputDir());
@@ -84,11 +310,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				PatternPreview = np.Apply("Mage", "Druid", "Player", "Opponent");
 			else
 				PatternPreview = "the pattern is invalid";
-		}
-
-		private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			Settings.Save();
 		}
 	}
 }

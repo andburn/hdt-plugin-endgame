@@ -10,22 +10,22 @@
         <GroupBox Header="Options">
             <StackPanel>
                 <CheckBox Content="Auto archive decks"
-                          IsChecked="{Binding Settings.AutoArchiveArchetypes}"
+                          IsChecked="{Binding AutoArchiveArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Auto archive all archetype decks imported by the plugin." />
                 <CheckBox Content="Remove class from deck name"
-                          IsChecked="{Binding Settings.RemoveClassFromName}"
+                          IsChecked="{Binding RemoveClassFromName}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Remove the class from deck names imported by the plugin." />
                 <CheckBox Content="Delete previously imported decks"
-                          IsChecked="{Binding Settings.DeletePreviouslyImported}"
+                          IsChecked="{Binding DeletePreviouslyImported}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Delete any previously imported archetype decks before importing again." />
                 <CheckBox Content="Close note with enter"
-                          IsChecked="{Binding Settings.CloseNoteWithEnter}"
+                          IsChecked="{Binding CloseNoteWithEnter}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Close the note dialog when enter is pressed in the text box." />
@@ -34,27 +34,27 @@
         <GroupBox x:Name="ModeGroup" Header="GAME MODES" ToolTip="Game modes for which archetypes will be enabled">
             <StackPanel>
                 <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked"
-                          IsChecked="{Binding Settings.RecordRankedArchetypes}"
+                          IsChecked="{Binding RecordRankedArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordArena" Content="Arena"
-                          IsChecked="{Binding Settings.RecordArenaArchetypes}"
+                          IsChecked="{Binding RecordArenaArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl"
-                          IsChecked="{Binding Settings.RecordBrawlArchetypes}"
+                          IsChecked="{Binding RecordBrawlArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordCasual" Content="Casual"
-                          IsChecked="{Binding Settings.RecordCasualArchetypes}"
+                          IsChecked="{Binding RecordCasualArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordFriendly" Content="Friendly"
-                          IsChecked="{Binding Settings.RecordFriendlyArchetypes}"
+                          IsChecked="{Binding RecordFriendlyArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
                 <CheckBox x:Name="CheckboxRecordOther" Content="Other"
-                          IsChecked="{Binding Settings.RecordOtherArchetypes}"
+                          IsChecked="{Binding RecordOtherArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
             </StackPanel>

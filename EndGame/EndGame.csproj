@@ -84,11 +84,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Utilities\DesignerRepository.cs" />
     <Compile Include="Services\HttpClient.cs" />
     <Compile Include="Services\IArchetypeImporter.cs" />
@@ -103,7 +98,6 @@
     <Compile Include="Services\TempoStorm\Include.cs" />
     <Compile Include="Services\TempoStorm\SnapshotRequest.cs" />
     <Compile Include="Services\TrackerCapture.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="Utilities\MatchResultToStarRatingConverter.cs" />
     <Compile Include="Utilities\NamingPattern.cs" />
     <Compile Include="ViewModels\BasicNoteViewModel.cs" />
@@ -169,10 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <EmbeddedResource Include="Resources\Default.ini" />
     <Resource Include="Resources\icomoon-min.ttf" />
   </ItemGroup>

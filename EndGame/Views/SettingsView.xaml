@@ -25,20 +25,20 @@
             <StackPanel>
                 <mah:ToggleSwitch OnLabel="Enabled" OffLabel="Disabled"
                                   Margin="20,4"
-                                  IsChecked="{Binding Settings.ScreenshotEnabled}"
+                                  IsChecked="{Binding ScreenshotEnabled}"
                                   ToolTip="Enable/Disable end game screen capture functionality" />
                 <ContentControl Content="{Binding ScreenshotSettings}"
-                                Visibility="{Binding Settings.ScreenshotEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+                                Visibility="{Binding ScreenshotEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
             </StackPanel>
         </TabItem>
         <TabItem Header="Archetypes">
             <StackPanel>
                 <mah:ToggleSwitch OnLabel="Enabled" OffLabel="Disabled"
                                   Margin="20,4"
-                                  IsChecked="{Binding Settings.ArchetypesEnabled}"
+                                  IsChecked="{Binding ArchetypesEnabled}"
                                   ToolTip="Enable/Disable end game screen capture functionality" />
                 <ContentControl Content="{Binding ArchetypeSettings}"
-                                Visibility="{Binding Settings.ArchetypesEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+                                Visibility="{Binding ArchetypesEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
             </StackPanel>
         </TabItem>
     </TabControl>
