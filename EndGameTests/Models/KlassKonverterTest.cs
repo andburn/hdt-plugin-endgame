@@ -1,5 +1,6 @@
-﻿using HDT.Plugins.EndGame.Models;
+﻿using HDT.Plugins.Common.Util;
 using NUnit.Framework;
+using static HDT.Plugins.Common.Util.EnumConverter;
 
 namespace HDT.Plugins.EndGame.Tests.Models
 {
@@ -9,68 +10,68 @@ namespace HDT.Plugins.EndGame.Tests.Models
 		[Test]
 		public void NullOrEmptyString_Should_Be_Any()
 		{
-			Assert.AreEqual(Klass.Any, KlassKonverter.FromString(string.Empty));
-			Assert.AreEqual(Klass.Any, KlassKonverter.FromString(null));
+			Assert.AreEqual(PlayerClass.ALL, ConvertHeroClass(string.Empty));
+			Assert.AreEqual(PlayerClass.ALL, ConvertHeroClass(null));
 		}
 
 		[Test]
 		public void Druid_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Druid, KlassKonverter.FromString("Druid"));
+			Assert.AreEqual(PlayerClass.DRUID, ConvertHeroClass("Druid"));
 		}
 
 		[Test]
 		public void Hunter_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Hunter, KlassKonverter.FromString("Hunter"));
+			Assert.AreEqual(PlayerClass.HUNTER, ConvertHeroClass("Hunter"));
 		}
 
 		[Test]
 		public void Mage_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Mage, KlassKonverter.FromString("Mage"));
+			Assert.AreEqual(PlayerClass.MAGE, ConvertHeroClass("Mage"));
 		}
 
 		[Test]
 		public void Paladin_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Paladin, KlassKonverter.FromString("Paladin"));
+			Assert.AreEqual(PlayerClass.PALADIN, ConvertHeroClass("Paladin"));
 		}
 
 		[Test]
 		public void Priest_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Priest, KlassKonverter.FromString("Priest"));
+			Assert.AreEqual(PlayerClass.PRIEST, ConvertHeroClass("Priest"));
 		}
 
 		[Test]
 		public void Rogue_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Rogue, KlassKonverter.FromString("Rogue"));
+			Assert.AreEqual(PlayerClass.ROGUE, ConvertHeroClass("Rogue"));
 		}
 
 		[Test]
 		public void Shaman_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Shaman, KlassKonverter.FromString("Shaman"));
+			Assert.AreEqual(PlayerClass.SHAMAN, ConvertHeroClass("Shaman"));
 		}
 
 		[Test]
 		public void Warlockn_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Warlock, KlassKonverter.FromString("Warlock"));
+			Assert.AreEqual(PlayerClass.WARLOCK, ConvertHeroClass("Warlock"));
 		}
 
 		[Test]
 		public void Warrior_Should_Be_Correct()
 		{
-			Assert.AreEqual(Klass.Warrior, KlassKonverter.FromString("Warrior"));
+			Assert.AreEqual(PlayerClass.WARRIOR, ConvertHeroClass("Warrior"));
 		}
 
 		[Test]
 		public void NonKlass_Should_Be_Any()
 		{
-			Assert.AreEqual(Klass.Any, KlassKonverter.FromString("Random String"));
+			Assert.AreEqual(PlayerClass.ALL, ConvertHeroClass("Random String"));
 		}
 	}
 }

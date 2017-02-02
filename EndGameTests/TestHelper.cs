@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Models;
 
 namespace HDT.Plugins.EndGame.Tests
@@ -25,20 +27,20 @@ namespace HDT.Plugins.EndGame.Tests
 			return list;
 		}
 
-		internal static Deck CreateDeck(Klass klass, bool standard, string str)
+		internal static Deck CreateDeck(PlayerClass klass, bool standard, string str)
 		{
 			var deck = new Deck();
-			deck.Klass = klass;
+			deck.Class = klass;
 			deck.IsStandard = standard;
 			deck.Cards = CreateCards(str);
 			return deck;
 		}
 
-		internal static ArchetypeDeck CreateDeck(string name, Klass klass, bool standard, string str)
+		internal static ArchetypeDeck CreateDeck(string name, PlayerClass klass, bool standard, string str)
 		{
 			var deck = new ArchetypeDeck();
 			deck.Name = name;
-			deck.Klass = klass;
+			deck.Class = klass;
 			deck.IsStandard = standard;
 			deck.Cards = CreateCards(str);
 			return deck;

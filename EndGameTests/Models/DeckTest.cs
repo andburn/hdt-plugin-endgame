@@ -1,4 +1,5 @@
-﻿using HDT.Plugins.EndGame.Models;
+﻿using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Util;
 using NUnit.Framework;
 
 namespace HDT.Plugins.EndGame.Tests.Models
@@ -76,7 +77,7 @@ namespace HDT.Plugins.EndGame.Tests.Models
 		[Test]
 		public void SimilarityOfZeroCount()
 		{
-			var deck = TestHelper.CreateDeck(Klass.Any, false, "NT_001:0");
+			var deck = TestHelper.CreateDeck(PlayerClass.ALL, false, "NT_001:0");
 			Assert.AreEqual(0, deck.Similarity(_deck4));
 		}
 	}

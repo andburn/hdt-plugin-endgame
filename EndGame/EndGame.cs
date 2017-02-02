@@ -59,12 +59,17 @@ namespace HDT.Plugins.EndGame
 
 		public override MenuItem MenuItem
 		{
-			get { return _menuItem; }
+			get
+			{
+				if (_menuItem == null)
+					CreatePluginMenu();
+				return _menuItem;
+			}
 		}
 
 		private void CreatePluginMenu()
 		{
-			PluginMenu pm = new PluginMenu("End Game", "pie-chart");
+			PluginMenu pm = new PluginMenu("End Game", "trophy");
 			_menuItem = pm.Menu;
 		}
 
@@ -75,8 +80,14 @@ namespace HDT.Plugins.EndGame
 
 		public override async void OnLoad()
 		{
-			// FIXME
-			//Config.Set("ShowNoteDialogAfterGame", false);
+			try
+			{
+				Config.Set("ShowNoteDialogAfterGame", false);
+			}
+			catch(Exception e)
+			{
+				Logger.Error(e);
+			}
 			await UpdateCheck("EndGame", "hdt-plugin-endgame");
 			Events.OnGameEnd(EndGame.Run);
 		}
@@ -96,7 +107,7 @@ namespace HDT.Plugins.EndGame
 
 				// close any already open note windows
 				CloseOpenNoteWindows();
-				
+
 				// take the screenshots
 				var screenshots = await Capture(mode);
 				// check what features are enabled
@@ -164,7 +175,7 @@ namespace HDT.Plugins.EndGame
 			try
 			{
 				IArchetypeImporter importer =
-					new SnapshotImporter(new HttpClient(), Data);
+					new SnapshotImporter(new HttpClient(), Data, EndGame.Logger);
 				var count = await importer.ImportDecks(
 					Settings.Get("Archetypes", "AutoArchiveArchetypes").Bool,
 					Settings.Get("Archetypes", "DeletePreviouslyImported").Bool,

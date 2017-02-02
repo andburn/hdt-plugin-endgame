@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.ViewModels;
@@ -12,7 +13,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 	public class BasicNoteViewModelTest
 	{
 		private BasicNoteViewModel viewModel;
-		private Mock<ITrackerRepository> trackMock;
+		private Mock<IDataRepository> trackMock;
 		private Mock<ILoggingService> logMock;
 		private Mock<IImageCaptureService> capMock;
 
@@ -21,7 +22,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		{
 			logMock = new Mock<ILoggingService>();
 			capMock = new Mock<IImageCaptureService>();
-			trackMock = new Mock<ITrackerRepository>();
+			trackMock = new Mock<IDataRepository>();
 
 			trackMock.Setup(x => x.GetGameNote()).Returns("Note Text");
 

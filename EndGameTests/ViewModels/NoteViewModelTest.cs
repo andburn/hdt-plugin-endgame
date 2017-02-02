@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
+using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.ViewModels;
@@ -13,23 +16,23 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 	public class NoteViewModelTest
 	{
 		private NoteViewModel viewModel;
-		private Mock<ITrackerRepository> trackMock;
+		private Mock<IDataRepository> trackMock;
 		private Mock<ILoggingService> logMock;
 		private Mock<IImageCaptureService> capMock;
 
 		[SetUp]
 		public void TestSetup()
 		{
-			var deck = new Deck(Klass.Druid, true);
+			var deck = new Deck(PlayerClass.DRUID, true);
 			deck.Cards = new List<Card>();
 
 			logMock = new Mock<ILoggingService>();
 			capMock = new Mock<IImageCaptureService>();
-			trackMock = new Mock<ITrackerRepository>();
+			trackMock = new Mock<IDataRepository>();
 
 			trackMock.Setup(x => x.GetGameNote()).Returns("Note Text");
 			trackMock.Setup(x => x.GetOpponentDeck()).Returns(deck);
-			trackMock.Setup(x => x.GetAllArchetypeDecks()).Returns(new List<ArchetypeDeck>());
+			trackMock.Setup(x => x.GetAllDecksWithTag("archetype")).Returns(new List<Deck>());
 
 			viewModel = new NoteViewModel(trackMock.Object, logMock.Object, capMock.Object);
 		}
@@ -54,7 +57,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void DeckSelectedChange_WritesToNote_IfSimilarityAboveThreshold()
 		{
 			viewModel.SelectedDeck = new MatchResult(
-				new ArchetypeDeck("A Deck", Klass.Druid, false),
+				new ArchetypeDeck("A Deck", PlayerClass.DRUID, false),
 				MatchResult.THRESHOLD + 0.1f);
 
 			Assert.That(() =>
@@ -66,7 +69,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void EmptyDeckName_DoesNotChangeNote()
 		{
 			viewModel.SelectedDeck = new MatchResult(
-				new ArchetypeDeck("", Klass.Druid, false), 0);
+				new ArchetypeDeck("", PlayerClass.DRUID, false), 0);
 
 			Assert.That(viewModel.Note, Is.EqualTo("Note Text"));
 		}
@@ -76,7 +79,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		{
 			viewModel.Note = "[Previous Deck] Other notes";
 			viewModel.SelectedDeck = new MatchResult(
-				new ArchetypeDeck("A Deck", Klass.Druid, false),
+				new ArchetypeDeck("A Deck", PlayerClass.DRUID, false),
 				MatchResult.THRESHOLD + 0.1f);
 
 			Assert.That(() =>

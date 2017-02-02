@@ -20,11 +20,11 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		private ILoggingService _logger;
 		private JsonSerializerSettings _settings;
 
-		public SnapshotImporter(IHttpClient http, IDataRepository tracker)
+		public SnapshotImporter(IHttpClient http, IDataRepository tracker, ILoggingService logger)
 		{
 			_http = http;
 			_tracker = tracker;
-			_logger = EndGame.Logger;
+			_logger = logger;
 			_settings = new JsonSerializerSettings() {
 				NullValueHandling = NullValueHandling.Ignore
 			};

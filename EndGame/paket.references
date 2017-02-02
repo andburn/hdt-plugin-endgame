@@ -2,5 +2,5 @@ HDT.Plugins.Common
 Ookii.Dialogs
 MvvmLightLibs
 Costura.Fody
-Newtonsoft.Json
-MahApps.Metro
+Newtonsoft.Json copy_local: false
+MahApps.Metro copy_local: false

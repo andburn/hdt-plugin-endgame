@@ -1,4 +1,6 @@
 HDT.Plugins.Common
+Newtonsoft.Json
+MvvmLightLibs
 
 group Test
 	NUnit
