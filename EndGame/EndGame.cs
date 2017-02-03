@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Controls.SlidePanels;
 using HDT.Plugins.Common.Plugin;
 using HDT.Plugins.Common.Providers;
@@ -41,12 +42,13 @@ namespace HDT.Plugins.EndGame
 		static EndGame()
 		{
 			// initialize services
-			Updater = ServiceFactory.CreateUpdateService();
-			Logger = ServiceFactory.CreateLoggingService();
-			Data = ServiceFactory.CreateDataRepository();
-			Events = ServiceFactory.CreateEventService();
-			Client = ServiceFactory.CreateGameClientService();
-			Config = ServiceFactory.CreateConfigRepository();
+			var resolver = Injector.Instance.Container;
+			Updater = resolver.GetInstance<IUpdateService>();
+			Logger = resolver.GetInstance<ILoggingService>();
+			Data = resolver.GetInstance<IDataRepository>();
+			Events = resolver.GetInstance<IEventsService>();
+			Client = resolver.GetInstance<IGameClientService>();
+			Config = resolver.GetInstance<IConfigurationRepository>();
 			// load settings
 			var assembly = Assembly.GetExecutingAssembly();
 			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
@@ -62,15 +64,19 @@ namespace HDT.Plugins.EndGame
 			get
 			{
 				if (_menuItem == null)
-					CreatePluginMenu();
+					_menuItem = CreatePluginMenu();
 				return _menuItem;
 			}
 		}
 
-		private void CreatePluginMenu()
+		private MenuItem CreatePluginMenu()
 		{
-			PluginMenu pm = new PluginMenu("End Game", "trophy");
-			_menuItem = pm.Menu;
+			var pm = new PluginMenu("End Game", "trophy");
+			pm.Append("Import Meta Decks", 
+				new RelayCommand(async () => await ImportMetaDecks()));
+			pm.Append("Settings", 
+				new RelayCommand(() => ShowSettings()));
+			return pm.Menu;
 		}
 
 		public override void OnButtonPress()
@@ -96,7 +102,6 @@ namespace HDT.Plugins.EndGame
 		{
 			EndGame.CloseOpenNoteWindows();
 			EndGame.CloseSettings();
-			EndGame.CloseNotification();
 		}
 
 		public async static void Run()
@@ -157,12 +162,6 @@ namespace HDT.Plugins.EndGame
 				_settingsFlyout.IsOpen = false;
 		}
 
-		public static void CloseNotification()
-		{
-			if (_notificationFlyout != null)
-				_notificationFlyout.IsOpen = false;
-		}
-
 		public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
 		{
 			SlidePanelManager
@@ -174,8 +173,7 @@ namespace HDT.Plugins.EndGame
 		{
 			try
 			{
-				IArchetypeImporter importer =
-					new SnapshotImporter(new HttpClient(), Data, EndGame.Logger);
+				IArchetypeImporter importer = new SnapshotImporter(new HttpClient(), Data, Logger);
 				var count = await importer.ImportDecks(
 					Settings.Get("Archetypes", "AutoArchiveArchetypes").Bool,
 					Settings.Get("Archetypes", "DeletePreviouslyImported").Bool,

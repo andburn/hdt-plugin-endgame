@@ -11,6 +11,7 @@ NUGET
       CommonServiceLocator (>= 1.3)
     Newtonsoft.Json (6.0.8)
     Ookii.Dialogs (1.0)
+    SimpleInjector (3.3.2)
   remote: paket-files/github.com/andburn/hdt-plugin-common/Common.NuPkg
     HDT.Plugins.Common (0.1.0.0)
       ini-parser (>= 2.3)

@@ -2,5 +2,6 @@ HDT.Plugins.Common
 Ookii.Dialogs
 MvvmLightLibs
 Costura.Fody
+SimpleInjector
 Newtonsoft.Json copy_local: false
 MahApps.Metro copy_local: false
