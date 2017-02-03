@@ -44,6 +44,7 @@
                         Margin="0,10,0,4"
                         Command="{Binding ChooseDirCommand}"
                         ToolTip="Set the default ouput directory for saved screenshots" />
+                <TextBlock Text="{Binding OutputDir}" MaxWidth="180"/>
             </StackPanel>
         </GroupBox>
         <GroupBox x:Name="FileNameGroup" Header="FILENAME PATTERN">

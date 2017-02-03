@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HDT.Plugins.Common.Settings;
-using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Utilities;
 using Ookii.Dialogs.Wpf;
 
@@ -14,7 +12,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			get
 			{
-				return EndGame.Settings.Get("OutputDir").ToString();
+				return EndGame.Settings.Get("ScreenShot", "OutputDir").Value;
 			}
 			set
 			{
@@ -22,7 +20,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("OutputDir");
 			}
 		}
-
 
 		public int Delay
 		{
@@ -37,7 +34,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool UseAdvancedShot
 		{
 			get
@@ -50,7 +46,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("UseAdvancedShot");
 			}
 		}
-
 
 		public int NumberOfImages
 		{
@@ -65,7 +60,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool WasNoteDialogOn
 		{
 			get
@@ -78,7 +72,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("WasNoteDialogOn");
 			}
 		}
-
 
 		public bool WasNoteDialogDelayed
 		{
@@ -93,7 +86,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool WasNoteEnterChecked
 		{
 			get
@@ -106,7 +98,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("WasNoteEnterChecked");
 			}
 		}
-
 
 		public int DelayBetweenShots
 		{
@@ -121,7 +112,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool RecordArena
 		{
 			get
@@ -134,7 +124,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("RecordArena");
 			}
 		}
-
 
 		public bool RecordBrawl
 		{
@@ -149,7 +138,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool RecordCasual
 		{
 			get
@@ -162,7 +150,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("RecordCasual");
 			}
 		}
-
 
 		public bool RecordFriendly
 		{
@@ -177,7 +164,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool RecordOther
 		{
 			get
@@ -190,7 +176,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("RecordOther");
 			}
 		}
-
 
 		public bool RecordPractice
 		{
@@ -205,7 +190,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool RecordRanked
 		{
 			get
@@ -219,12 +203,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public string FileNamePattern
 		{
 			get
 			{
-				return EndGame.Settings.Get("ScreenShot", "FileNamePattern").ToString();
+				return EndGame.Settings.Get("ScreenShot", "FileNamePattern").Value;
 			}
 			set
 			{
@@ -232,7 +215,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				RaisePropertyChanged("FileNamePattern");
 			}
 		}
-
 
 		public bool ScreenshotEnabled
 		{
@@ -267,40 +249,22 @@ namespace HDT.Plugins.EndGame.ViewModels
 		}
 
 		private void ChooseOuputDir()
-		{			
+		{
 			VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
 			dialog.Description = "Select a folder";
 			dialog.UseDescriptionForTitle = true;
 
-			// TODO set initial directory to setting if exists
-			// var current = EndGame.Settings.Get("ScreenShot", "OutputDir");
-			//if (Directory.Exists(current))
-			//	dialog.RootFolder = current;
+			// set initial directory to setting if exists
+			var current = EndGame.Settings.Get("ScreenShot", "OutputDir").Value;
+			if (Directory.Exists(current))
+				dialog.SelectedPath = current;
 
 			if ((bool)dialog.ShowDialog())
+			{
 				EndGame.Settings.Set("ScreenShot", "OutputDir", dialog.SelectedPath);
+				RaisePropertyChanged("OutputDir");
+			}
 		}
-
-		// TODO where was this suppose to be used?
-		//private string OpenBrowseDialog(bool folderSelect = false, string filter = null)
-		//{
-		//	var dialog = new CommonOpenFileDialog();
-		//	dialog.IsFolderPicker = folderSelect;
-
-		//	if (!string.IsNullOrEmpty(filter))
-		//	{
-		//		var fs = filter.Split(new char[] { ';' }, 2);
-		//		if (fs.Length >= 2)
-		//			dialog.Filters.Add(new CommonFileDialogFilter(fs[0], fs[1]));
-		//	}
-
-		//	CommonFileDialogResult result = dialog.ShowDialog();
-
-		//	if (result == CommonFileDialogResult.Ok)
-		//		return dialog.FileName;
-		//	else
-		//		return null;
-		//}
 
 		private void UpdatePattern(string x)
 		{
