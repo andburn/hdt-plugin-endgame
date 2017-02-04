@@ -49,7 +49,7 @@ namespace HDT.Plugins.EndGame.Services
 		{
 			if (screenshot != null)
 			{
-				var dir = EndGame.Settings.Get("Archetypes", "OutputDir").ToString();
+				var dir = EndGame.Settings.Get("ScreenShot", "OutputDir").Value;
 				if (!Directory.Exists(dir))
 				{
 					EndGame.Logger.Info($"Output dir does not exist ({dir}), using desktop");
@@ -58,7 +58,8 @@ namespace HDT.Plugins.EndGame.Services
 				var filename = DateTime.Now.ToString("dd.MM.yyyy_HH.mm");
 
 				var gameInfo = EndGame.Client.CurrentGameInfo();
-				if (gameInfo.Length != 4)
+				EndGame.Logger.Info("gameInfo: " + gameInfo);
+				if (gameInfo.Length == 4)
 				{
 					// save with game details
 					var pattern = EndGame.Settings.Get("ScreenShot", "FileNamePattern").ToString();

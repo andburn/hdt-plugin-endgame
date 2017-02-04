@@ -25,15 +25,15 @@ namespace HDT.Plugins.EndGame
 	[Description("Adds extra functionality to the built-in end of game note window. Including, victory/defeat screenshots and opponent deck archetypes.")]
 	public class EndGame : PluginBase
 	{
+		public const string ARCHETYPE_TAG = "Archetype";
+
 		public static readonly IUpdateService Updater;
 		public static readonly ILoggingService Logger;
 		public static readonly IDataRepository Data;
 		public static readonly IEventsService Events;
 		public static readonly IGameClientService Client;
 		public static readonly IConfigurationRepository Config;
-		public static readonly Settings Settings;
-
-		private MenuItem _menuItem;
+		public static readonly Settings Settings;		
 
 		private static Flyout _settingsFlyout;
 		private static Flyout _notificationFlyout;
@@ -59,6 +59,13 @@ namespace HDT.Plugins.EndGame
 			_settingsFlyout = CreateSettingsFlyout();
 		}
 
+		public EndGame()
+			: base(Assembly.GetExecutingAssembly())
+		{
+		}
+
+		private MenuItem _menuItem;
+
 		public override MenuItem MenuItem
 		{
 			get
@@ -81,27 +88,30 @@ namespace HDT.Plugins.EndGame
 
 		public override void OnButtonPress()
 		{
-			EndGame.ShowSettings();
+			ShowSettings();
 		}
 
 		public override async void OnLoad()
 		{
 			try
 			{
+				// disable the built in note dialog
 				Config.Set("ShowNoteDialogAfterGame", false);
 			}
 			catch(Exception e)
 			{
 				Logger.Error(e);
 			}
+			// check for plugin update
 			await UpdateCheck("EndGame", "hdt-plugin-endgame");
-			Events.OnGameEnd(EndGame.Run);
+			// set the action to run on the game end event
+			Events.OnGameEnd(Run);
 		}
 
 		public override void OnUnload()
 		{
-			EndGame.CloseOpenNoteWindows();
-			EndGame.CloseSettings();
+			CloseOpenNoteWindows();
+			CloseSettings();
 		}
 
 		public async static void Run()
@@ -109,10 +119,8 @@ namespace HDT.Plugins.EndGame
 			try
 			{
 				var mode = Data.GetGameMode();
-
 				// close any already open note windows
 				CloseOpenNoteWindows();
-
 				// take the screenshots
 				var screenshots = await Capture(mode);
 				// check what features are enabled

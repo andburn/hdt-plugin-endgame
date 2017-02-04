@@ -106,7 +106,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 			Decks.Clear();
 			var alldecks = _repository
-				.GetAllDecksWithTag("archetype")
+				.GetAllDecksWithTag(EndGame.ARCHETYPE_TAG)
 				.Select(d => new ArchetypeDeck(d))
 				.ToList();
 			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
