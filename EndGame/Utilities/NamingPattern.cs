@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace HDT.Plugins.EndGame.Utilities
@@ -35,12 +36,18 @@ namespace HDT.Plugins.EndGame.Utilities
 				var tokens = match.Groups[3].Captures;
 				var strings = match.Groups[4].Captures;
 
-				// TODO: check tokens.count == strings.count
-				for (int i = 0; i < tokens.Count; i++)
+				if (tokens.Count == strings.Count)
 				{
-					list.Add(tokens[i].Value);
-					if (!String.IsNullOrEmpty(strings[i].Value))
-						list.Add(strings[i].Value);
+					for (int i = 0; i < tokens.Count; i++)
+					{
+						list.Add(tokens[i].Value);
+						if (!String.IsNullOrEmpty(strings[i].Value))
+							list.Add(strings[i].Value);
+					}
+				}
+				else
+				{
+					EndGame.Logger.Error("NamingPattern parse error: tokens and strings don't match");
 				}
 			}
 			return list;
@@ -63,36 +70,36 @@ namespace HDT.Plugins.EndGame.Utilities
 
 		public string Apply(string playerClass, string oppClass, string playerName, string oppName)
 		{
-			var name = "";
+			var name = new StringBuilder();
 			foreach (var token in Pattern)
 			{
 				var tokenLower = token.ToLower();
 				if (tokenLower == "{playerclass}")
 				{
-					name += playerClass;
+					name.Append(playerClass);
 				}
 				else if (tokenLower == "{opponentclass}")
 				{
-					name += oppClass;
+					name.Append(oppClass);
 				}
 				else if (tokenLower == "{playername}")
 				{
-					name += playerName;
+					name.Append(playerName);
 				}
 				else if (tokenLower == "{opponentname}")
 				{
-					name += oppName;
+					name.Append(oppName);
 				}
 				else if (tokenLower.Contains("{date:"))
 				{
-					name += ParseDate(token);
+					name.Append(ParseDate(token));
 				}
 				else
 				{
-					name += token;
+					name.Append(token);
 				}
 			}
-			return name;
+			return name.ToString();
 		}
 
 		private string ParseDate(string format)

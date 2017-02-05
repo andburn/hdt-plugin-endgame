@@ -58,18 +58,18 @@ namespace HDT.Plugins.EndGame.Services
 				var filename = DateTime.Now.ToString("dd.MM.yyyy_HH.mm");
 
 				var gameInfo = EndGame.Client.CurrentGameInfo();
-				EndGame.Logger.Info("gameInfo: " + gameInfo);
 				if (gameInfo.Length == 4)
 				{
 					// save with game details
-					var pattern = EndGame.Settings.Get("ScreenShot", "FileNamePattern").ToString();
+					var pattern = EndGame.Settings.Get("ScreenShot", "FileNamePattern").Value;					
 					NamingPattern np = null;
 					if (!NamingPattern.TryParse(pattern, out np))
 						EndGame.Logger.Info("Invalid file name pattern, using default");
 					// TODO a cleaner way here
 					filename = np.Apply(gameInfo[0], gameInfo[1], gameInfo[2], gameInfo[3]);
-				}
-				await SaveAsPng(screenshot.Full, Path.Combine(dir, filename));
+				}				
+				var fn = Path.Combine(dir, filename + ".png");
+				await SaveAsPng(screenshot.Full, fn);
 			}
 			else
 			{
