@@ -5,6 +5,7 @@ using HDT.Plugins.EndGame.Models;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using Hearthstone_Deck_Tracker.Utility.Logging;
+using Hearthstone_Deck_Tracker.Importing;
 using HDTCard = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using HDTDeck = Hearthstone_Deck_Tracker.Hearthstone.Deck;
 
@@ -100,7 +101,7 @@ namespace HDT.Plugins.EndGame.Services
 
 		public void AddDeck(string name, string playerClass, string cards, bool archive, params string[] tags)
 		{
-			var deck = Helper.ParseCardString(cards);
+			var deck = StringImporter.Import(cards);
 			if (deck != null)
 			{
 				deck.Name = name;
