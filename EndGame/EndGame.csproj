@@ -71,10 +71,8 @@
     <Compile Include="EndGame.cs" />
     <Compile Include="MergedTrigger.cs" />
     <Compile Include="Models\MatchResult.cs" />
-    <Compile Include="Utilities\DesignerData.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Models\ArchetypeDeck.cs" />
-    <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -86,7 +84,6 @@
     <Compile Include="Services\IArchetypeImporter.cs" />
     <Compile Include="Services\IHttpClient.cs" />
     <Compile Include="EndGameExceptions.cs" />
-    <Compile Include="Services\IImageCaptureService.cs" />
     <Compile Include="Services\TempoStorm\DeckSnapshot.cs" />
     <Compile Include="Services\TempoStorm\Error.cs" />
     <Compile Include="Services\TempoStorm\Slugs.cs" />
@@ -94,26 +91,13 @@
     <Compile Include="Services\TempoStorm\SnapshotImporter.cs" />
     <Compile Include="Services\TempoStorm\Include.cs" />
     <Compile Include="Services\TempoStorm\SnapshotRequest.cs" />
-    <Compile Include="Services\TrackerCapture.cs" />
     <Compile Include="Utilities\MatchResultToStarRatingConverter.cs" />
-    <Compile Include="Utilities\NamingPattern.cs" />
-    <Compile Include="ViewModels\BasicNoteViewModel.cs" />
+    <Compile Include="Utilities\Strings.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
-    <Compile Include="ViewModels\SettingsArchetypeViewModel.cs" />
-    <Compile Include="ViewModels\SettingsScreenshotViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelHelper.cs" />
-    <Compile Include="Views\BasicNoteView.xaml.cs">
-      <DependentUpon>BasicNoteView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NoteView.xaml.cs">
       <DependentUpon>NoteView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsArchetypeView.xaml.cs">
-      <DependentUpon>SettingsArchetypeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsScreenshotView.xaml.cs">
-      <DependentUpon>SettingsScreenshotView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -126,19 +110,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\BasicNoteView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\NoteView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsArchetypeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsScreenshotView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\card_sample.bmp" />
-    <Resource Include="Resources\thumb_sample.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>

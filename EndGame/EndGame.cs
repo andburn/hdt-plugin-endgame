@@ -15,6 +15,7 @@ using HDT.Plugins.Common.Settings;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
+using HDT.Plugins.EndGame.Utilities;
 using HDT.Plugins.EndGame.ViewModels;
 using HDT.Plugins.EndGame.Views;
 using MahApps.Metro.Controls;
@@ -25,8 +26,6 @@ namespace HDT.Plugins.EndGame
 	[Description("Adds extra functionality to the built-in end of game note window. Including, victory/defeat screenshots and opponent deck archetypes.")]
 	public class EndGame : PluginBase
 	{
-		public const string ARCHETYPE_TAG = "Archetype";
-
 		public static readonly IUpdateService Updater;
 		public static readonly ILoggingService Logger;
 		public static readonly IDataRepository Data;
@@ -37,7 +36,6 @@ namespace HDT.Plugins.EndGame
 
 		private static Flyout _settingsFlyout;
 		private static Flyout _notificationFlyout;
-		private static IImageCaptureService _capture;
 
 		static EndGame()
 		{
@@ -54,7 +52,6 @@ namespace HDT.Plugins.EndGame
 			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
 			Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
 			// other
-			_capture = new TrackerCapture();
 			_notificationFlyout = CreateDialogFlyout();
 			_settingsFlyout = CreateSettingsFlyout();
 		}
@@ -121,26 +118,15 @@ namespace HDT.Plugins.EndGame
 				var mode = Data.GetGameMode();
 				// close any already open note windows
 				CloseOpenNoteWindows();
-				// take the screenshots
-				var screenshots = await Capture(mode);
 				// check what features are enabled
-				if (Settings.Get("Archetypes", "ArchetypesEnabled").Bool && IsModeEnabledForArchetypes(mode))
+				if (IsModeEnabledForArchetypes(mode))
 				{
-					var viewModel = new NoteViewModel(screenshots);
+					var viewModel = new NoteViewModel();
 					var view = new NoteView();
 					view.DataContext = viewModel;
 					await WaitUntilInMenu();
 					view.Show();
 				}
-				else if (Settings.Get("ScreenShot", "ScreenshotEnabled").Bool && IsModeEnabledForScreenshots(mode))
-				{
-					var viewModel = new BasicNoteViewModel(screenshots);
-					var view = new BasicNoteView();
-					view.DataContext = viewModel;
-					await WaitUntilInMenu();
-					view.Show();
-				}
-				// else both disabled, do nothing
 			}
 			catch (Exception e)
 			{
@@ -152,8 +138,6 @@ namespace HDT.Plugins.EndGame
 		public static void CloseOpenNoteWindows()
 		{
 			foreach (var x in Application.Current.Windows.OfType<NoteView>())
-				x.Close();
-			foreach (var x in Application.Current.Windows.OfType<BasicNoteView>())
 				x.Close();
 		}
 
@@ -183,9 +167,9 @@ namespace HDT.Plugins.EndGame
 			{
 				IArchetypeImporter importer = new SnapshotImporter(new HttpClient(), Data, Logger);
 				var count = await importer.ImportDecks(
-					Settings.Get("Archetypes", "AutoArchiveArchetypes").Bool,
-					Settings.Get("Archetypes", "DeletePreviouslyImported").Bool,
-					Settings.Get("Archetypes", "RemoveClassFromName").Bool);
+					Settings.Get(Strings.AutoArchiveArchetypes).Bool,
+					Settings.Get(Strings.DeletePreviouslyImported).Bool,
+					Settings.Get(Strings.RemoveClassFromName).Bool);
 				Notify("Import Complete", $"{count} decks imported", 10);
 			}
 			catch (Exception e)
@@ -195,80 +179,27 @@ namespace HDT.Plugins.EndGame
 			}
 		}
 
-		private static async Task<ObservableCollection<Screenshot>> Capture(string mode)
-		{
-			ObservableCollection<Screenshot> screenshots = null;
-			try
-			{
-				if (Settings.Get("ScreenShot", "ScreenshotEnabled").Bool && IsModeEnabledForScreenshots(mode))
-				{
-					screenshots = await _capture.CaptureSequence(
-						Settings.Get("ScreenShot", "Delay").Int,
-						Settings.Get("ScreenShot", "OutputDir"),
-						Settings.Get("ScreenShot", "NumberOfImages").Int,
-						Settings.Get("ScreenShot", "DelayBetweenShots").Int);
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.Error(e);
-				Notify("Screen Capture Failed", e.Message, 15, "error", null);
-			}
-			return screenshots;
-		}
-
 		private static bool IsModeEnabledForArchetypes(string mode)
 		{
 			switch (mode.ToLowerInvariant())
 			{
 				case "ranked":
-					return Settings.Get("Archetypes", "RecordRankedArchetypes").Bool;
+					return Settings.Get(Strings.RecordRankedArchetypes).Bool;
 
 				case "casual":
-					return Settings.Get("Archetypes", "RecordCasualArchetypes").Bool;
+					return Settings.Get(Strings.RecordCasualArchetypes).Bool;
 
 				case "brawl":
-					return Settings.Get("Archetypes", "RecordBrawlArchetypes").Bool;
+					return Settings.Get(Strings.RecordBrawlArchetypes).Bool;
 
 				case "friendly":
-					return Settings.Get("Archetypes", "RecordFriendlyArchetypes").Bool;
+					return Settings.Get(Strings.RecordFriendlyArchetypes).Bool;
 
 				case "arena":
-					return Settings.Get("Archetypes", "RecordArenaArchetypes").Bool;
+					return Settings.Get(Strings.RecordArenaArchetypes).Bool;
 
 				default:
-					return Settings.Get("Archetypes", "RecordOtherArchetypes").Bool;
-			}
-		}
-
-		private static bool IsModeEnabledForScreenshots(string mode)
-		{
-			switch (mode.ToLowerInvariant())
-			{
-				case "ranked":
-					return Settings.Get("ScreenShot", "RecordRanked").Bool;
-
-				case "casual":
-					return Settings.Get("ScreenShot", "RecordCasual").Bool;
-
-				case "arena":
-					return Settings.Get("ScreenShot", "RecordArena").Bool;
-
-				case "brawl":
-					return Settings.Get("ScreenShot", "RecordBrawl").Bool;
-
-				case "friendly":
-					return Settings.Get("ScreenShot", "RecordFriendly").Bool;
-
-				case "practice":
-					return Settings.Get("ScreenShot", "RecordPractice").Bool;
-
-				case "spectator":
-				case "none":
-					return Settings.Get("ScreenShot", "RecordOther").Bool;
-
-				default:
-					return false;
+					return Settings.Get(Strings.RecordOtherArchetypes).Bool;
 			}
 		}
 

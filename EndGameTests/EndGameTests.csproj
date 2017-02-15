@@ -76,12 +76,10 @@
     <Compile Include="Models\ArchetypeDeckTest.cs" />
     <Compile Include="Models\CardTest.cs" />
     <Compile Include="Models\DeckTest.cs" />
-    <Compile Include="Models\KlassKonverterTest.cs" />
     <Compile Include="Models\MatchResultTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TempoStormImporterTest.cs" />
     <Compile Include="TestHelper.cs" />
-    <Compile Include="ViewModels\BasicNoteViewModelTest.cs" />
     <Compile Include="ViewModels\NoteViewModelTest.cs" />
     <Compile Include="ViewModels\ViewModelHelperTest.cs" />
   </ItemGroup>

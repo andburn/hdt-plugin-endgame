@@ -15,12 +15,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 	public class NoteViewModel : ViewModelBase
 	{
 		private IDataRepository _repository;
-		private IImageCaptureService _cap;
 		private ILoggingService _log;
 
 		public ObservableCollection<Card> Cards { get; set; }
 		public ObservableCollection<MatchResult> Decks { get; set; }
-		public ObservableCollection<Screenshot> Screenshots { get; set; }
 
 		private string _note;
 
@@ -57,11 +55,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public RelayCommand WindowClosingCommand { get; private set; }
 
 		public NoteViewModel()
-			: this(EndGame.Data, EndGame.Logger, new TrackerCapture())
+			: this(EndGame.Data, EndGame.Logger)
 		{
 		}
 
-		public NoteViewModel(IDataRepository track, ILoggingService logger, IImageCaptureService capture)
+		public NoteViewModel(IDataRepository track, ILoggingService logger)
 		{
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
@@ -70,14 +68,12 @@ namespace HDT.Plugins.EndGame.ViewModels
 			if (IsInDesignMode)
 			{
 				_repository = new DesignerRepository();
-				Screenshots = DesignerData.GenerateScreenshots();
 				HasScreenshots = true;
 			}
 			else
 			{
 				_repository = track;
 			}
-			_cap = capture;
 			_log = logger;
 
 			PropertyChanged += NoteViewModel_PropertyChanged;
@@ -85,13 +81,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			WindowClosingCommand = new RelayCommand(() => Closing());
 
 			Update();
-		}
-
-		public NoteViewModel(ObservableCollection<Screenshot> screenshots)
-			: this()
-		{
-			Screenshots = screenshots;
-			HasScreenshots = Screenshots != null && Screenshots.Any();
 		}
 
 		private void Update()
@@ -106,7 +95,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 			Decks.Clear();
 			var alldecks = _repository
-				.GetAllDecksWithTag(EndGame.ARCHETYPE_TAG)
+				.GetAllDecksWithTag(Strings.ArchetypeTag)
 				.Select(d => new ArchetypeDeck(d))
 				.ToList();
 			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
@@ -128,23 +117,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		private void Closing()
 		{
-			var screenshot = Screenshots?.FirstOrDefault(s => s.IsSelected);
-			if (screenshot != null)
-			{
-				_log.Debug($"Attempting to save screenshot #{screenshot.Index}");
-				try
-				{
-					_cap.SaveImage(screenshot);
-				}
-				catch (Exception e)
-				{
-					_log.Error(e.Message);
-				}
-			}
-			else
-			{
-				_log.Debug($"No screenshot selected (len={Screenshots?.Count})");
-			}
+			// TODO remove if no need for it
 		}
 
 		private void DeckSelected(MatchResult item)

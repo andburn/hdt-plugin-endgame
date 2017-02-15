@@ -10,7 +10,7 @@ paket.local
 /paket-files
 !/.paket/paket.bootstrapper.exe
 
-# power shell scripts
+# root power shell scripts
 /*.ps1
 
 ## Ignore Visual Studio temporary files, build results, and

@@ -1,55 +1,155 @@
 ﻿using GalaSoft.MvvmLight;
+using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class SettingsViewModel : ViewModelBase
 	{
-		private SettingsScreenshotViewModel _screenshotSettings;
-
-		public SettingsScreenshotViewModel ScreenshotSettings
-		{
-			get { return _screenshotSettings; }
-			set { Set(() => ScreenshotSettings, ref _screenshotSettings, value); }
-		}
-
-		private SettingsArchetypeViewModel _archetypeSettings;
-
-		public SettingsArchetypeViewModel ArchetypeSettings
-		{
-			get { return _archetypeSettings; }
-			set { Set(() => ArchetypeSettings, ref _archetypeSettings, value); }
-		}
-
 		public bool ArchetypesEnabled
 		{
 			get
 			{
-				return EndGame.Settings.Get("Archetypes", "ArchetypesEnabled").Bool;
+				return EndGame.Settings.Get(Strings.ArchetypesEnabled).Bool;
 			}
 			set
 			{
-				EndGame.Settings.Set("Archetypes", "ArchetypesEnabled", value);
-				RaisePropertyChanged("ArchetypesEnabled");
+				EndGame.Settings.Set(Strings.ArchetypesEnabled, value);
+				RaisePropertyChanged(Strings.ArchetypesEnabled);
 			}
 		}
 
-		public bool ScreenshotEnabled
+		public bool AutoArchiveArchetypes
 		{
 			get
 			{
-				return EndGame.Settings.Get("ScreenShot", "ScreenshotEnabled").Bool;
+				return EndGame.Settings.Get(Strings.AutoArchiveArchetypes).Bool;
 			}
 			set
 			{
-				EndGame.Settings.Set("ScreenShot", "ScreenshotEnabled", value);
-				RaisePropertyChanged("ScreenshotEnabled");
+				EndGame.Settings.Set(Strings.AutoArchiveArchetypes, value);
+				RaisePropertyChanged(Strings.AutoArchiveArchetypes);
+			}
+		}
+
+		public bool DeletePreviouslyImported
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.DeletePreviouslyImported).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.DeletePreviouslyImported, value);
+				RaisePropertyChanged(Strings.DeletePreviouslyImported);
+			}
+		}
+
+		public bool RemoveClassFromName
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RemoveClassFromName).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RemoveClassFromName, value);
+				RaisePropertyChanged(Strings.RemoveClassFromName);
+			}
+		}
+
+		public bool CloseNoteWithEnter
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.CloseNoteWithEnter).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.CloseNoteWithEnter, value);
+				RaisePropertyChanged(Strings.CloseNoteWithEnter);
+			}
+		}
+
+		public bool RecordBrawlArchetypes
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RecordBrawlArchetypes).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RecordBrawlArchetypes, value);
+				RaisePropertyChanged(Strings.RecordBrawlArchetypes);
+			}
+		}
+
+		public bool RecordCasualArchetypes
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RecordCasualArchetypes).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RecordCasualArchetypes, value);
+				RaisePropertyChanged(Strings.RecordCasualArchetypes);
+			}
+		}
+
+		public bool RecordFriendlyArchetypes
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RecordFriendlyArchetypes).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RecordFriendlyArchetypes, value);
+				RaisePropertyChanged(Strings.RecordFriendlyArchetypes);
+			}
+		}
+
+		public bool RecordRankedArchetypes
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RecordRankedArchetypes).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RecordRankedArchetypes, value);
+				RaisePropertyChanged(Strings.RecordRankedArchetypes);
+			}
+		}
+
+		public bool RecordOtherArchetypes
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RecordOtherArchetypes).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RecordOtherArchetypes, value);
+				RaisePropertyChanged(Strings.RecordOtherArchetypes);
+			}
+		}
+
+		public bool RecordArenaArchetypes
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.RecordArenaArchetypes).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.RecordArenaArchetypes, value);
+				RaisePropertyChanged(Strings.RecordArenaArchetypes);
 			}
 		}
 
 		public SettingsViewModel()
 		{
-			ScreenshotSettings = new SettingsScreenshotViewModel();
-			ArchetypeSettings = new SettingsArchetypeViewModel();
 		}
 	}
 }

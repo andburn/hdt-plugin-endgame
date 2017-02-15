@@ -6,6 +6,7 @@ using HDT.Plugins.Common.Services;
 using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
+using HDT.Plugins.EndGame.Utilities;
 using HDT.Plugins.EndGame.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -18,7 +19,6 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		private NoteViewModel viewModel;
 		private Mock<IDataRepository> trackMock;
 		private Mock<ILoggingService> logMock;
-		private Mock<IImageCaptureService> capMock;
 
 		[SetUp]
 		public void TestSetup()
@@ -27,14 +27,13 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 			deck.Cards = new List<Card>();
 
 			logMock = new Mock<ILoggingService>();
-			capMock = new Mock<IImageCaptureService>();
 			trackMock = new Mock<IDataRepository>();
 
 			trackMock.Setup(x => x.GetGameNote()).Returns("Note Text");
 			trackMock.Setup(x => x.GetOpponentDeck()).Returns(deck);
-			trackMock.Setup(x => x.GetAllDecksWithTag("archetype")).Returns(new List<Deck>());
+			trackMock.Setup(x => x.GetAllDecksWithTag(Strings.ArchetypeTag)).Returns(new List<Deck>());
 
-			viewModel = new NoteViewModel(trackMock.Object, logMock.Object, capMock.Object);
+			viewModel = new NoteViewModel(trackMock.Object, logMock.Object);
 		}
 
 		[Test]
@@ -87,42 +86,43 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 				Throws.Nothing);
 		}
 
-		[Test]
-		public void IfScreenshotsIsNullOnClosing_LogMessage()
-		{
-			viewModel.Screenshots = null;
-			viewModel.WindowClosingCommand.Execute(null);
+		// TODO keep for reference temporarily
+		//[Test]
+		//public void IfScreenshotsIsNullOnClosing_LogMessage()
+		//{
+		//	viewModel.Screenshots = null;
+		//	viewModel.WindowClosingCommand.Execute(null);
 
-			Assert.That(() =>
-				logMock.Verify(x => x.Debug("No screenshot selected (len=)")),
-				Throws.Nothing);
-		}
+		//	Assert.That(() =>
+		//		logMock.Verify(x => x.Debug("No screenshot selected (len=)")),
+		//		Throws.Nothing);
+		//}
 
-		[Test]
-		public void OnClosing_SaveSelectedScreenshot()
-		{
-			viewModel.Screenshots = new ObservableCollection<Screenshot>() {
-				new Screenshot(null, null, 0) { IsSelected = true }
-			};
-			viewModel.WindowClosingCommand.Execute(null);
+		//[Test]
+		//public void OnClosing_SaveSelectedScreenshot()
+		//{
+		//	viewModel.Screenshots = new ObservableCollection<Screenshot>() {
+		//		new Screenshot(null, null, 0) { IsSelected = true }
+		//	};
+		//	viewModel.WindowClosingCommand.Execute(null);
 
-			Assert.That(() =>
-				capMock.Verify(x => x.SaveImage(It.IsAny<Screenshot>()), Times.Once),
-				Throws.Nothing);
-		}
+		//	Assert.That(() =>
+		//		capMock.Verify(x => x.SaveImage(It.IsAny<Screenshot>()), Times.Once),
+		//		Throws.Nothing);
+		//}
 
-		[Test]
-		public void OnClosing_CatchExceptionsOnSavingImage()
-		{
-			capMock.Setup(x => x.SaveImage(It.IsAny<Screenshot>())).Throws<Exception>();
-			viewModel.Screenshots = new ObservableCollection<Screenshot>() {
-				new Screenshot(null, null, 0) { IsSelected = true }
-			};
-			viewModel.WindowClosingCommand.Execute(null);
+		//[Test]
+		//public void OnClosing_CatchExceptionsOnSavingImage()
+		//{
+		//	capMock.Setup(x => x.SaveImage(It.IsAny<Screenshot>())).Throws<Exception>();
+		//	viewModel.Screenshots = new ObservableCollection<Screenshot>() {
+		//		new Screenshot(null, null, 0) { IsSelected = true }
+		//	};
+		//	viewModel.WindowClosingCommand.Execute(null);
 
-			Assert.That(() =>
-				logMock.Verify(x => x.Error(It.IsAny<string>()), Times.Once),
-				Throws.Nothing);
-		}
+		//	Assert.That(() =>
+		//		logMock.Verify(x => x.Error(It.IsAny<string>()), Times.Once),
+		//		Throws.Nothing);
+		//}
 	}
 }

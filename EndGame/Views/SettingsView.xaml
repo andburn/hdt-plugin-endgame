@@ -3,43 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
-             xmlns:viewmodels="clr-namespace:HDT.Plugins.EndGame.ViewModels"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="300">
-    <UserControl.DataContext>
-        <viewmodels:SettingsViewModel />
-    </UserControl.DataContext>
-    <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:SettingsScreenshotViewModel}">
-            <views:SettingsScreenshotView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:SettingsArchetypeViewModel}">
-            <views:SettingsArchetypeView />
-        </DataTemplate>
-        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
-    </UserControl.Resources>
-    <TabControl>
-        <TabItem Header="Screenshot">
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Margin="10,15,10,15">
+        <GroupBox Header="Options">
             <StackPanel>
-                <mah:ToggleSwitch OnLabel="Enabled" OffLabel="Disabled"
-                                  Margin="20,4"
-                                  IsChecked="{Binding ScreenshotEnabled}"
-                                  ToolTip="Enable/Disable end game screen capture functionality" />
-                <ContentControl Content="{Binding ScreenshotSettings}"
-                                Visibility="{Binding ScreenshotEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+                <CheckBox Content="Auto archive decks"
+                          IsChecked="{Binding AutoArchiveArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top"
+                          ToolTip="Auto archive all archetype decks imported by the plugin." />
+                <CheckBox Content="Remove class from deck name"
+                          IsChecked="{Binding RemoveClassFromName}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top"
+                          ToolTip="Remove the class from deck names imported by the plugin." />
+                <CheckBox Content="Delete previously imported decks"
+                          IsChecked="{Binding DeletePreviouslyImported}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top"
+                          ToolTip="Delete any previously imported archetype decks before importing again." />
+                <CheckBox Content="Close note with enter"
+                          IsChecked="{Binding CloseNoteWithEnter}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top"
+                          ToolTip="Close the note dialog when enter is pressed in the text box." />
             </StackPanel>
-        </TabItem>
-        <TabItem Header="Archetypes">
+        </GroupBox>
+        <GroupBox x:Name="ModeGroup" Header="GAME MODES" ToolTip="Game modes for which archetypes will be enabled">
             <StackPanel>
-                <mah:ToggleSwitch OnLabel="Enabled" OffLabel="Disabled"
-                                  Margin="20,4"
-                                  IsChecked="{Binding ArchetypesEnabled}"
-                                  ToolTip="Enable/Disable end game screen capture functionality" />
-                <ContentControl Content="{Binding ArchetypeSettings}"
-                                Visibility="{Binding ArchetypesEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+                <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked"
+                          IsChecked="{Binding RecordRankedArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckboxRecordArena" Content="Arena"
+                          IsChecked="{Binding RecordArenaArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl"
+                          IsChecked="{Binding RecordBrawlArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckboxRecordCasual" Content="Casual"
+                          IsChecked="{Binding RecordCasualArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckboxRecordFriendly" Content="Friendly"
+                          IsChecked="{Binding RecordFriendlyArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckboxRecordOther" Content="Other"
+                          IsChecked="{Binding RecordOtherArchetypes}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top" />
             </StackPanel>
-        </TabItem>
-    </TabControl>
+        </GroupBox>
+    </StackPanel>
 </UserControl>
