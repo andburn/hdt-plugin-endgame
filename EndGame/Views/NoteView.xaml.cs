@@ -1,12 +1,10 @@
-﻿using System.Windows;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using HDT.Plugins.EndGame.Properties;
 using HDT.Plugins.EndGame.Utilities;
-using MahApps.Metro.Controls;
 
 namespace HDT.Plugins.EndGame.Views
 {
-	public partial class NoteView : MetroWindow
+	public partial class NoteView : UserControl
 	{
 		public NoteView()
 		{
@@ -28,7 +26,8 @@ namespace HDT.Plugins.EndGame.Views
 			if (e.Key == Key.Enter && EndGame.Settings.Get(Strings.CloseNoteWithEnter).Bool)
 			{
 				e.Handled = true;
-				Close();
+				// TODO close parent window
+				//Close();
 			}
 		}
 

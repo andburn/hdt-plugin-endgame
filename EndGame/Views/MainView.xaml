@@ -1,0 +1,52 @@
+﻿<Window x:Class="HDT.Plugins.EndGame.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"             
+             xmlns:viewmodels="clr-namespace:HDT.Plugins.EndGame.ViewModels"
+             xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
+             xmlns:controls="clr-namespace:HDT.Plugins.Common.Controls;assembly=HDT.Plugins.Common"
+             mc:Ignorable="d" 
+             Width="600" Height="460"
+             MinWidth="600" MinHeight="460"
+             d:DesignWidth="600" d:DesignHeight="460"
+             Topmost="True"
+             WindowStartupLocation="CenterScreen"
+             Title="Hearthstone Deck Tracker (End Game)">
+    <Window.DataContext>
+        <viewmodels:MainViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
+            <views:SettingsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:NoteViewModel}">
+            <views:NoteView />
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Height="60">
+            <DockPanel.Background>
+                <ImageBrush ImageSource="pack://application:,,,/EndGame;component/Resources/hdt-banner.png" 
+                            Viewport="0,-50,600,150"
+                            ViewportUnits="Absolute"
+                            TileMode="Tile"
+                            Stretch="None"
+                            AlignmentX="Left"
+                            AlignmentY="Top"/>
+            </DockPanel.Background>
+            <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
+                                     Text="SETTINGS" Icon="&#xe994;" Cursor="Hand"
+                                     Command="{Binding NavigateCommand}" Param="settings" />
+            <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
+                                     Text="NOTE" Icon="&#xe90e;" Cursor="Hand"
+                                     Command="{Binding NavigateCommand}" Param="Note" />
+            <TextBlock Foreground="White" FontSize="28" VerticalAlignment="Center" Margin="8">End Game</TextBlock>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top" Background="#2e3136">
+            <TextBlock Text="{Binding ContentTitle}" Foreground="White" FontSize="16" Margin="8,4,4,4" />
+        </DockPanel>
+        <ContentControl Content="{Binding ContentViewModel}" />
+    </DockPanel>
+</Window>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -12,18 +11,16 @@ using HDT.Plugins.Common.Plugin;
 using HDT.Plugins.Common.Providers;
 using HDT.Plugins.Common.Services;
 using HDT.Plugins.Common.Settings;
-using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
 using HDT.Plugins.EndGame.Utilities;
 using HDT.Plugins.EndGame.ViewModels;
 using HDT.Plugins.EndGame.Views;
-using MahApps.Metro.Controls;
 
 namespace HDT.Plugins.EndGame
 {
 	[Name("End Game")]
-	[Description("Adds extra functionality to the built-in end of game note window. Including, victory/defeat screenshots and opponent deck archetypes.")]
+	[Description("Matches opponent's played cards to defined deck archetypes at the end of game.")]
 	public class EndGame : PluginBase
 	{
 		public static readonly IUpdateService Updater;
@@ -32,10 +29,7 @@ namespace HDT.Plugins.EndGame
 		public static readonly IEventsService Events;
 		public static readonly IGameClientService Client;
 		public static readonly IConfigurationRepository Config;
-		public static readonly Settings Settings;		
-
-		private static Flyout _settingsFlyout;
-		private static Flyout _notificationFlyout;
+		public static readonly Settings Settings;
 
 		static EndGame()
 		{
@@ -51,9 +45,6 @@ namespace HDT.Plugins.EndGame
 			var assembly = Assembly.GetExecutingAssembly();
 			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
 			Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
-			// other
-			_notificationFlyout = CreateDialogFlyout();
-			_settingsFlyout = CreateSettingsFlyout();
 		}
 
 		public EndGame()
@@ -76,9 +67,9 @@ namespace HDT.Plugins.EndGame
 		private MenuItem CreatePluginMenu()
 		{
 			var pm = new PluginMenu("End Game", "trophy");
-			pm.Append("Import Meta Decks", 
+			pm.Append("Import Meta Decks",
 				new RelayCommand(async () => await ImportMetaDecks()));
-			pm.Append("Settings", 
+			pm.Append("Settings",
 				new RelayCommand(() => ShowSettings()));
 			return pm.Menu;
 		}
@@ -95,7 +86,7 @@ namespace HDT.Plugins.EndGame
 				// disable the built in note dialog
 				Config.Set("ShowNoteDialogAfterGame", false);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Logger.Error(e);
 			}
@@ -121,9 +112,10 @@ namespace HDT.Plugins.EndGame
 				// check what features are enabled
 				if (IsModeEnabledForArchetypes(mode))
 				{
-					var viewModel = new NoteViewModel();
-					var view = new NoteView();
-					view.DataContext = viewModel;
+					//var viewModel = new NoteViewModel();
+					//var view = new NoteView();
+					//view.DataContext = viewModel;
+					var view = new MainView();
 					await WaitUntilInMenu();
 					view.Show();
 				}
@@ -135,23 +127,21 @@ namespace HDT.Plugins.EndGame
 			}
 		}
 
-		public static void CloseOpenNoteWindows()
+		public static void CloseSettings()
 		{
-			foreach (var x in Application.Current.Windows.OfType<NoteView>())
-				x.Close();
 		}
 
 		public static void ShowSettings()
 		{
-			if (_settingsFlyout == null)
-				_settingsFlyout = CreateSettingsFlyout();
-			_settingsFlyout.IsOpen = true;
+			CloseOpenNoteWindows();
+			var view = new MainView();
+			view.Show();
 		}
 
-		public static void CloseSettings()
+		public static void CloseOpenNoteWindows()
 		{
-			if (_settingsFlyout != null)
-				_settingsFlyout.IsOpen = false;
+			foreach (var x in Application.Current.Windows.OfType<MainView>())
+				x.Close();
 		}
 
 		public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
@@ -215,35 +205,6 @@ namespace HDT.Plugins.EndGame
 				if (elapsed >= timeout)
 					return;
 			}
-		}
-
-		private static Flyout CreateSettingsFlyout()
-		{
-			var settings = new Flyout();
-			settings.Name = "EndGameSettingsFlyout";
-			settings.Position = Position.Left;
-			Panel.SetZIndex(settings, 100);
-			settings.Header = "End Game Settings";
-			settings.Content = new SettingsView();
-			var metroWindow = Client.MainWindow() as MetroWindow;
-			metroWindow.Flyouts.Items.Add(settings);
-			return settings;
-		}
-
-		private static Flyout CreateDialogFlyout()
-		{
-			var dialog = new Flyout();
-			dialog.Name = "EndGameDialogFlyout";
-			dialog.Theme = FlyoutTheme.Accent;
-			dialog.Position = Position.Bottom;
-			dialog.TitleVisibility = Visibility.Collapsed;
-			dialog.CloseButtonVisibility = Visibility.Collapsed;
-			dialog.IsPinned = false;
-			dialog.Height = 50;
-			Panel.SetZIndex(dialog, 1000);
-			var metroWindow = Client.MainWindow() as MetroWindow;
-			metroWindow.Flyouts.Items.Add(dialog);
-			return dialog;
 		}
 
 		private async Task UpdateCheck(string name, string repo)

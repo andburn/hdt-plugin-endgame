@@ -14,6 +14,9 @@
 		public const string RecordRankedArchetypes = "RecordRankedArchetypes";
 		public const string RecordOtherArchetypes = "RecordOtherArchetypes";
 		public const string RecordArenaArchetypes = "RecordArenaArchetypes";
+		// Navigation
+		public const string NavSettings = "settings";
+		public const string NavNote = "note";
 		// Other
 		public const string ArchetypeTag = "Archetype";
 	}
