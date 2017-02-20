@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
-using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -40,18 +39,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public BasicNoteViewModel(IDataRepository track, ILoggingService logger)
 		{
 			Cards = new ObservableCollection<Card>();
-
-			if (IsInDesignMode)
-			{
-				_repository = new DesignerRepository();
-			}
-			else
-			{
-				_repository = track;
-			}
+			_repository = track;
 			_logger = logger;
-
-			Update();
 		}
 
 		public override void Update()
