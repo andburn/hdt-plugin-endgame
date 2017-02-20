@@ -65,8 +65,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utilities\IUpdatable.cs" />
+    <Compile Include="ViewModels\BasicNoteViewModel.cs" />
     <Compile Include="ViewModels\EmptyNoteViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NoteViewModelBase.cs" />
+    <Compile Include="Views\BasicNoteView.xaml.cs">
+      <DependentUpon>BasicNoteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EmptyNoteView.xaml.cs">
       <DependentUpon>EmptyNoteView.xaml</DependentUpon>
     </Compile>
@@ -119,6 +125,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\BasicNoteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EmptyNoteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

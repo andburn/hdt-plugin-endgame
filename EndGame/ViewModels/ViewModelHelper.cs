@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Models;
@@ -8,6 +9,15 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public static class ViewModelHelper
 	{
+		public static void FocusTextBox(TextBox box)
+		{
+			box.Focus();
+			if (!string.IsNullOrEmpty(box.Text) && box.CaretIndex <= 0)
+			{
+				box.CaretIndex = box.Text.Length;
+			}
+		}
+
 		public static List<MatchResult> MatchArchetypes(Deck deck, List<ArchetypeDeck> archetypes)
 		{
 			return archetypes

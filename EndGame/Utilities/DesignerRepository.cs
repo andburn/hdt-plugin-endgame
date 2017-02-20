@@ -33,7 +33,7 @@ namespace HDT.Plugins.EndGame.Utilities
 			return "I'm a note";
 		}
 
-		public Deck GetOpponentDeck()
+		public Deck GetOpponentDeck(bool live)
 		{
 			StreamResourceInfo sri = Application.GetResourceStream(
 				new Uri("pack://application:,,,/EndGame;component/Resources/card_sample.bmp"));

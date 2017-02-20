@@ -1,8 +1,6 @@
-﻿using GalaSoft.MvvmLight;
-
-namespace HDT.Plugins.EndGame.ViewModels
+﻿namespace HDT.Plugins.EndGame.ViewModels
 {
-	public class EmptyNoteViewModel : ViewModelBase
+	public class EmptyNoteViewModel : NoteViewModelBase
 	{
 		private string _message;
 
@@ -15,6 +13,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public EmptyNoteViewModel()
 		{
 			Message = "Not Available";
+		}
+
+		public override void Update()
+		{
 		}
 	}
 }
