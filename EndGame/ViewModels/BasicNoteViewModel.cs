@@ -31,6 +31,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => PlayerClass, ref _playerClass, value); }
 		}
 
+		private bool _isNoteFocused;
+
+		public bool IsNoteFocused
+		{
+			get { return _isNoteFocused; }
+			set { Set(() => IsNoteFocused, ref _isNoteFocused, value); }
+		}
+
 		public BasicNoteViewModel()
 			: this(EndGame.Data, EndGame.Logger)
 		{
@@ -46,10 +54,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public override void Update()
 		{
 			Note = _repository.GetGameNote()?.ToString();
-			var deck = _repository.GetOpponentDeck(false);
+			var deck = _repository.GetOpponentDeck();
 			Cards.Clear();
 			deck.Cards.ForEach(c => Cards.Add(c));
 			PlayerClass = deck.Class.ToString();
+			IsNoteFocused = true;
 		}
 	}
 }

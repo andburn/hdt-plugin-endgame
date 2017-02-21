@@ -57,16 +57,16 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-		public bool CloseNoteWithEnter
+		public bool ShowRegularNoteBox
 		{
 			get
 			{
-				return EndGame.Settings.Get(Strings.CloseNoteWithEnter).Bool;
+				return EndGame.Settings.Get(Strings.ShowRegularNoteBox).Bool;
 			}
 			set
 			{
-				EndGame.Settings.Set(Strings.CloseNoteWithEnter, value);
-				RaisePropertyChanged(Strings.CloseNoteWithEnter);
+				EndGame.Settings.Set(Strings.ShowRegularNoteBox, value);
+				RaisePropertyChanged(Strings.ShowRegularNoteBox);
 			}
 		}
 

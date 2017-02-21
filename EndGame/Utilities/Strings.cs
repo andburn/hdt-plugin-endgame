@@ -14,6 +14,8 @@
 		public const string RecordRankedArchetypes = "RecordRankedArchetypes";
 		public const string RecordOtherArchetypes = "RecordOtherArchetypes";
 		public const string RecordArenaArchetypes = "RecordArenaArchetypes";
+		public const string ShowRegularNoteBox = "ShowRegularNoteBox";
+		public const string DeveloperMode = "DeveloperMode";
 		// Navigation
 		public const string NavSettings = "settings";
 		public const string NavNote = "note";

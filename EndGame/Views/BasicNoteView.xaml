@@ -6,15 +6,15 @@
              xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:vm="clr-namespace:HDT.Plugins.EndGame.ViewModels"
+             xmlns:common="clr-namespace:HDT.Plugins.Common.Controls.Extensions;assembly=HDT.Plugins.Common"
              mc:Ignorable="d" 
-             Width="600" Height="400"
-             MinWidth="600" MinHeight="400"
              d:DesignWidth="600" d:DesignHeight="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
         <Style x:Key="NoBorder" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="BorderThickness" Value="0" />
         </Style>
+        <SolidColorBrush x:Key="DarkBackground">#2e3136</SolidColorBrush>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,18 +22,40 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Margin="10,10,5,10" Header="Game Notes">
-            <!-- TODO watermark? -->
-            <TextBox x:Name="NoteTextBox"
-                     TextWrapping="Wrap"                     
-                     Focusable="True"
-                     Text="{Binding Note}" Style="{StaticResource NoBorder}">
-            </TextBox>
-        </GroupBox>
-
-        <GroupBox Grid.Column="1" x:Name="CardList"
-                  Width="254" Margin="5,10,10,10"
-                  Header="{Binding PlayerClass}">
+        <Border Margin="10,10,5,10" Grid.Column="0" 
+                BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
+            <DockPanel>
+                <TextBlock Text="GAME NOTE"
+                    Padding="8,4,0,0"
+                    DockPanel.Dock="Top"
+                    Height="24"
+                    TextAlignment="Left" FontSize="12"
+                    Background="{StaticResource DarkBackground}"
+                    Foreground="White"/>
+                <AdornerDecorator>
+                    <TextBox x:Name="NoteTextBox"
+                         common:Focusable.IsFocused="{Binding IsNoteFocused}"
+                         TextWrapping="Wrap"        
+                         Text="{Binding Note}" Style="{StaticResource NoBorder}">
+                        <common:WatermarkService.Watermark>
+                            <TextBlock Margin="8,3,0,0">Enter note text here...</TextBlock>
+                        </common:WatermarkService.Watermark>
+                    </TextBox>
+                </AdornerDecorator>
+            </DockPanel>
+        </Border>
+        
+        <Border Grid.Column="1" x:Name="CardList"
+                Width="254" Margin="5,10,10,10"
+                BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
+            <DockPanel>
+                <TextBlock Text="{Binding PlayerClass}"
+                    Padding="8,4,0,0"
+                    DockPanel.Dock="Top"
+                    Height="24"
+                    TextAlignment="Left" FontSize="12"
+                    Background="{StaticResource DarkBackground}"
+                    Foreground="White"/>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemTemplate>
@@ -43,6 +65,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-        </GroupBox>
+                </DockPanel>
+        </Border>
     </Grid>
 </UserControl>

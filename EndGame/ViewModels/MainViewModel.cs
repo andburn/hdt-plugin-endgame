@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
@@ -8,7 +10,9 @@ namespace HDT.Plugins.EndGame.ViewModels
 	public class MainViewModel : ViewModelBase
 	{
 		private static readonly ViewModelBase SettingsVM = new SettingsViewModel();
-		private static readonly ViewModelBase NoteVM = new NoteViewModel();
+		private static readonly NoteViewModelBase NoteVM = new NoteViewModel();
+		private static readonly NoteViewModelBase BasicNoteVM = new BasicNoteViewModel();
+		private static readonly NoteViewModelBase EmptyNoteVM = new EmptyNoteViewModel();
 
 		private string _contentTitle;
 
@@ -38,28 +42,51 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public void OnNavigation(string location)
 		{
 			var loc = location.ToLower();
-			ViewModelBase vm = null;
 			if (loc == Strings.NavSettings)
 			{
-				vm = SettingsVM;
+				ContentViewModel = SettingsVM;
 			} 
 			else if (loc == Strings.NavNote)
 			{
-				vm = NoteVM;
+				LoadNote();
 			}
 			else
 			{
-				vm = SettingsVM;
 				EndGame.Logger.Error($"Unknown Main navigation '{location}'");
+				return;
 			}
 
-			// change only if different to current
-			if (ContentViewModel != vm)
+			if (loc.Length > 2)
+				ContentTitle = loc.Substring(0, 1).ToUpper() + loc.Substring(1);
+		}
+
+		private void LoadNote()
+		{
+			NoteViewModelBase viewModel = EmptyNoteVM;
+			var mode = EndGame.Data.GetGameMode();
+			if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
 			{
-				ContentViewModel = vm;
-				if (loc.Length > 2)
-					ContentTitle = loc.Substring(0, 1).ToUpper() + loc.Substring(1);
+				viewModel = BasicNoteVM;
 			}
+			else if (IsDeckAvailable())
+			{
+				if (ViewModelHelper.IsModeEnabledForArchetypes(mode))
+				{
+					viewModel = NoteVM;
+				}				
+				else if (EndGame.Settings.Get(Strings.ShowRegularNoteBox).Bool)
+				{
+					viewModel = BasicNoteVM;
+				}
+			}
+			viewModel.Update();
+			ContentViewModel = viewModel;
+		}
+
+		public static bool IsDeckAvailable()
+		{
+			var deck = EndGame.Data.GetOpponentDeck();
+			return deck.Cards.Count >= 1 && deck.Class != PlayerClass.ALL;
 		}
 	}
 }

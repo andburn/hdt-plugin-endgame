@@ -8,12 +8,12 @@
              xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:controls="clr-namespace:HDT.Plugins.Common.Controls;assembly=HDT.Plugins.Common"
              mc:Ignorable="d" 
-             Width="600" Height="460"
-             MinWidth="600" MinHeight="460"
-             d:DesignWidth="600" d:DesignHeight="460"
+             Width="620" Height="500"
+             MinWidth="620" MinHeight="500"
+             d:DesignWidth="620" d:DesignHeight="500"
              Topmost="True"
              WindowStartupLocation="CenterScreen"
-             Title="Hearthstone Deck Tracker (End Game)">
+             Title="Hearthstone Deck Tracker - End Game">
     <Window.DataContext>
         <viewmodels:MainViewModel />
     </Window.DataContext>
@@ -23,6 +23,12 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:NoteViewModel}">
             <views:NoteView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:BasicNoteViewModel}">
+            <views:BasicNoteView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:EmptyNoteViewModel}">
+            <views:EmptyNoteView />
         </DataTemplate>
     </Window.Resources>
     <DockPanel>
@@ -40,7 +46,7 @@
                                      Text="SETTINGS" Icon="&#xe994;" Cursor="Hand"
                                      Command="{Binding NavigateCommand}" Param="settings" />
             <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
-                                     Text="NOTE" Icon="&#xe90e;" Cursor="Hand"
+                                     Text="NOTE" Icon="&#xe926;" Cursor="Hand"
                                      Command="{Binding NavigateCommand}" Param="Note" />
             <TextBlock Foreground="White" FontSize="28" VerticalAlignment="Center" Margin="8">End Game</TextBlock>
         </DockPanel>

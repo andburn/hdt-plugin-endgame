@@ -11,6 +11,7 @@ using HDT.Plugins.Common.Plugin;
 using HDT.Plugins.Common.Providers;
 using HDT.Plugins.Common.Services;
 using HDT.Plugins.Common.Settings;
+using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
 using HDT.Plugins.EndGame.Utilities;
@@ -31,6 +32,8 @@ namespace HDT.Plugins.EndGame
 		public static readonly IConfigurationRepository Config;
 		public static readonly Settings Settings;
 
+		private static MainViewModel _viewModel;
+
 		static EndGame()
 		{
 			// initialize services
@@ -45,6 +48,8 @@ namespace HDT.Plugins.EndGame
 			var assembly = Assembly.GetExecutingAssembly();
 			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
 			Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
+			// main view model
+			_viewModel = new MainViewModel();
 		}
 
 		public EndGame()
@@ -66,7 +71,7 @@ namespace HDT.Plugins.EndGame
 
 		private MenuItem CreatePluginMenu()
 		{
-			var pm = new PluginMenu("End Game", "trophy");
+			var pm = new PluginMenu("End Game", IcoMoon.Target);
 			pm.Append("Import Meta Decks",
 				new RelayCommand(async () => await ImportMetaDecks()));
 			pm.Append("Settings",
@@ -98,27 +103,15 @@ namespace HDT.Plugins.EndGame
 
 		public override void OnUnload()
 		{
-			CloseOpenNoteWindows();
-			CloseSettings();
+			CloseMainView();
 		}
 
 		public async static void Run()
 		{
 			try
-			{
-				var mode = Data.GetGameMode();
-				// close any already open note windows
-				CloseOpenNoteWindows();
-				// check what features are enabled
-				if (IsModeEnabledForArchetypes(mode))
-				{
-					//var viewModel = new NoteViewModel();
-					//var view = new NoteView();
-					//view.DataContext = viewModel;
-					var view = new MainView();
-					await WaitUntilInMenu();
-					view.Show();
-				}
+			{				
+				await WaitUntilInMenu();
+				ShowMainView(Strings.NavNote);
 			}
 			catch (Exception e)
 			{
@@ -127,18 +120,35 @@ namespace HDT.Plugins.EndGame
 			}
 		}
 
-		public static void CloseSettings()
-		{
-		}
-
 		public static void ShowSettings()
 		{
-			CloseOpenNoteWindows();
-			var view = new MainView();
-			view.Show();
+			ShowMainView(Strings.NavSettings);
 		}
 
-		public static void CloseOpenNoteWindows()
+		public static void ShowMainView(string location)
+		{
+			MainView view = null;
+			// check for any open windows
+			var open = Application.Current.Windows.OfType<MainView>();
+			if (open.Count() == 1)
+			{
+				view = open.FirstOrDefault();
+			}
+			else
+			{
+				CloseMainView();
+				// create view
+				view = new MainView();
+				view.DataContext = _viewModel;
+			}
+			// navigate to location
+			_viewModel.OnNavigation(location);
+			// show window, bring to front
+			view.Show();
+			view.Activate();			
+		}
+
+		public static void CloseMainView()
 		{
 			foreach (var x in Application.Current.Windows.OfType<MainView>())
 				x.Close();
@@ -167,31 +177,7 @@ namespace HDT.Plugins.EndGame
 				Logger.Error(e);
 				Notify("Import Failed", e.Message, 15, "error", null);
 			}
-		}
-
-		private static bool IsModeEnabledForArchetypes(string mode)
-		{
-			switch (mode.ToLowerInvariant())
-			{
-				case "ranked":
-					return Settings.Get(Strings.RecordRankedArchetypes).Bool;
-
-				case "casual":
-					return Settings.Get(Strings.RecordCasualArchetypes).Bool;
-
-				case "brawl":
-					return Settings.Get(Strings.RecordBrawlArchetypes).Bool;
-
-				case "friendly":
-					return Settings.Get(Strings.RecordFriendlyArchetypes).Bool;
-
-				case "arena":
-					return Settings.Get(Strings.RecordArenaArchetypes).Bool;
-
-				default:
-					return Settings.Get(Strings.RecordOtherArchetypes).Bool;
-			}
-		}
+		}		
 
 		private static async Task WaitUntilInMenu()
 		{
@@ -220,7 +206,7 @@ namespace HDT.Plugins.EndGame
 					SlidePanelManager
 						.Notification("Plugin Update Available",
 							$"[DOWNLOAD]({latest.DownloadUrl}) {name} v{latest.Version}",
-							"download3",
+							IcoMoon.Download3,
 							() => Process.Start(latest.DownloadUrl))
 						.AutoClose(10);
 				}

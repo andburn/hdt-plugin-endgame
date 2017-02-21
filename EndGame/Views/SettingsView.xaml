@@ -4,60 +4,80 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Margin="10,15,10,15">
-        <GroupBox Header="Options">
-            <StackPanel>
-                <CheckBox Content="Auto archive decks"
+             mc:Ignorable="d" d:DesignWidth="300"
+             Background="White"><!-- TODO remove bg -->
+    <StackPanel Margin="15">
+        <Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0,0,0,15">
+            <TextBlock FontWeight="Bold" FontSize="16">OPTIONS</TextBlock>
+        </Border>
+        <StackPanel>
+            <CheckBox Content="Auto archive decks"
                           IsChecked="{Binding AutoArchiveArchetypes}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Auto archive all archetype decks imported by the plugin." />
-                <CheckBox Content="Remove class from deck name"
+            <CheckBox Content="Remove class from deck name"
                           IsChecked="{Binding RemoveClassFromName}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Remove the class from deck names imported by the plugin." />
-                <CheckBox Content="Delete previously imported decks"
+            <CheckBox Content="Delete previously imported decks"
                           IsChecked="{Binding DeletePreviouslyImported}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Delete any previously imported archetype decks before importing again." />
-                <CheckBox Content="Close note with enter"
-                          IsChecked="{Binding CloseNoteWithEnter}"
+        </StackPanel>
+        <Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0,15">
+            <TextBlock FontWeight="Bold" FontSize="16"
+                       ToolTip="Game modes for which archetypes will be enabled">GAME MODES</TextBlock>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked" 
+                      Grid.Column="0" Grid.Row="0"
+                      IsChecked="{Binding RecordRankedArchetypes}"
+                      HorizontalAlignment="Left" Margin="0,5,0,0"
+                      VerticalAlignment="Top" />
+            <CheckBox x:Name="CheckboxRecordArena" Content="Arena" 
+                      Grid.Column="0" Grid.Row="1"
+                      IsChecked="{Binding RecordArenaArchetypes}"
+                      HorizontalAlignment="Left" Margin="0,5,0,0"
+                      VerticalAlignment="Top" />
+            <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl" 
+                      Grid.Column="0" Grid.Row="2"
+                      IsChecked="{Binding RecordBrawlArchetypes}"
+                      HorizontalAlignment="Left" Margin="0,5,0,0"
+                      VerticalAlignment="Top" />
+            <CheckBox x:Name="CheckboxRecordCasual" Content="Casual" 
+                      Grid.Column="1" Grid.Row="0"
+                      IsChecked="{Binding RecordCasualArchetypes}"
+                      HorizontalAlignment="Left" Margin="0,5,0,0"
+                      VerticalAlignment="Top" />
+            <CheckBox x:Name="CheckboxRecordFriendly" Content="Friendly"
+                      Grid.Column="1" Grid.Row="1"
+                      IsChecked="{Binding RecordFriendlyArchetypes}"
+                      HorizontalAlignment="Left" Margin="0,5,0,0"
+                      VerticalAlignment="Top" />
+            <CheckBox x:Name="CheckboxRecordOther" Content="Other"
+                      Grid.Column="1" Grid.Row="2"
+                      IsChecked="{Binding RecordOtherArchetypes}"
+                      HorizontalAlignment="Left" Margin="0,5,0,0"
+                      VerticalAlignment="Top" />
+        </Grid>
+        <StackPanel Margin="0,10,0,0">
+            <CheckBox Content="Show regular note box for unchecked modes"
+                          IsChecked="{Binding ShowRegularNoteBox }"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
-                          ToolTip="Close the note dialog when enter is pressed in the text box." />
-            </StackPanel>
-        </GroupBox>
-        <GroupBox x:Name="ModeGroup" Header="GAME MODES" ToolTip="Game modes for which archetypes will be enabled">
-            <StackPanel>
-                <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked"
-                          IsChecked="{Binding RecordRankedArchetypes}"
-                          HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" />
-                <CheckBox x:Name="CheckboxRecordArena" Content="Arena"
-                          IsChecked="{Binding RecordArenaArchetypes}"
-                          HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" />
-                <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl"
-                          IsChecked="{Binding RecordBrawlArchetypes}"
-                          HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" />
-                <CheckBox x:Name="CheckboxRecordCasual" Content="Casual"
-                          IsChecked="{Binding RecordCasualArchetypes}"
-                          HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" />
-                <CheckBox x:Name="CheckboxRecordFriendly" Content="Friendly"
-                          IsChecked="{Binding RecordFriendlyArchetypes}"
-                          HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" />
-                <CheckBox x:Name="CheckboxRecordOther" Content="Other"
-                          IsChecked="{Binding RecordOtherArchetypes}"
-                          HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" />
-            </StackPanel>
-        </GroupBox>
+                          ToolTip="For unchecked game modes show the regular note box." />
+        </StackPanel>
     </StackPanel>
 </UserControl>

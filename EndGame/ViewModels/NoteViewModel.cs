@@ -41,7 +41,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			Note = _repository.GetGameNote()?.ToString();
 
-			var deck = _repository.GetOpponentDeck(false);
+			var deck = _repository.GetOpponentDeck();
 
 			Cards.Clear();
 			deck.Cards.ForEach(c => Cards.Add(c));

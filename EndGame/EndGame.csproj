@@ -93,7 +93,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\DesignerRepository.cs" />
     <Compile Include="Services\HttpClient.cs" />
     <Compile Include="Services\IArchetypeImporter.cs" />
     <Compile Include="Services\IHttpClient.cs" />
@@ -150,9 +149,6 @@
     <None Include="app.config" />
     <EmbeddedResource Include="Resources\Default.ini" />
     <Resource Include="Resources\icomoon-min.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\card_sample.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>

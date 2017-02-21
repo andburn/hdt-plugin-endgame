@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Models;
+using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -27,6 +28,30 @@ namespace HDT.Plugins.EndGame.ViewModels
 				.Select(a => new MatchResult(a, deck.Similarity(a), a.Similarity(deck)))
 				.OrderByDescending(r => r.Similarity).ThenBy(r => r.Deck.Name)
 				.ToList();
+		}
+
+		public static bool IsModeEnabledForArchetypes(string mode)
+		{
+			switch (mode.ToLowerInvariant())
+			{
+				case "ranked":
+					return EndGame.Settings.Get(Strings.RecordRankedArchetypes).Bool;
+
+				case "casual":
+					return EndGame.Settings.Get(Strings.RecordCasualArchetypes).Bool;
+
+				case "brawl":
+					return EndGame.Settings.Get(Strings.RecordBrawlArchetypes).Bool;
+
+				case "friendly":
+					return EndGame.Settings.Get(Strings.RecordFriendlyArchetypes).Bool;
+
+				case "arena":
+					return EndGame.Settings.Get(Strings.RecordArenaArchetypes).Bool;
+
+				default:
+					return EndGame.Settings.Get(Strings.RecordOtherArchetypes).Bool;
+			}
 		}
 	}
 }
