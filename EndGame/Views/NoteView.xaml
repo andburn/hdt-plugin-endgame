@@ -42,8 +42,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <DockPanel>
-                                <TextBlock DockPanel.Dock="Right" Margin="4,0" HorizontalAlignment="Center"
-                                       FontFamily="pack://application:,,,/EndGame;component/Resources/#icomoon-min"
+                                <TextBlock DockPanel.Dock="Right" Margin="4,0" HorizontalAlignment="Center"                                       
+                                       FontFamily="pack://application:,,,/HDT.Plugins.Common;component/Resources/#IcoMoon-Free"
                                        Text="{Binding Similarity, Converter={StaticResource StarRatingConverter}, FallbackValue={x:Null}}" />
                                 <TextBlock Margin="2,0" Text="{Binding Deck.Name}" />
                             </DockPanel>
