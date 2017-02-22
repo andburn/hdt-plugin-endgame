@@ -64,11 +64,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			NoteViewModelBase viewModel = EmptyNoteVM;
 			var mode = EndGame.Data.GetGameMode();
-			if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
-			{
-				viewModel = BasicNoteVM;
-			}
-			else if (IsDeckAvailable())
+			if (IsDeckAvailable())
 			{
 				if (ViewModelHelper.IsModeEnabledForArchetypes(mode))
 				{
@@ -79,6 +75,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 					viewModel = BasicNoteVM;
 				}
 			}
+			else if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
+			{
+				viewModel = NoteVM;
+			}
+			
 			viewModel.Update();
 			ContentViewModel = viewModel;
 		}

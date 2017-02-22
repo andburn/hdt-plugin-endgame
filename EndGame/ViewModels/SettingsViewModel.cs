@@ -5,16 +5,16 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class SettingsViewModel : ViewModelBase
 	{
-		public bool ArchetypesEnabled
+		public bool WaitUntilBackInMenu
 		{
 			get
 			{
-				return EndGame.Settings.Get(Strings.ArchetypesEnabled).Bool;
+				return EndGame.Settings.Get(Strings.WaitUntilBackInMenu).Bool;
 			}
 			set
 			{
-				EndGame.Settings.Set(Strings.ArchetypesEnabled, value);
-				RaisePropertyChanged(Strings.ArchetypesEnabled);
+				EndGame.Settings.Set(Strings.WaitUntilBackInMenu, value);
+				RaisePropertyChanged(Strings.WaitUntilBackInMenu);
 			}
 		}
 

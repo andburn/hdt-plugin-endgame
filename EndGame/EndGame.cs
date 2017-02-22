@@ -110,7 +110,8 @@ namespace HDT.Plugins.EndGame
 		{
 			try
 			{				
-				await WaitUntilInMenu();
+				if (Settings.Get(Strings.WaitUntilBackInMenu).Bool)
+					await WaitUntilInMenu();
 				ShowMainView(Strings.NavNote);
 			}
 			catch (Exception e)
