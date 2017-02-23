@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,7 +32,6 @@ namespace HDT.Plugins.EndGame
 		public static readonly IGameClientService Client;
 		public static readonly IConfigurationRepository Config;
 		public static readonly Settings Settings;
-
 		private static MainViewModel _viewModel;
 
 		static EndGame()
@@ -75,13 +75,13 @@ namespace HDT.Plugins.EndGame
 			pm.Append("Import Meta Decks",
 				new RelayCommand(async () => await ImportMetaDecks()));
 			pm.Append("Settings",
-				new RelayCommand(() => ShowSettings()));
+				new RelayCommand(async () => await ShowSettings()));
 			return pm.Menu;
 		}
 
-		public override void OnButtonPress()
+		public override async void OnButtonPress()
 		{
-			ShowSettings();
+			await ShowSettings();
 		}
 
 		public override async void OnLoad()
@@ -112,21 +112,21 @@ namespace HDT.Plugins.EndGame
 			{				
 				if (Settings.Get(Strings.WaitUntilBackInMenu).Bool)
 					await WaitUntilInMenu();
-				ShowMainView(Strings.NavNote);
+				await ShowMainView(Strings.NavNote);
 			}
 			catch (Exception e)
 			{
 				Logger.Error(e);
-				Notify("EndGame Error", e.Message, 15, "error", null);
+				Notify("EndGame Error", e.Message, 15, IcoMoon.Warning, null);
 			}
 		}
 
-		public static void ShowSettings()
+		public static async Task ShowSettings()
 		{
-			ShowMainView(Strings.NavSettings);
+			await ShowMainView(Strings.NavSettings);
 		}
 
-		public static void ShowMainView(string location)
+		public static async Task ShowMainView(string location)
 		{
 			MainView view = null;
 			// check for any open windows
@@ -143,7 +143,7 @@ namespace HDT.Plugins.EndGame
 				view.DataContext = _viewModel;
 			}
 			// navigate to location
-			_viewModel.OnNavigation(location);
+			await _viewModel.OnNavigation(location);
 			// show window, bring to front
 			view.Show();
 			view.Activate();			
@@ -168,15 +168,16 @@ namespace HDT.Plugins.EndGame
 			{
 				IArchetypeImporter importer = new SnapshotImporter(new HttpClient(), Data, Logger);
 				var count = await importer.ImportDecks(
+					Settings.Get(Strings.IncludeWild).Bool,
 					Settings.Get(Strings.AutoArchiveArchetypes).Bool,
 					Settings.Get(Strings.DeletePreviouslyImported).Bool,
 					Settings.Get(Strings.RemoveClassFromName).Bool);
-				Notify("Import Complete", $"{count} decks imported", 10);
+				Notify("Import Complete", $"{count} decks imported", 10, IcoMoon.Notification, null);
 			}
 			catch (Exception e)
 			{
 				Logger.Error(e);
-				Notify("Import Failed", e.Message, 15, "error", null);
+				Notify("Import Failed", e.Message, 15, IcoMoon.Warning, null);
 			}
 		}		
 

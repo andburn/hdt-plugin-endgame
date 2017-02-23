@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Data;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
 
@@ -6,7 +8,9 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class BasicNoteViewModel : NoteViewModelBase
 	{
-		public ObservableCollection<Card> Cards { get; set; }
+		private static object _cardLock = new object();
+
+		public ObservableCollection<Card> Cards { get; set; }		
 
 		private IDataRepository _repository;
 		private ILoggingService _logger;
@@ -47,16 +51,17 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public BasicNoteViewModel(IDataRepository track, ILoggingService logger)
 		{
 			Cards = new ObservableCollection<Card>();
+			BindingOperations.EnableCollectionSynchronization(Cards, _cardLock);
 			_repository = track;
 			_logger = logger;
 		}
 
-		public override void Update()
+		public override async Task Update()
 		{
 			Note = _repository.GetGameNote()?.ToString();
 			var deck = _repository.GetOpponentDeck();
 			Cards.Clear();
-			deck.Cards.ForEach(c => Cards.Add(c));
+			await Task.Run(() => deck.Cards.ForEach(c => Cards.Add(c)));
 			PlayerClass = deck.Class.ToString();
 			IsNoteFocused = true;
 		}

@@ -18,6 +18,20 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
+		public string IncludeWild
+		{
+			get
+			{
+				return EndGame.Settings.Get("IncludeWild");
+			}
+			set
+			{
+				EndGame.Settings.Set("IncludeWild", value);
+				RaisePropertyChanged("IncludeWild");
+			}
+		}
+
+
 		public bool AutoArchiveArchetypes
 		{
 			get

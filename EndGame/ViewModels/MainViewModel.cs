@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Util;
@@ -36,10 +37,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			// set default content to screenshot view
 			ContentViewModel = SettingsVM;
-			NavigateCommand = new RelayCommand<string>(x => OnNavigation(x));
+			NavigateCommand = new RelayCommand<string>(async x => await OnNavigation(x));
 		}
 
-		public void OnNavigation(string location)
+		public async Task OnNavigation(string location)
 		{
 			var loc = location.ToLower();
 			if (loc == Strings.NavSettings)
@@ -48,7 +49,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 			} 
 			else if (loc == Strings.NavNote)
 			{
-				LoadNote();
+				await LoadNote();
 			}
 			else
 			{
@@ -60,7 +61,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 				ContentTitle = loc.Substring(0, 1).ToUpper() + loc.Substring(1);
 		}
 
-		private void LoadNote()
+		private async Task LoadNote()
 		{
 			NoteViewModelBase viewModel = EmptyNoteVM;
 			var mode = EndGame.Data.GetGameMode();
@@ -79,9 +80,9 @@ namespace HDT.Plugins.EndGame.ViewModels
 			{
 				viewModel = NoteVM;
 			}
-			
-			viewModel.Update();
+
 			ContentViewModel = viewModel;
+			await viewModel.Update();			
 		}
 
 		public static bool IsDeckAvailable()

@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Data;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
@@ -10,6 +12,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class NoteViewModel : BasicNoteViewModel
 	{
+		private static object _deckLock = new object();
+
 		private IDataRepository _repository;
 		private ILoggingService _log;
 
@@ -23,6 +27,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => SelectedDeck, ref _selectedDeck, value); }
 		}
 
+		private bool _isLoadingDecks;
+
+		public bool IsLoadingDecks
+		{
+			get { return _isLoadingDecks; }
+			set { Set(() => IsLoadingDecks, ref _isLoadingDecks, value); }
+		}
+
 		public NoteViewModel()
 			: this(EndGame.Data, EndGame.Logger)
 		{
@@ -32,15 +44,16 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
+			BindingOperations.EnableCollectionSynchronization(Decks, _deckLock);
 			_repository = track;
 			_log = logger;
 			PropertyChanged += NoteViewModel_PropertyChanged;
 		}
 
-		public override void Update()
+		public override async Task Update()
 		{
+			IsLoadingDecks = true;
 			Note = _repository.GetGameNote()?.ToString();
-
 			var deck = _repository.GetOpponentDeck();
 
 			Cards.Clear();
@@ -48,17 +61,23 @@ namespace HDT.Plugins.EndGame.ViewModels
 			PlayerClass = deck.Class.ToString();
 
 			Decks.Clear();
-			var alldecks = _repository
-				.GetAllDecksWithTag(Strings.ArchetypeTag)
-				.Select(d => new ArchetypeDeck(d))
-				.ToList();
-			var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
-			results.ForEach(r => Decks.Add(r));
-			results.ForEach(r => _log.Info($"{r.Deck.Name} [{r.Similarity}, {r.Containment}]"));
+			await Task.Run(() =>
+			{
+				var alldecks = _repository
+					.GetAllDecksWithTag(Strings.ArchetypeTag)
+					.Select(d => new ArchetypeDeck(d))
+					.ToList();
+				var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
+				results.ForEach(r => Decks.Add(r));
+				results.ForEach(r => _log.Info($"{r.Deck.Name} [{r.Similarity}, {r.Containment}]"));
 
-			var firstDeck = Decks.FirstOrDefault();
-			if (firstDeck != null && firstDeck.Similarity > MatchResult.THRESHOLD)
-				DeckSelected(firstDeck);
+				var firstDeck = Decks.FirstOrDefault();
+				if (firstDeck != null && firstDeck.Similarity > MatchResult.THRESHOLD)
+					DeckSelected(firstDeck);
+
+				IsLoadingDecks = false;
+				IsNoteFocused = true;
+			});			
 		}
 
 		private void DeckSelected(MatchResult item)

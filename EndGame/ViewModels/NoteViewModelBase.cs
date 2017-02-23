@@ -1,10 +1,13 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
 	public abstract class NoteViewModelBase : ViewModelBase, IUpdatable
 	{
-		public abstract void Update();
+		public virtual async Task Update()
+		{
+		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace HDT.Plugins.EndGame.ViewModels
+﻿using System.Threading.Tasks;
+
+namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class EmptyNoteViewModel : NoteViewModelBase
 	{
@@ -15,8 +17,8 @@
 			Message = "Not Available";
 		}
 
-		public override void Update()
-		{
+		public override async Task Update()
+		{			
 		}
 	}
 }

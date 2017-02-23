@@ -26,6 +26,11 @@
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="Delete any previously imported archetype decks before importing again." />
+            <CheckBox Content="Include wild decks in imported decks"
+                          IsChecked="{Binding IncludeWild}"
+                          HorizontalAlignment="Left" Margin="0,5,0,0"
+                          VerticalAlignment="Top"
+                          ToolTip="Import the wild meta decks as well as the standard ones." />
             <CheckBox Content="Show when back at menu screen"
                           IsChecked="{Binding WaitUntilBackInMenu}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"

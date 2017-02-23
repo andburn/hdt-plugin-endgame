@@ -53,6 +53,11 @@
             </DockPanel>
         </Border>
 
+        <TextBlock Grid.Column="0" Grid.Row="0"
+                   Visibility="{Binding IsLoadingDecks, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Text="LOADING" FontWeight="Bold" />
+
         <Border Margin="10,0,10,10" Grid.Column="0" Grid.Row="1"
                 BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
             <DockPanel>
