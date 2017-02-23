@@ -17,10 +17,14 @@
 		public const string ShowRegularNoteBox = "ShowRegularNoteBox";
 		public const string DeveloperMode = "DeveloperMode";
 		public const string WaitUntilBackInMenu = "WaitUntilBackInMenu";
+		public const string IncludeWild = "IncludeWild";
 		// Navigation
 		public const string NavSettings = "settings";
 		public const string NavNote = "note";
 		// Other
 		public const string ArchetypeTag = "Archetype";
+		public const string PluginTag = "EndGame";
+		public const string MetaStandard = "standard";
+		public const string MetaWild = "wild";
 	}
 }

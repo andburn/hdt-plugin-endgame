@@ -31,7 +31,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 
 			var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
 
-			Assert.That(async () => await importer.GetSnapshotSlug(),
+			Assert.That(async () => await importer.GetSnapshotSlug("standard"),
 				Is.EqualTo(new Tuple<string, string>("2016-07-10", "standard")));
 		}
 
@@ -44,7 +44,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 
 			var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
 
-			Assert.That(async () => await importer.GetSnapshotSlug(),
+			Assert.That(async () => await importer.GetSnapshotSlug("standard"),
 				Throws.TypeOf<ImportException>()
 				.With.Message.EqualTo("Getting the snapshot slug failed (500)"));
 		}
@@ -58,7 +58,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 
 			var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
 
-			Assert.That(async () => await importer.GetSnapshotSlug(),
+			Assert.That(async () => await importer.GetSnapshotSlug("standard"),
 				Throws.TypeOf<ImportException>()
 				.With.Message.EqualTo("Snapshot slug count greater than one"));
 		}

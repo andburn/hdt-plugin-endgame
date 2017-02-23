@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HDT.Plugins.Common.Services;
+using HDT.Plugins.EndGame.Utilities;
 using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
@@ -11,10 +12,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 	{
 		private const string BaseDeckUrl = "https://tempostorm.com/hearthstone/decks/";
 		private const string BaseSnapshotUrl = "https://tempostorm.com/api/snapshots/findOne?filter=";
-
-		private const string ArchetypeTag = "Archetype";
-		private const string PluginTag = "EndGame";
-
+		
 		private IHttpClient _http;
 		private IDataRepository _tracker;
 		private ILoggingService _logger;
@@ -30,13 +28,13 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			};
 		}
 
-		public async Task<Tuple<string, string>> GetSnapshotSlug()
+		public async Task<Tuple<string, string>> GetSnapshotSlug(string type)
 		{
 			// build the Json query
 			var metaReq = new SnapshotRequest();
 			metaReq.SortOrder = "createdDate DESC";
 			metaReq.SetFields("id", "snapshotType", "isActive");
-			metaReq.SetQuery("isActive:true", "snapshotType:standard");
+			metaReq.SetQuery("isActive:true", $"snapshotType:{type}");
 			metaReq.Includes.Add(new IncludeItem("slugs"));
 			// make the request and deserialize Json result
 			var metaRespJson = await _http.JsonGet(
@@ -88,45 +86,63 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return snapResponse;
 		}
 
-		public async Task<int> ImportDecks(bool archive, bool deletePrevious, bool removeClass)
+		public async Task<int> ImportDecks(bool includeWild, bool archive, bool deletePrevious, bool removeClass)
 		{
-			_logger.Info("Starting meta deck import");
-			int deckCount = 0;
 			// delete previous snapshot decks
 			if (deletePrevious)
 			{
 				_logger.Info("Deleting previous meta decks");
-				_tracker.DeleteAllDecksWithTag(PluginTag);
+				_tracker.DeleteAllDecksWithTag(Strings.PluginTag);
 			}
-			// get the lastest meta snapshot slug/date
-			var slug = await GetSnapshotSlug();
-			// use the slug to request the actual snapshot details
-			var snapshot = await GetSnapshot(slug);
-			// add all decks to the tracker
-			foreach (var dt in snapshot.DeckTiers)
+			var deckCount = 0;
+			deckCount += await ImportSnapshotDecks(Strings.MetaStandard, archive, removeClass);
+			if (includeWild)
 			{
-				var cards = "";
-				_logger.Info($"Importing deck ({dt.Name})");
-				foreach (var cd in dt.Deck.Cards)
+				deckCount += await ImportSnapshotDecks(Strings.MetaWild, archive, removeClass);
+			}
+			return deckCount;
+		}
+
+		private async Task<int> ImportSnapshotDecks(string type, bool archive, bool removeClass)
+		{
+			int deckCount = 0;
+			if (type == Strings.MetaStandard || type == Strings.MetaWild)
+			{
+				_logger.Info($"Starting meta deck import ({type})");								
+				// get the lastest meta snapshot slug/date
+				var slug = await GetSnapshotSlug(type);
+				// use the slug to request the actual snapshot details
+				var snapshot = await GetSnapshot(slug);
+				// add all decks to the tracker
+				foreach (var dt in snapshot.DeckTiers)
 				{
-					cards += cd.Detail.Name;
-					// don't add count if only one
-					if (cd.Quantity > 1)
-						cards += $" x {cd.Quantity}";
-					cards += "\n";
-				}
-				// remove trailing newline
-				if (cards.Length > 1)
-					cards = cards.Substring(0, cards.Length - 1);
+					var cards = "";
+					_logger.Info($"Importing deck ({dt.Name})");
+					foreach (var cd in dt.Deck.Cards)
+					{
+						cards += cd.Detail.Name;
+						// don't add count if only one
+						if (cd.Quantity > 1)
+							cards += $" x {cd.Quantity}";
+						cards += "\n";
+					}
+					// remove trailing newline
+					if (cards.Length > 1)
+						cards = cards.Substring(0, cards.Length - 1);
 
-				// optionally remove player class from deck name
-				// e.g. 'Control Warrior' => 'Control'
-				var deckName = dt.Name;
-				if (removeClass)
-					deckName = deckName.Replace(dt.Deck.PlayerClass, "").Trim();
+					// optionally remove player class from deck name
+					// e.g. 'Control Warrior' => 'Control'
+					var deckName = dt.Name;
+					if (removeClass)
+						deckName = deckName.Replace(dt.Deck.PlayerClass, "").Trim();
 
-				_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, archive, ArchetypeTag, PluginTag);
-				deckCount++;
+					_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, archive, Strings.ArchetypeTag, Strings.PluginTag);
+					deckCount++;
+				}				
+			}
+			else
+			{
+				_logger.Info($"Unknonwn meta import type: {type}");
 			}
 			return deckCount;
 		}
