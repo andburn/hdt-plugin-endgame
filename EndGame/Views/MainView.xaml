@@ -34,7 +34,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="60">
             <DockPanel.Background>
-                <ImageBrush ImageSource="pack://application:,,,/EndGame;component/Resources/hdt-banner.png" 
+                <ImageBrush ImageSource="pack://application:,,,/HDT.Plugins.Common;component/Resources/hdt-banner.png" 
                             Viewport="0,-50,600,150"
                             ViewportUnits="Absolute"
                             TileMode="Tile"

@@ -85,7 +85,6 @@
     <Compile Include="EndGame.cs" />
     <Compile Include="MergedTrigger.cs" />
     <Compile Include="Models\MatchResult.cs" />
-    <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Models\ArchetypeDeck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -115,7 +114,6 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Resource Include="Resources\hdt-banner.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
