@@ -1,5 +1,5 @@
 ﻿using System;
-using HDT.Plugins.Common.Services;
+using HDT.Plugins.Common.Data.Services;
 using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
 using Moq;

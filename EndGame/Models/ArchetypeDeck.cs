@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using HDT.Plugins.Common.Models;
-using HDT.Plugins.Common.Util;
+using HDT.Plugins.Common.Data;
+using HDT.Plugins.Common.Data.Models;
 
 namespace HDT.Plugins.EndGame.Models
 {

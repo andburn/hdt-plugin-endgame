@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using HDT.Plugins.Common.Models;
-using HDT.Plugins.Common.Util;
+using HDT.Plugins.Common.Data;
+using HDT.Plugins.Common.Data.Models;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
 

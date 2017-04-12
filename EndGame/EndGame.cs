@@ -2,15 +2,14 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Controls.SlidePanels;
+using HDT.Plugins.Common.Data.Services;
 using HDT.Plugins.Common.Plugin;
 using HDT.Plugins.Common.Providers;
-using HDT.Plugins.Common.Services;
 using HDT.Plugins.Common.Settings;
 using HDT.Plugins.Common.Util;
 using HDT.Plugins.EndGame.Services;
@@ -109,7 +108,7 @@ namespace HDT.Plugins.EndGame
 		public async static void Run()
 		{
 			try
-			{				
+			{
 				if (Settings.Get(Strings.WaitUntilBackInMenu).Bool)
 					await WaitUntilInMenu();
 				await ShowMainView(Strings.NavNote);
@@ -146,7 +145,7 @@ namespace HDT.Plugins.EndGame
 			await _viewModel.OnNavigation(location);
 			// show window, bring to front
 			view.Show();
-			view.Activate();			
+			view.Activate();
 		}
 
 		public static void CloseMainView()
@@ -179,7 +178,7 @@ namespace HDT.Plugins.EndGame
 				Logger.Error(e);
 				Notify("Import Failed", e.Message, 15, IcoMoon.Warning, null);
 			}
-		}		
+		}
 
 		private static async Task WaitUntilInMenu()
 		{

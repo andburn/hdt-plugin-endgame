@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HDT.Plugins.Common.Services;
+using HDT.Plugins.Common.Data.Services;
 using HDT.Plugins.EndGame.Utilities;
 using Newtonsoft.Json;
 
@@ -12,7 +12,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 	{
 		private const string BaseDeckUrl = "https://tempostorm.com/hearthstone/decks/";
 		private const string BaseSnapshotUrl = "https://tempostorm.com/api/snapshots/findOne?filter=";
-		
+
 		private IHttpClient _http;
 		private IDataRepository _tracker;
 		private ILoggingService _logger;
@@ -108,7 +108,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			int deckCount = 0;
 			if (type == Strings.MetaStandard || type == Strings.MetaWild)
 			{
-				_logger.Info($"Starting meta deck import ({type})");								
+				_logger.Info($"Starting meta deck import ({type})");
 				// get the lastest meta snapshot slug/date
 				var slug = await GetSnapshotSlug(type);
 				// use the slug to request the actual snapshot details
@@ -138,7 +138,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 
 					_tracker.AddDeck(deckName, dt.Deck.PlayerClass, cards, archive, Strings.ArchetypeTag, Strings.PluginTag);
 					deckCount++;
-				}				
+				}
 			}
 			else
 			{

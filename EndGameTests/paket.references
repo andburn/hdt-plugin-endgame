@@ -1,9 +1,0 @@
-HDT.Plugins.Common
-Newtonsoft.Json
-MvvmLightLibs
-SimpleInjector
-
-group Test
-	NUnit
-	Moq
-	coveralls.io

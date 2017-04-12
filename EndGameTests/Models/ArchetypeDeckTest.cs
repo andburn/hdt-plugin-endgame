@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Data.Models;
 using HDT.Plugins.EndGame.Models;
 using NUnit.Framework;
 

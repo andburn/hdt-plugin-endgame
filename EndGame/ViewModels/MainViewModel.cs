@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HDT.Plugins.Common.Util;
+using HDT.Plugins.Common.Data;
 using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
@@ -46,7 +44,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 			if (loc == Strings.NavSettings)
 			{
 				ContentViewModel = SettingsVM;
-			} 
+			}
 			else if (loc == Strings.NavNote)
 			{
 				await LoadNote();
@@ -70,7 +68,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 				if (ViewModelHelper.IsModeEnabledForArchetypes(mode))
 				{
 					viewModel = NoteVM;
-				}				
+				}
 				else if (EndGame.Settings.Get(Strings.ShowRegularNoteBox).Bool)
 				{
 					viewModel = BasicNoteVM;
@@ -82,7 +80,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 
 			ContentViewModel = viewModel;
-			await viewModel.Update();			
+			await viewModel.Update();
 		}
 
 		public static bool IsDeckAvailable()

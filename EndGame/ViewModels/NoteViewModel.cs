@@ -3,8 +3,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using HDT.Plugins.Common.Models;
-using HDT.Plugins.Common.Services;
+using HDT.Plugins.Common.Data.Models;
+using HDT.Plugins.Common.Data.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
 
@@ -77,7 +77,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 				IsLoadingDecks = false;
 				IsNoteFocused = true;
-			});			
+			});
 		}
 
 		private void DeckSelected(MatchResult item)

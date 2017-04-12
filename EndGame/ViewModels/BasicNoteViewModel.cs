@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using HDT.Plugins.Common.Models;
-using HDT.Plugins.Common.Services;
+using HDT.Plugins.Common.Data.Models;
+using HDT.Plugins.Common.Data.Services;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -10,7 +10,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 	{
 		private static object _cardLock = new object();
 
-		public ObservableCollection<Card> Cards { get; set; }		
+		public ObservableCollection<Card> Cards { get; set; }
 
 		private IDataRepository _repository;
 		private ILoggingService _logger;
