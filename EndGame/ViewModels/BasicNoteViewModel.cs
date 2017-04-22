@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using HDT.Plugins.Common.Data.Models;
-using HDT.Plugins.Common.Data.Services;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {

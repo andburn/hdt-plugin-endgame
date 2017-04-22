@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HDT.Plugins.Common.Data.Services;
+using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Utilities;
 using Newtonsoft.Json;
 

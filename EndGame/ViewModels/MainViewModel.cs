@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HDT.Plugins.Common.Data;
+using HDT.Plugins.Common.Enums;
 using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels

@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:vm="clr-namespace:HDT.Plugins.EndGame.ViewModels"
         xmlns:util="clr-namespace:HDT.Plugins.EndGame.Utilities"
-        xmlns:common="clr-namespace:HDT.Plugins.Common.Controls.Extensions;assembly=HDT.Plugins.Common"
+        xmlns:common="clr-namespace:HDT.Plugins.Common.Controls.Extensions;assembly=Common"
         mc:Ignorable="d"
         d:DesignWidth="600" d:DesignHeight="400">
     <UserControl.Resources>
@@ -43,7 +41,7 @@
                         <DataTemplate>
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Right" Margin="4,0" HorizontalAlignment="Center"                                       
-                                       FontFamily="pack://application:,,,/HDT.Plugins.Common;component/Resources/#IcoMoon-Free"
+                                       FontFamily="pack://application:,,,/Common;component/Resources/#IcoMoon-Free"
                                        Text="{Binding Similarity, Converter={StaticResource StarRatingConverter}, FallbackValue={x:Null}}" />
                                 <TextBlock Margin="2,0" Text="{Binding Deck.Name}" />
                             </DockPanel>

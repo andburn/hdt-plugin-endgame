@@ -18,7 +18,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 		}
 
 		public override async Task Update()
-		{			
+		{
 		}
 	}
 }

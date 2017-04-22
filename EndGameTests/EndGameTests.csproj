@@ -99,10 +99,6 @@
     <Compile Include="ViewModels\ViewModelHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\common\Common.Data\Common.Data.csproj">
-      <Project>{728a16fe-ed70-490d-8b66-5421914bd68a}</Project>
-      <Name>Common.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EndGame\EndGame.csproj">
       <Project>{5601a829-037b-4142-94a3-39d6624fe001}</Project>
       <Name>EndGame</Name>
