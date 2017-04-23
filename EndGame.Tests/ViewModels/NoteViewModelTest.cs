@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using HDT.Plugins.Common.Data;
-using HDT.Plugins.Common.Data.Models;
-using HDT.Plugins.Common.Data.Services;
+using HDT.Plugins.Common.Enums;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
 using HDT.Plugins.EndGame.ViewModels;
 using Moq;
 using NUnit.Framework;
+
 
 namespace HDT.Plugins.EndGame.Tests.ViewModels
 {

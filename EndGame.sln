@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGameTests", "EndGameTests\EndGameTests.csproj", "{58067CFB-7C33-4864-9B08-63EF2DDAD00D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGame.Tests", "EndGame.Tests\EndGame.Tests.csproj", "{58067CFB-7C33-4864-9B08-63EF2DDAD00D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGame", "EndGame\EndGame.csproj", "{5601A829-037B-4142-94A3-39D6624FE001}"
 EndProject

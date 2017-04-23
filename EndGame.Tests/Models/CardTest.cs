@@ -1,4 +1,4 @@
-﻿using HDT.Plugins.Common.Data.Models;
+﻿using HDT.Plugins.Common.Models;
 using NUnit.Framework;
 
 namespace HDT.Plugins.EndGame.Tests.Models

@@ -19,7 +19,12 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public string Note
 		{
-			get { return _note; }
+			get
+			{
+				if (_note == null)
+					_note = _repository.GetGameNote();
+				return _note;
+			}
 			set
 			{
 				Set(() => Note, ref _note, value);
@@ -58,7 +63,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public override async Task Update()
 		{
-			Note = _repository.GetGameNote()?.ToString();
+			Note = _repository.GetGameNote();
 			var deck = _repository.GetOpponentDeck();
 			Cards.Clear();
 			await Task.Run(() => deck.Cards.ForEach(c => Cards.Add(c)));

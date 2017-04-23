@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using HDT.Plugins.Common.Data.Models;
-using HDT.Plugins.Common.Data;
+using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Enums;
 using HDT.Plugins.EndGame.Models;
 
 namespace HDT.Plugins.EndGame.Tests

@@ -41,6 +41,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 		}
 
 		public NoteViewModel(IDataRepository track, ILoggingService logger)
+			: base(track, logger)
 		{
 			Cards = new ObservableCollection<Card>();
 			Decks = new ObservableCollection<MatchResult>();
