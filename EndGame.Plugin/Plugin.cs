@@ -64,6 +64,7 @@ namespace HDT.Plugins.EndGame
 			kernel.Bind<IGameClientService>().To<TrackerClientService>().InSingletonScope();
 			kernel.Bind<IConfigurationRepository>().To<TrackerConfigRepository>().InSingletonScope();
 			kernel.Bind<ISlidePanel>().To<MetroSlidePanel>();
+			kernel.Bind<IHttpClient>().To<HttpClient>();
 			return kernel;
 		}
 

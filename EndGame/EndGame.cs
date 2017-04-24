@@ -155,7 +155,7 @@ namespace HDT.Plugins.EndGame
 		{
 			try
 			{
-				IArchetypeImporter importer = new SnapshotImporter(new HttpClient(), Data, Logger);
+				IArchetypeImporter importer = _kernel.Get<SnapshotImporter>();
 				var count = await importer.ImportDecks(
 					Settings.Get(Strings.IncludeWild).Bool,
 					Settings.Get(Strings.AutoArchiveArchetypes).Bool,

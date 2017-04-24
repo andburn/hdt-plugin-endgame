@@ -121,9 +121,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\HttpClient.cs" />
     <Compile Include="Services\IArchetypeImporter.cs" />
-    <Compile Include="Services\IHttpClient.cs" />
     <Compile Include="EndGameExceptions.cs" />
     <Compile Include="Services\TempoStorm\DeckSnapshot.cs" />
     <Compile Include="Services\TempoStorm\Error.cs" />
@@ -199,9 +197,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target 
-		AfterTargets="AfterBuild;NonWinFodyTarget"
-		Name="CleanReferenceCopyLocalPaths" >
+  <Target AfterTargets="AfterBuild;NonWinFodyTarget" Name="CleanReferenceCopyLocalPaths">
     <Delete Files="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />
   </Target>
   <Choose>
