@@ -4,22 +4,21 @@ platform: x86
 environment:
   COVERALLS_REPO_TOKEN:
     secure: w6yF8ULdQfsRMAv7vq3yFZ/d/7ZQSbL0PZUZRHvpszoW5vIDAyQiemXyfcJu6Sp3
-install:
-- ps: .\Scripts\ci_install_hdt.ps1
 before_build:
-- ps: nuget restore
+- git clone https://github.com/andburn/powershell.git C:\projects\build\Powershell
+- ps: .\appveyor.ps1 -PreBuild
 build:
   project: EndGame.sln
   verbosity: minimal
 after_build:
-- ps: .\Scripts\ci_artifacts.ps1
+- ps: .\appveyor.ps1 -PostBuild
 after_test:
-- ps: .\Scripts\ci_coverage.ps1
+- ps: .\appveyor.ps1 -PostTest
 deploy:
 - provider: GitHub
   tag: $(APPVEYOR_REPO_TAG_NAME)
-  release: Update v$(APPVEYOR_REPO_TAG_NAME)
-  description: description
+  release: Update $(APPVEYOR_REPO_TAG_NAME)
+  description: Description
   auth_token:
     secure: OpNj+lrWxBC7mLLsC2F7BqFrwrOBXsgqelz6t0wK8pqIBjO7Imn9Adp+k6OuNbCN
   artifact: Release

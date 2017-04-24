@@ -1,2 +1,0 @@
-REM  --where "class == HDT.Plugins.EndGame.Tests.Services.TempoStormImporterTest"
-.\packages\test\NUnit.ConsoleRunner\tools\nunit3-console.exe --noheader --noresult /domain:single "%~dp0..\EndGameTests\bin\x86\release\EndGameTests.dll"
