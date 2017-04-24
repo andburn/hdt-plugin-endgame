@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.EndGame.Models;
+using HDT.Plugins.EndGame.ViewModels;
+using Moq;
 using NUnit.Framework;
 using static HDT.Plugins.EndGame.ViewModels.ViewModelHelper;
 

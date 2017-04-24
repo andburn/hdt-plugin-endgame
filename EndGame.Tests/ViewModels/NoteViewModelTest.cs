@@ -86,43 +86,6 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 				Throws.Nothing);
 		}
 
-		// TODO keep for reference temporarily
-		//[Test]
-		//public void IfScreenshotsIsNullOnClosing_LogMessage()
-		//{
-		//	viewModel.Screenshots = null;
-		//	viewModel.WindowClosingCommand.Execute(null);
-
-		//	Assert.That(() =>
-		//		logMock.Verify(x => x.Debug("No screenshot selected (len=)")),
-		//		Throws.Nothing);
-		//}
-
-		//[Test]
-		//public void OnClosing_SaveSelectedScreenshot()
-		//{
-		//	viewModel.Screenshots = new ObservableCollection<Screenshot>() {
-		//		new Screenshot(null, null, 0) { IsSelected = true }
-		//	};
-		//	viewModel.WindowClosingCommand.Execute(null);
-
-		//	Assert.That(() =>
-		//		capMock.Verify(x => x.SaveImage(It.IsAny<Screenshot>()), Times.Once),
-		//		Throws.Nothing);
-		//}
-
-		//[Test]
-		//public void OnClosing_CatchExceptionsOnSavingImage()
-		//{
-		//	capMock.Setup(x => x.SaveImage(It.IsAny<Screenshot>())).Throws<Exception>();
-		//	viewModel.Screenshots = new ObservableCollection<Screenshot>() {
-		//		new Screenshot(null, null, 0) { IsSelected = true }
-		//	};
-		//	viewModel.WindowClosingCommand.Execute(null);
-
-		//	Assert.That(() =>
-		//		logMock.Verify(x => x.Error(It.IsAny<string>()), Times.Once),
-		//		Throws.Nothing);
-		//}
+		
 	}
 }

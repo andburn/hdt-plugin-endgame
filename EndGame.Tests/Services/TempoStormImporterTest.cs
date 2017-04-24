@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using HDT.Plugins.Common.Services;
-using HDT.Plugins.EndGame.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
 using Moq;
 using NUnit.Framework;
@@ -87,6 +87,49 @@ namespace HDT.Plugins.EndGame.Tests.Services
 			Assert.That(async () => await importer.GetSnapshot(new Tuple<string, string>("standard", "2016-09-10")),
 				Throws.TypeOf<ImportException>()
 				.With.Message.EqualTo("Getting the snapshot failed (500)"));
+		}
+
+		[Test]
+		public void ImportDecks_Standard_NoDelete()
+		{
+			var response = new SnapshotResponse();
+			response.DeckTiers = new List<DeckSnapshot>() {
+				new DeckSnapshot() {
+					Name = "Mage Deck",
+					Deck = new Deck() {
+						PlayerClass = "Mage",
+						Cards = new List<Card>() {
+							new Card() {
+								Quantity = 1,
+								Detail = new CardDetail() {
+									Name = "Fireball"
+								}
+							},
+							new Card() {
+								Quantity = 2,
+								Detail = new CardDetail() {
+									Name = "Ice Block"
+								}
+							}
+						}
+					}
+				}
+			};
+
+			var mock = new Mock<SnapshotImporter>(_http.Object, _data.Object, _log.Object);
+			mock.Setup(x => x.GetSnapshotSlug(It.IsAny<string>()))
+				.ReturnsAsync(new Tuple<string, string>("standard", "2017-02-01"));
+			mock.Setup(x => x.GetSnapshot(It.IsAny<Tuple<string, string>>()))
+				.ReturnsAsync(response);
+			mock.CallBase = true;
+
+			Assert.That(async () => await mock.Object.ImportDecks(false, true, false, true),
+				Is.EqualTo(1));
+
+			_data.Verify(x => x.AddDeck(
+				It.Is<string>(s => s == "Deck"), It.Is<string>(s => s == "Mage"), 
+				It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string[]>()),
+				Times.Once);
 		}
 	}
 }

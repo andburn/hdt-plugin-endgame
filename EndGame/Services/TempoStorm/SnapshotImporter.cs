@@ -28,7 +28,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			};
 		}
 
-		public async Task<Tuple<string, string>> GetSnapshotSlug(string type)
+		public virtual async Task<Tuple<string, string>> GetSnapshotSlug(string type)
 		{
 			// build the Json query
 			var metaReq = new SnapshotRequest();
@@ -53,7 +53,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 				metaResponse.SnapshotType);
 		}
 
-		public async Task<SnapshotResponse> GetSnapshot(Tuple<string, string> slug)
+		public virtual async Task<SnapshotResponse> GetSnapshot(Tuple<string, string> slug)
 		{
 			var snapReq = new SnapshotRequest();
 			snapReq.SetQuery($"slug:{slug.Item1}", $"snapshotType:{slug.Item2}");
@@ -86,7 +86,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return snapResponse;
 		}
 
-		public async Task<int> ImportDecks(bool includeWild, bool archive, bool deletePrevious, bool removeClass)
+		public virtual async Task<int> ImportDecks(bool includeWild, bool archive, bool deletePrevious, bool removeClass)
 		{
 			// delete previous snapshot decks
 			if (deletePrevious)
