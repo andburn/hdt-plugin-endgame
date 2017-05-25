@@ -48,14 +48,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common">
-      <HintPath>..\..\build\Common\Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Common.Providers">
-      <HintPath>..\..\build\Common\Common.Providers.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HearthstoneDeckTracker">
       <HintPath>..\..\build\Hearthstone Deck Tracker\HearthstoneDeckTracker.exe</HintPath>
       <Private>False</Private>
