@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"          
              xmlns:viewmodels="clr-namespace:HDT.Plugins.EndGame.ViewModels"
              xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
-             xmlns:controls="clr-namespace:HDT.Plugins.Common.Controls;assembly=Common"
+             xmlns:controls="clr-namespace:HDT.Plugins.Common.Controls;assembly=EndGame.Common"
              mc:Ignorable="d" 
              Width="620" Height="500"
              MinWidth="620" MinHeight="500"
@@ -33,7 +33,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="60">
             <DockPanel.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Common;component/Resources/hdt-banner.png" 
+                <ImageBrush ImageSource="pack://application:,,,/EndGame.Common;component/Resources/hdt-banner.png" 
                             Viewport="0,-50,600,150"
                             ViewportUnits="Absolute"
                             TileMode="Tile"

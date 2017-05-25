@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock FontFamily="pack://application:,,,/Common;component/Resources/#IcoMoon-Free" 
+        <TextBlock FontFamily="pack://application:,,,/EndGame.Common;component/Resources/#IcoMoon-Free" 
                    FontSize="40" Text="&#xea0e;" TextAlignment="Center" />
         <TextBlock Text="{Binding Message}" TextAlignment="Center" FontSize="18" />
     </StackPanel>

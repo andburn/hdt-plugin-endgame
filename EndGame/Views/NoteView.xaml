@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:util="clr-namespace:HDT.Plugins.EndGame.Utilities"
-        xmlns:common="clr-namespace:HDT.Plugins.Common.Controls.Extensions;assembly=Common"
+        xmlns:common="clr-namespace:HDT.Plugins.Common.Controls.Extensions;assembly=EndGame.Common"
         mc:Ignorable="d"
         d:DesignWidth="600" d:DesignHeight="400">
     <UserControl.Resources>

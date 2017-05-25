@@ -76,6 +76,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EndGame.Common\EndGame.Common.csproj">
+      <Project>{6c9627c8-86d9-42bb-8080-a33534fc193d}</Project>
+      <Name>EndGame.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EndGame\EndGame.csproj">
       <Project>{5601a829-037b-4142-94a3-39d6624fe001}</Project>
       <Name>EndGame</Name>
