@@ -7,6 +7,9 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Controls;
+using HDT.Plugins.Common.Providers.Metro;
+using HDT.Plugins.Common.Providers.Tracker;
+using HDT.Plugins.Common.Providers.Web;
 using HDT.Plugins.Common.Services;
 using HDT.Plugins.Common.Settings;
 using HDT.Plugins.Common.Utils;
@@ -15,30 +18,27 @@ using HDT.Plugins.EndGame.Services.TempoStorm;
 using HDT.Plugins.EndGame.Utilities;
 using HDT.Plugins.EndGame.ViewModels;
 using HDT.Plugins.EndGame.Views;
+using Hearthstone_Deck_Tracker.Plugins;
 using Ninject;
 
 namespace HDT.Plugins.EndGame
 {
-	public class EndGame : IPluggable
+	public class EndGame : IPlugin
 	{
+		private static IKernel _kernel;
+		private static MainViewModel _viewModel;
+
 		public static IUpdateService Updater;
 		public static ILoggingService Logger;
 		public static IDataRepository Data;
 		public static IEventsService Events;
 		public static IGameClientService Client;
 		public static IConfigurationRepository Config;
-		public static Settings Settings;
-		private static MainViewModel _viewModel;
+		public static Settings Settings;		
 
-		private static IKernel _kernel;
-		private static Version _version;
-
-		public static readonly string Name = "End Game";
-
-		public EndGame(IKernel kernel, Version version)
+		public EndGame()
 		{
-			_kernel = kernel;
-			_version = version;
+			_kernel = GetKernel();
 			// initialize services
 			Updater = _kernel.Get<IUpdateService>();
 			Logger = _kernel.Get<ILoggingService>();
@@ -54,22 +54,44 @@ namespace HDT.Plugins.EndGame
 			_viewModel = new MainViewModel();
 		}
 
-		public MenuItem CreateMenu()
+		public string Name => "End Game";
+
+		public string Description => "Matches opponent's played cards to defined deck archetypes at the end of game.";
+
+		public string ButtonText => "Settings";
+
+		public string Author => "andburn";
+
+		private Version _version;
+
+		public Version Version
 		{
-			var pm = new PluginMenu("End Game", IcoMoon.Target);
-			pm.Append("Import Meta Decks",
-				new RelayCommand(async () => await ImportMetaDecks()));
-			pm.Append("Settings",
-				new RelayCommand(async () => await ShowSettings()));
-			return pm.Menu;
+			get
+			{
+				if (_version == null)
+					_version = GetVersion() ?? new Version(0, 0, 0, 0);
+				return _version;
+			}
 		}
 
-		public async void ButtonPress()
+		private MenuItem _menuItem;
+
+		public MenuItem MenuItem
+		{
+			get
+			{
+				if (_menuItem == null)
+					_menuItem = CreateMenu();
+				return _menuItem;				
+			}
+		}
+
+		public async void OnButtonPress()
 		{
 			await ShowSettings();
 		}
 
-		public async void Load()
+		public async void OnLoad()
 		{
 			try
 			{
@@ -86,12 +108,12 @@ namespace HDT.Plugins.EndGame
 			Events.OnGameEnd(Run);
 		}
 
-		public void Unload()
+		public void OnUnload()
 		{
 			CloseMainView();
 		}
 
-		public void Repeat()
+		public void OnUpdate()
 		{
 		}
 
@@ -201,6 +223,35 @@ namespace HDT.Plugins.EndGame
 			{
 				Logger.Error($"Github update failed: {e.Message}");
 			}
+		}
+
+		private MenuItem CreateMenu()
+		{
+			var pm = new PluginMenu("End Game", IcoMoon.Target);
+			pm.Append("Import Meta Decks",
+				new RelayCommand(async () => await ImportMetaDecks()));
+			pm.Append("Settings",
+				new RelayCommand(async () => await ShowSettings()));
+			return pm.Menu;
+		}
+
+		private Version GetVersion()
+		{
+			return GitVersion.Get(Assembly.GetExecutingAssembly(), this);
+		}
+
+		private IKernel GetKernel()
+		{
+			var kernel = new StandardKernel();
+			kernel.Bind<IDataRepository>().To<TrackerDataRepository>().InSingletonScope();
+			kernel.Bind<IUpdateService>().To<GitHubUpdateService>().InSingletonScope();
+			kernel.Bind<ILoggingService>().To<TrackerLoggingService>().InSingletonScope();
+			kernel.Bind<IEventsService>().To<TrackerEventsService>().InSingletonScope();
+			kernel.Bind<IGameClientService>().To<TrackerClientService>().InSingletonScope();
+			kernel.Bind<IConfigurationRepository>().To<TrackerConfigRepository>().InSingletonScope();
+			kernel.Bind<ISlidePanel>().To<MetroSlidePanel>();
+			kernel.Bind<IHttpClient>().To<HttpClient>();
+			return kernel;
 		}
 	}
 }
