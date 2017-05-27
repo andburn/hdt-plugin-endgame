@@ -1,10 +1,13 @@
 #Requires -Version 3.0
 
 Param(
+	[string]$ProjectName,
 	[switch]$PreBuild,
 	[switch]$PostBuild,
 	[switch]$PostTest
 )
+
+$ProjectNameLower = $ProjectName.ToLower()
 
 $Root = "C:\projects\build"
 If (-not (test-path $Root)) {
@@ -39,7 +42,7 @@ If ($PreBuild) {
 } ElseIf ($PostBuild) {
 	# Create a release package
 	Write-Host -Foreground Cyan "Creating deployment artifacts"
-	BuildArtifacts "EndGame.Plugin" "hdt-plugin-endgame" "$Root\EndGame" "bin\x86\Release"
+	BuildArtifacts $ProjectName "hdt-plugin-$ProjectNameLower" "$Root\$ProjectName" "bin\x86\Release"
 } ElseIf ($PostTest) {
 	$OpenCoverPath = Package-Path('OpenCover')
 	$NunitPath = Package-Path('NUnit.ConsoleRunner')
@@ -48,8 +51,8 @@ If ($PreBuild) {
 	& "$OpenCoverPath\tools\OpenCover.Console.exe" `
 		-register:user `
 		-target:"$NunitPath\tools\nunit3-console.exe" `
-		-targetargs:"--noheader /domain:single EndGame.Tests/bin/x86/release/EndGame.Tests.dll" `
-		-filter:"+[EndGame]*" -mergebyhash -skipautoprops `
+		-targetargs:"--noheader /domain:single $ProjectName.Tests/bin/x86/release/$ProjectName.Tests.dll" `
+		-filter:"+[$ProjectName]*" -mergebyhash -skipautoprops `
 		-output:"coverage.xml"
 
 	& "$CoverallsPath\tools\coveralls.net.exe" --opencover coverage.xml

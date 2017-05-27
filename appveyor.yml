@@ -1,19 +1,23 @@
 version: 1.0.{build}
+branches:
+  only:
+    - master
 configuration: Release
 platform: x86
 environment:
   COVERALLS_REPO_TOKEN:
     secure: w6yF8ULdQfsRMAv7vq3yFZ/d/7ZQSbL0PZUZRHvpszoW5vIDAyQiemXyfcJu6Sp3
 before_build:
+- ps: .\bootstrap.ps1
 - git clone https://github.com/andburn/powershell.git C:\projects\build\Powershell
-- ps: .\appveyor.ps1 -PreBuild
+- ps: .\appveyor.ps1 EndGame -PreBuild
 build:
   project: EndGame.sln
   verbosity: minimal
 after_build:
-- ps: .\appveyor.ps1 -PostBuild
+- ps: .\appveyor.ps1 EndGame -PostBuild
 after_test:
-- ps: .\appveyor.ps1 -PostTest
+- ps: .\appveyor.ps1 EndGame -PostTest
 deploy:
 - provider: GitHub
   tag: $(APPVEYOR_REPO_TAG_NAME)
