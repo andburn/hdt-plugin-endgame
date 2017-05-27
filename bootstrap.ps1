@@ -73,7 +73,8 @@ Param(
 if (Get-Command "git.exe" -ErrorAction SilentlyContinue) {
     RemoveDirectoryIfExists $TempDir
     # clone the Common repo to a temp directory
-    git clone --depth=1 $CommonRepo $TempName
+	Write-Host "Cloning common repo"
+    git clone -q --branch=master --depth=1 $CommonRepo $TempName
     if (-not (DirectoryExistsAndIsNonEmpty $TempDir)) {
         ErrorAndExit "failed to clone git repository"
     }
@@ -91,7 +92,7 @@ if (Get-Command "git.exe" -ErrorAction SilentlyContinue) {
     Rename-Item "$TempDir\$Common\$Common.csproj" "$TempDir\$Common\$name.$Common.csproj"
     Rename-Item "$TempDir\$Common" "$TempDir\$name.$Common"
     # delete any existing files in this plugins common project
-    Remove-Item "$RootDir\$name.$Common\*" -Recurse
+	RemoveDirectoryIfExists "$RootDir\$name.$Common"
     # copy the new Common project in its place
     Copy-Item "$TempDir\$name.$Common" $RootDir -Force -Recurse
     # remove the temporary files
