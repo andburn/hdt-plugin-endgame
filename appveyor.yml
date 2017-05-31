@@ -8,16 +8,17 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: w6yF8ULdQfsRMAv7vq3yFZ/d/7ZQSbL0PZUZRHvpszoW5vIDAyQiemXyfcJu6Sp3
 before_build:
-- ps: .\bootstrap.ps1
-- git clone https://github.com/andburn/powershell.git C:\projects\build\Powershell
-- ps: .\appveyor.ps1 EndGame -PreBuild
+  - git submodule update --init --recursive
+  - git clone https://github.com/andburn/powershell.git C:\projects\build\Powershell
+  - ps: .\Scripts\bootstrap.ps1
+  - ps: .\Scripts\appveyor.ps1 EndGame -PreBuild
 build:
   project: EndGame.sln
   verbosity: minimal
 after_build:
-- ps: .\appveyor.ps1 EndGame -PostBuild
+- ps: .\Scripts\appveyor.ps1 EndGame -PostBuild
 after_test:
-- ps: .\appveyor.ps1 EndGame -PostTest
+- ps: .\Scripts\appveyor.ps1 EndGame -PostTest
 deploy:
 - provider: GitHub
   tag: $(APPVEYOR_REPO_TAG_NAME)

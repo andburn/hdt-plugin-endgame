@@ -1,0 +1,3 @@
+[submodule "Scripts"]
+	path = Scripts
+	url = https://github.com/andburn/hdt-plugin-scripts.git
