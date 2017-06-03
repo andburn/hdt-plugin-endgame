@@ -153,11 +153,13 @@ namespace HDT.Plugins.EndGame
 				view = new MainView();
 				view.DataContext = _viewModel;
 			}
+			// show the window, and restore if needed
+			view.Show();
+			if (view.WindowState == WindowState.Minimized)
+				view.WindowState = WindowState.Normal;
+			view.Activate();
 			// navigate to location
 			await _viewModel.OnNavigation(location);
-			// show window, bring to front
-			view.Show();
-			view.Activate();
 		}
 
 		public static void CloseMainView()
