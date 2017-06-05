@@ -230,9 +230,9 @@ namespace HDT.Plugins.EndGame
 		private MenuItem CreateMenu()
 		{
 			var pm = new PluginMenu("End Game", IcoMoon.Target);
-			pm.Append("Import Meta Decks",
+			pm.Append("Import Meta Decks", IcoMoon.Download2,
 				new RelayCommand(async () => await ImportMetaDecks()));
-			pm.Append("Settings",
+			pm.Append("Settings", IcoMoon.Cog,
 				new RelayCommand(async () => await ShowSettings()));
 			return pm.Menu;
 		}
