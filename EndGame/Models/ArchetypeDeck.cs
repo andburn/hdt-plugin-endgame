@@ -2,11 +2,20 @@
 using System.Linq;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
+using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.Models
 {
 	public class ArchetypeDeck : Deck
 	{
+		public string DisplayName
+		{
+			get
+			{
+				return Name + (IsStandard ? string.Empty : $" ({Strings.MetaWild})");
+			}
+		}
+
 		public ArchetypeDeck()
 			: base()
 		{
