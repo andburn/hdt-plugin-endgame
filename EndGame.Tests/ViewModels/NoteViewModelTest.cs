@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
@@ -86,6 +87,14 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 				Throws.Nothing);
 		}
 
-		
+		[Test]
+		public async Task Decks_Are_UpdatedOnUpdate()
+		{
+			viewModel.Decks.Add(new MatchResult(null, 0));
+			Assert.That(viewModel.Decks.Count, Is.GreaterThan(0));
+			await viewModel.Update();
+			Assert.That(viewModel.Decks.Count, Is.EqualTo(0));
+			Assert.That(viewModel.IsLoadingDecks, Is.False);
+		}
 	}
 }

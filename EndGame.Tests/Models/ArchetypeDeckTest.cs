@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.EndGame.Models;
@@ -44,7 +45,7 @@ namespace HDT.Plugins.EndGame.Tests.Models
 		[Test]
 		public void DisplayName_Equals_Name_IfStandardDeck()
 		{
-			var deck = new ArchetypeDeck("Test", PlayerClass.DRUID, true);
+			var deck = new ArchetypeDeck(new Deck(Guid.NewGuid(), "Test", false, "Druid", true));
 			Assert.AreEqual($"Test", deck.DisplayName);
 			deck.Name = "Renamed";
 			Assert.AreEqual($"Renamed", deck.DisplayName);

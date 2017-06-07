@@ -126,7 +126,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\IArchetypeImporter.cs" />
-    <Compile Include="EndGameExceptions.cs" />
+    <Compile Include="ImportException.cs" />
     <Compile Include="Services\TempoStorm\DeckSnapshot.cs" />
     <Compile Include="Services\TempoStorm\Error.cs" />
     <Compile Include="Services\TempoStorm\Slugs.cs" />
