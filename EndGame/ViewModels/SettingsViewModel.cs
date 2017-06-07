@@ -22,12 +22,12 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			get
 			{
-				return EndGame.Settings.Get("IncludeWild");
+				return EndGame.Settings.Get(Strings.IncludeWild);
 			}
 			set
 			{
-				EndGame.Settings.Set("IncludeWild", value);
-				RaisePropertyChanged("IncludeWild");
+				EndGame.Settings.Set(Strings.IncludeWild, value);
+				RaisePropertyChanged(Strings.IncludeWild);
 			}
 		}
 
