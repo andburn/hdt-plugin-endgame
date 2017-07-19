@@ -21,6 +21,7 @@
 		// Navigation
 		public const string NavSettings = "settings";
 		public const string NavNote = "note";
+		public const string NavStats = "stats";
 		// Other
 		public const string ArchetypeTag = "Archetype";
 		public const string PluginTag = "EndGame";

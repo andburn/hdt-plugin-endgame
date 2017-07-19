@@ -12,7 +12,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 		private static readonly NoteViewModelBase NoteVM = new NoteViewModel();
 		private static readonly NoteViewModelBase BasicNoteVM = new BasicNoteViewModel();
 		private static readonly NoteViewModelBase EmptyNoteVM = new EmptyNoteViewModel();
-
+		private static readonly StatsViewModel StatsVM = new StatsViewModel();
+		
 		private string _contentTitle;
 
 		public string ContentTitle
@@ -48,6 +49,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 			else if (loc == Strings.NavNote)
 			{
 				await LoadNote();
+			}
+			else if (loc == Strings.NavStats)
+			{
+				ContentViewModel = StatsVM;
 			}
 			else
 			{

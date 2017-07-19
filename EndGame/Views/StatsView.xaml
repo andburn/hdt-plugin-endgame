@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="HDT.Plugins.EndGame.Views.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
+             xmlns:common="clr-namespace:HDT.Plugins.Common.Enums;assembly=EndGame.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <common:EnumStringConverter x:Key="EnumStringConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisiblityConverter" />
+    </UserControl.Resources>
+
+    <StackPanel HorizontalAlignment="Center">
+        <DockPanel Margin="0,2">
+            <Label Content="Game Mode" Width="100" DockPanel.Dock="Left" />
+            <ComboBox Width="200"
+                      ItemsSource="{Binding GameModes}" SelectedItem="{Binding SelectedGameMode}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Margin="0,2">
+            <Label Content="Game Format" Width="100" DockPanel.Dock="Left" />
+            <ComboBox Width="200"
+                      ItemsSource="{Binding GameFormats}" SelectedItem="{Binding SelectedGameFormat}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Margin="0,2">
+            <Label Content="Deck" Width="100" DockPanel.Dock="Left" />
+            <ComboBox Width="200"
+                      ItemsSource="{Binding Decks}"  SelectedItem="{Binding SelectedDeck}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Margin="0,2">
+            <Label Content="Region" Width="100" DockPanel.Dock="Left" />
+            <ComboBox Width="200"
+                      ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}">
+            </ComboBox>
+        </DockPanel>
+    </StackPanel>
+</UserControl>
