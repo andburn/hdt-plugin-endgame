@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="EndGameTest.cs" />
     <Compile Include="Models\ArchetypeDeckTest.cs" />
+    <Compile Include="Models\ArchetypeRecordTest.cs" />
     <Compile Include="Models\CardTest.cs" />
     <Compile Include="Models\DeckTest.cs" />
     <Compile Include="Models\MatchResultTest.cs" />

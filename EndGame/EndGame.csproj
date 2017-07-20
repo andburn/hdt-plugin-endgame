@@ -98,6 +98,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ArchetypeRecord.cs" />
     <Compile Include="Utilities\IUpdatable.cs" />
     <Compile Include="ViewModels\BasicNoteViewModel.cs" />
     <Compile Include="ViewModels\EmptyNoteViewModel.cs" />
