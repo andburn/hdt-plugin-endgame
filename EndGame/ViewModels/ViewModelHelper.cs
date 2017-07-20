@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
 
@@ -52,6 +54,68 @@ namespace HDT.Plugins.EndGame.ViewModels
 				default:
 					return EndGame.Settings.Get(Strings.RecordOtherArchetypes).Bool;
 			}
+		}
+
+		public static IEnumerable<Deck> GetDecksWithArchetypeGames(IDataRepository data)
+		{
+			var games = data.GetAllGames()
+				.Where(g => g.Note.HasArchetype)
+				.Select(g => g.Deck.Id)
+				.Distinct()
+				.ToLookup(x => x);
+			var decks = data.GetAllDecks()
+				.Where(d => games.Contains(d.Id))
+				.ToList();
+			return decks;
+		}
+
+		public static IEnumerable<ArchetypeRecord> GetArchetypeStats(IDataRepository data, Deck deck)
+		{
+			var stats = new List<ArchetypeRecord>();
+			if (deck != null && deck.Id != null && deck.Id != Guid.Empty)
+			{
+				var archetypes = new Dictionary<string, ArchetypeRecord>();
+				var games = data.GetAllGamesWithDeck(deck.Id);
+				foreach (var g in games)
+				{
+					if (g.Note.HasArchetype)
+					{
+						var type = g.Note.Archetype;
+						if (!archetypes.ContainsKey(type))
+						{
+							archetypes[type] = new ArchetypeRecord(type, g.OpponentClass);
+						}
+						if (g.Result == GameResult.WIN)
+						{
+							archetypes[type].TotalWins++;
+						}
+						else if (g.Result == GameResult.LOSS)
+						{
+							archetypes[type].TotalLosses++;
+						}
+					}					
+					else
+					{
+						if (!archetypes.ContainsKey(ArchetypeRecord.DefaultName))
+						{
+							archetypes[ArchetypeRecord.DefaultName] = new ArchetypeRecord();
+						}
+						if (g.Result == GameResult.WIN)
+						{
+							archetypes[ArchetypeRecord.DefaultName].TotalWins++;
+						}
+						else if (g.Result == GameResult.LOSS)
+						{
+							archetypes[ArchetypeRecord.DefaultName].TotalLosses++;
+						}
+					}
+				}
+				if (archetypes.Count > 0)
+					stats = archetypes.Values.ToList();
+				else
+					stats.Add(new ArchetypeRecord());
+			}
+			return stats;
 		}
 	}
 }

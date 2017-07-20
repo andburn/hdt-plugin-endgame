@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
+using HDT.Plugins.EndGame.Models;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class StatsViewModel : ViewModelBase
 	{
+		public ObservableCollection<ArchetypeRecord> Stats { get; set; }
+
 		private IEnumerable<Deck> _decks;
 
 		public IEnumerable<Deck> Decks
@@ -89,22 +92,45 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public Deck SelectedDeck
 		{
 			get { return _selectedDeck; }
-			set { Set(() => SelectedDeck, ref _selectedDeck, value); }
+			set { Set(() => SelectedDeck, ref _selectedDeck, value); Update(value); }
 		}
 
 		public StatsViewModel()
-		{			
+		{
+			Stats = new ObservableCollection<ArchetypeRecord>();
 			// initialize selection lists
 			GameModes = Enum.GetValues(typeof(GameMode)).OfType<GameMode>();
 			GameFormats = Enum.GetValues(typeof(GameFormat)).OfType<GameFormat>();
 			TimePeriods = Enum.GetValues(typeof(TimeFrame)).OfType<TimeFrame>();
 			Regions = Enum.GetValues(typeof(Region)).OfType<Region>().Where(x => x != Region.UNKNOWN);
-			Decks = EndGame.Data.GetAllDecks();
+
+			Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
+
 			// set default selections
 			SelectedGameMode = GameMode.ALL;
 			SelectedGameFormat = GameFormat.ANY;
 			SelectedRegion = Region.US;
 			SelectedTimeFrame = TimeFrame.ALL;
+			SelectedDeck = Decks.First();
+
+			PropertyChanged += StatsViewModel_PropertyChanged;
+		}
+
+		private void Update(Deck deck)
+		{
+			EndGame.Logger.Info("Updating stats");
+			Stats.Clear();
+			foreach (var s in ViewModelHelper.GetArchetypeStats(EndGame.Data, deck))
+			{
+				EndGame.Logger.Info("Adding " + s.ToString());
+				Stats.Add(s);
+			}
+		}
+
+		private void StatsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "SelectedDeck")
+				EndGame.Logger.Info("Selected " + SelectedDeck.Name);
 		}
 	}
 }

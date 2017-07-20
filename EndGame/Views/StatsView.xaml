@@ -5,11 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:common="clr-namespace:HDT.Plugins.Common.Enums;assembly=EndGame.Common"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <common:EnumStringConverter x:Key="EnumStringConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisiblityConverter" />
+        <CollectionViewSource x:Key="StatsGroup"  Source="{Binding Path=Stats}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Klass" />
+            </CollectionViewSource.GroupDescriptions>
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="WinRate" Direction="Descending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
 
     <StackPanel HorizontalAlignment="Center">
@@ -52,5 +61,30 @@
                       ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}">
             </ComboBox>
         </DockPanel>
+        <ListView x:Name="StatsList" Margin="0,4" DataContext="{StaticResource StatsGroup}" ItemsSource="{Binding IsAsync=True}">
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </Style>
+            </ListView.Resources>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <!-- Note this is the Name attribute of the GroupView (not of Stats item) -->
+                            <TextBlock FontWeight="Bold" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Win" Width="50" DisplayMemberBinding="{Binding TotalWins}" />
+                    <GridViewColumn Header="Loss" Width="50" DisplayMemberBinding="{Binding TotalLosses}" />
+                    <GridViewColumn Header="Win Rate" Width="50" DisplayMemberBinding="{Binding WinRateText}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </StackPanel>
 </UserControl>
