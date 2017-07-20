@@ -48,11 +48,11 @@
                                      Text="SETTINGS" Icon="&#xe994;" Cursor="Hand"
                                      Command="{Binding NavigateCommand}" Param="settings" />
             <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
-                                     Text="NOTE" Icon="&#xe926;" Cursor="Hand"
-                                     Command="{Binding NavigateCommand}" Param="note" />
-            <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
                                      Text="STATS" Icon="&#xe99b;" Cursor="Hand"
                                      Command="{Binding NavigateCommand}" Param="stats" />
+            <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
+                                     Text="NOTE" Icon="&#xe926;" Cursor="Hand"
+                                     Command="{Binding NavigateCommand}" Param="note" />
             <TextBlock Foreground="White" FontSize="28" VerticalAlignment="Center" Margin="8">End Game</TextBlock>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" Background="#2e3136">

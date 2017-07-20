@@ -137,6 +137,11 @@ namespace HDT.Plugins.EndGame
 			await ShowMainView(Strings.NavSettings);
 		}
 
+		public static async Task ShowStats()
+		{
+			await ShowMainView(Strings.NavStats);
+		}
+
 		public static async Task ShowMainView(string location)
 		{
 			MainView view = null;
@@ -232,6 +237,8 @@ namespace HDT.Plugins.EndGame
 			var pm = new PluginMenu("End Game", IcoMoon.Target);
 			pm.Append("Import Meta Decks", IcoMoon.Download2,
 				new RelayCommand(async () => await ImportMetaDecks()));
+			pm.Append("Stats", IcoMoon.StatsDots,
+				new RelayCommand(async () => await ShowStats()));
 			pm.Append("Settings", IcoMoon.Cog,
 				new RelayCommand(async () => await ShowSettings()));
 			return pm.Menu;
