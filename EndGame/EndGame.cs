@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Controls;
 using HDT.Plugins.Common.Providers.Metro;
 using HDT.Plugins.Common.Providers.Tracker;
@@ -20,247 +13,254 @@ using HDT.Plugins.EndGame.ViewModels;
 using HDT.Plugins.EndGame.Views;
 using Hearthstone_Deck_Tracker.Plugins;
 using Ninject;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace HDT.Plugins.EndGame
 {
-	public class EndGame : IPlugin
-	{
-		private static IKernel _kernel;
-		private static MainViewModel _viewModel;
+    public class EndGame : IPlugin
+    {
+        private static IKernel _kernel;
+        private static MainViewModel _viewModel;
 
-		public static IUpdateService Updater;
-		public static ILoggingService Logger;
-		public static IDataRepository Data;
-		public static IEventsService Events;
-		public static IGameClientService Client;
-		public static IConfigurationRepository Config;
-		public static Settings Settings;		
+        public static IUpdateService Updater;
+        public static ILoggingService Logger;
+        public static IDataRepository Data;
+        public static IEventsService Events;
+        public static IGameClientService Client;
+        public static IConfigurationRepository Config;
+        public static Settings Settings;
 
-		public EndGame()
-		{
-			_kernel = GetKernel();
-			// initialize services
-			Updater = _kernel.Get<IUpdateService>();
-			Logger = _kernel.Get<ILoggingService>();
-			Data = _kernel.Get<IDataRepository>();
-			Events = _kernel.Get<IEventsService>();
-			Client = _kernel.Get<IGameClientService>();
-			Config = _kernel.Get<IConfigurationRepository>();
-			// load settings
-			var assembly = Assembly.GetExecutingAssembly();
-			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
-			Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
-			// main view model
-			_viewModel = new MainViewModel();
-		}
+        public EndGame()
+        {
+            _kernel = GetKernel();
+            // initialize services
+            Updater = _kernel.Get<IUpdateService>();
+            Logger = _kernel.Get<ILoggingService>();
+            Data = _kernel.Get<IDataRepository>();
+            Events = _kernel.Get<IEventsService>();
+            Client = _kernel.Get<IGameClientService>();
+            Config = _kernel.Get<IConfigurationRepository>();
+            // load settings
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
+            Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
+            // main view model
+            _viewModel = new MainViewModel();
+        }
 
-		public string Name => "End Game";
+        public string Name => "End Game";
 
-		public string Description => "Matches opponent's played cards to defined deck archetypes at the end of game.";
+        public string Description => "Matches opponent's played cards to defined deck archetypes at the end of game.";
 
-		public string ButtonText => "Settings";
+        public string ButtonText => "Settings";
 
-		public string Author => "andburn";
+        public string Author => "andburn";
 
-		private Version _version;
+        private Version _version;
 
-		public Version Version
-		{
-			get
-			{
-				if (_version == null)
-					_version = GetVersion() ?? new Version(0, 0, 0, 0);
-				return _version;
-			}
-		}
+        public Version Version
+        {
+            get
+            {
+                if (_version == null)
+                    _version = GetVersion() ?? new Version(0, 0, 0, 0);
+                return _version;
+            }
+        }
 
-		private MenuItem _menuItem;
+        private MenuItem _menuItem;
 
-		public MenuItem MenuItem
-		{
-			get
-			{
-				if (_menuItem == null)
-					_menuItem = CreateMenu();
-				return _menuItem;				
-			}
-		}
+        public MenuItem MenuItem
+        {
+            get
+            {
+                if (_menuItem == null)
+                    _menuItem = CreateMenu();
+                return _menuItem;
+            }
+        }
 
-		public async void OnButtonPress()
-		{
-			await ShowSettings();
-		}
+        public async void OnButtonPress()
+        {
+            await ShowSettings();
+        }
 
-		public async void OnLoad()
-		{
-			try
-			{
-				// disable the built in note dialog
-				Config.Set("ShowNoteDialogAfterGame", false);
-			}
-			catch (Exception e)
-			{
-				Logger.Error(e);
-			}
-			// check for plugin update
-			await UpdateCheck("andburn", "hdt-plugin-endgame");
-			// set the action to run on the game end event
-			Events.OnGameEnd(Run);
-		}
+        public async void OnLoad()
+        {
+            try
+            {
+                // disable the built in note dialog
+                Config.Set("ShowNoteDialogAfterGame", false);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
+            // check for plugin update
+            await UpdateCheck("andburn", "hdt-plugin-endgame");
+            // set the action to run on the game end event
+            Events.OnGameEnd(Run);
+        }
 
-		public void OnUnload()
-		{
-			CloseMainView();
-		}
+        public void OnUnload()
+        {
+            CloseMainView();
+        }
 
-		public void OnUpdate()
-		{
-		}
+        public void OnUpdate()
+        {
+        }
 
-		public async static void Run()
-		{
-			try
-			{
-				if (Settings.Get(Strings.WaitUntilBackInMenu).Bool)
-					await WaitUntilInMenu();
-				await ShowMainView(Strings.NavNote);
-			}
-			catch (Exception e)
-			{
-				Logger.Error(e);
-				Notify("EndGame Error", e.Message, 15, IcoMoon.Warning, null);
-			}
-		}
+        public async static void Run()
+        {
+            try
+            {
+                if (Settings.Get(Strings.WaitUntilBackInMenu).Bool)
+                    await WaitUntilInMenu();
+                await ShowMainView(Strings.NavNote);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                Notify("EndGame Error", e.Message, 15, IcoMoon.Warning, null);
+            }
+        }
 
-		public static async Task ShowSettings()
-		{
-			await ShowMainView(Strings.NavSettings);
-		}
+        public static async Task ShowSettings()
+        {
+            await ShowMainView(Strings.NavSettings);
+        }
 
-		public static async Task ShowStats()
-		{
-			await ShowMainView(Strings.NavStats);
-		}
+        public static async Task ShowStats()
+        {
+            await ShowMainView(Strings.NavStats);
+        }
 
-		public static async Task ShowMainView(string location)
-		{
-			MainView view = null;
-			// check for any open windows
-			var open = Application.Current.Windows.OfType<MainView>();
-			if (open.Count() == 1)
-			{
-				view = open.FirstOrDefault();
-			}
-			else
-			{
-				CloseMainView();
-				// create view
-				view = new MainView();
-				view.DataContext = _viewModel;
-			}
-			// show the window, and restore if needed
-			view.Show();
-			if (view.WindowState == WindowState.Minimized)
-				view.WindowState = WindowState.Normal;
-			view.Activate();
-			// navigate to location
-			await _viewModel.OnNavigation(location);
-		}
+        public static async Task ShowMainView(string location)
+        {
+            MainView view = null;
+            // check for any open windows
+            var open = Application.Current.Windows.OfType<MainView>();
+            if (open.Count() == 1)
+            {
+                view = open.FirstOrDefault();
+            }
+            else
+            {
+                CloseMainView();
+                // create view
+                view = new MainView();
+                view.DataContext = _viewModel;
+            }
+            // show the window, and restore if needed
+            view.Show();
+            if (view.WindowState == WindowState.Minimized)
+                view.WindowState = WindowState.Normal;
+            view.Activate();
+            // navigate to location
+            await _viewModel.OnNavigation(location);
+        }
 
-		public static void CloseMainView()
-		{
-			foreach (var x in Application.Current.Windows.OfType<MainView>())
-				x.Close();
-		}
+        public static void CloseMainView()
+        {
+            foreach (var x in Application.Current.Windows.OfType<MainView>())
+                x.Close();
+        }
 
-		public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
-		{
-			SlidePanelManager
-				.Notification(_kernel.Get<ISlidePanel>(), title, message, icon, action)
-				.AutoClose(autoClose);
-		}
+        public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
+        {
+            SlidePanelManager
+                .Notification(_kernel.Get<ISlidePanel>(), title, message, icon, action)
+                .AutoClose(autoClose);
+        }
 
-		public static async Task ImportMetaDecks()
-		{
-			try
-			{
-				IArchetypeImporter importer = _kernel.Get<SnapshotImporter>();
-				var count = await importer.ImportDecks(
-					Settings.Get(Strings.IncludeWild).Bool,
-					Settings.Get(Strings.AutoArchiveArchetypes).Bool,
-					Settings.Get(Strings.DeletePreviouslyImported).Bool,
-					Settings.Get(Strings.RemoveClassFromName).Bool);
-				Notify("Import Complete", $"{count} decks imported", 10, IcoMoon.Notification, null);
-			}
-			catch (Exception e)
-			{
-				Logger.Error(e);
-				Notify("Import Failed", e.Message, 15, IcoMoon.Warning, null);
-			}
-		}
+        public static async Task ImportMetaDecks()
+        {
+            try
+            {
+                IArchetypeImporter importer = _kernel.Get<SnapshotImporter>();
+                var count = await importer.ImportDecks(
+                    Settings.Get(Strings.IncludeWild).Bool,
+                    Settings.Get(Strings.AutoArchiveArchetypes).Bool,
+                    Settings.Get(Strings.DeletePreviouslyImported).Bool,
+                    Settings.Get(Strings.RemoveClassFromName).Bool);
+                Notify("Import Complete", $"{count} decks imported", 10, IcoMoon.Notification, null);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                Notify("Import Failed", e.Message, 15, IcoMoon.Warning, null);
+            }
+        }
 
-		private static async Task WaitUntilInMenu()
-		{
-			var timeout = 30000;
-			var wait = 1000;
-			var elapsed = 0;
-			while (!Client.IsInMenu())
-			{
-				await Task.Delay(wait);
-				elapsed += wait;
-				if (elapsed >= timeout)
-					return;
-			}
-		}
+        private static async Task WaitUntilInMenu()
+        {
+            var timeout = 30000;
+            var wait = 1000;
+            var elapsed = 0;
+            while (!Client.IsInMenu())
+            {
+                await Task.Delay(wait);
+                elapsed += wait;
+                if (elapsed >= timeout)
+                    return;
+            }
+        }
 
-		private async Task UpdateCheck(string user, string repo)
-		{
-			try
-			{
-				var latest = await Updater.CheckForUpdate(user, repo, _version);
-				if (latest.HasUpdate)
-				{
-					Logger.Info($"Plugin Update available ({latest.Version})");
-					Notify("Plugin Update Available",
-						$"[DOWNLOAD]({latest.DownloadUrl}) {Name} v{latest.Version}",
-						10, IcoMoon.Download3, () => Process.Start(latest.DownloadUrl));
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.Error($"Github update failed: {e.Message}");
-			}
-		}
+        private async Task UpdateCheck(string user, string repo)
+        {
+            try
+            {
+                var latest = await Updater.CheckForUpdate(user, repo, _version);
+                if (latest.HasUpdate)
+                {
+                    Logger.Info($"Plugin Update available ({latest.Version})");
+                    Notify("Plugin Update Available",
+                        $"[DOWNLOAD]({latest.DownloadUrl}) {Name} v{latest.Version}",
+                        10, IcoMoon.Download3, () => Process.Start(latest.DownloadUrl));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Github update failed: {e.Message}");
+            }
+        }
 
-		private MenuItem CreateMenu()
-		{
-			var pm = new PluginMenu("End Game", IcoMoon.Target);
-			pm.Append("Import Meta Decks", IcoMoon.Download2,
-				new RelayCommand(async () => await ImportMetaDecks()));
-			pm.Append("Stats", IcoMoon.StatsDots,
-				new RelayCommand(async () => await ShowStats()));
-			pm.Append("Settings", IcoMoon.Cog,
-				new RelayCommand(async () => await ShowSettings()));
-			return pm.Menu;
-		}
+        private MenuItem CreateMenu()
+        {
+            var pm = new PluginMenu("End Game", IcoMoon.Target);
+            pm.Append("Import Meta Decks", IcoMoon.Download2,
+                new RelayCommand(async () => await ImportMetaDecks()));
+            pm.Append("Stats", IcoMoon.StatsDots,
+                new RelayCommand(async () => await ShowStats()));
+            pm.Append("Settings", IcoMoon.Cog,
+                new RelayCommand(async () => await ShowSettings()));
+            return pm.Menu;
+        }
 
-		private Version GetVersion()
-		{
-			return GitVersion.Get(Assembly.GetExecutingAssembly(), this);
-		}
+        private Version GetVersion()
+        {
+            return GitVersion.Get(Assembly.GetExecutingAssembly(), this);
+        }
 
-		private IKernel GetKernel()
-		{
-			var kernel = new StandardKernel();
-			kernel.Bind<IDataRepository>().To<TrackerDataRepository>().InSingletonScope();
-			kernel.Bind<IUpdateService>().To<GitHubUpdateService>().InSingletonScope();
-			kernel.Bind<ILoggingService>().To<TrackerLoggingService>().InSingletonScope();
-			kernel.Bind<IEventsService>().To<TrackerEventsService>().InSingletonScope();
-			kernel.Bind<IGameClientService>().To<TrackerClientService>().InSingletonScope();
-			kernel.Bind<IConfigurationRepository>().To<TrackerConfigRepository>().InSingletonScope();
-			kernel.Bind<ISlidePanel>().To<MetroSlidePanel>();
-			kernel.Bind<IHttpClient>().To<HttpClient>();
-			return kernel;
-		}
-	}
+        private IKernel GetKernel()
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<IDataRepository>().To<TrackerDataRepository>().InSingletonScope();
+            kernel.Bind<IUpdateService>().To<GitHubUpdateService>().InSingletonScope();
+            kernel.Bind<ILoggingService>().To<TrackerLoggingService>().InSingletonScope();
+            kernel.Bind<IEventsService>().To<TrackerEventsService>().InSingletonScope();
+            kernel.Bind<IGameClientService>().To<TrackerClientService>().InSingletonScope();
+            kernel.Bind<IConfigurationRepository>().To<TrackerConfigRepository>().InSingletonScope();
+            kernel.Bind<ISlidePanel>().To<MetroSlidePanel>();
+            kernel.Bind<IHttpClient>().To<HttpClient>();
+            return kernel;
+        }
+    }
 }

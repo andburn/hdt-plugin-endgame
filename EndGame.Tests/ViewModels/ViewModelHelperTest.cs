@@ -41,12 +41,13 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 				CreateGame(GameResult.LOSS, PlayerClass.MAGE, PlayerClass.MAGE, decks[1], "two"),
 				CreateGame(GameResult.WIN, PlayerClass.DRUID, PlayerClass.MAGE, decks[0], null),
 				CreateGame(GameResult.DRAW, PlayerClass.DRUID, PlayerClass.SHAMAN, decks[0], null),
+				CreateGame(GameResult.WIN, PlayerClass.MAGE, PlayerClass.ROGUE, decks[1], "one")
 			};
 			mock = new Mock<IDataRepository>();
 			mock.Setup(x => x.GetAllGames()).Returns(games);
 			mock.Setup(x => x.GetAllDecks()).Returns(decks);
 			mock.Setup(x => x.GetAllGamesWithDeck(decks[1].Id))
-				.Returns(new List<Game>() { games[0], games[1] });
+				.Returns(new List<Game>() { games[0], games[1], games[4] });
 		}
 
 		[Test]
@@ -115,7 +116,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void GetDecksArchetypeStats()
 		{
 			var stats = ViewModelHelper.GetArchetypeStats(mock.Object, decks[1]);
-			Assert.That(stats.Count, Is.EqualTo(2));
+			Assert.That(stats.Count, Is.EqualTo(3));
 		}
 	}
 }

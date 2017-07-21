@@ -2,11 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"          
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewmodels="clr-namespace:HDT.Plugins.EndGame.ViewModels"
              xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:controls="clr-namespace:HDT.Plugins.Common.Controls;assembly=EndGame.Common"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              Width="620" Height="500"
              MinWidth="620" MinHeight="500"
              d:DesignWidth="620" d:DesignHeight="500"
@@ -36,13 +36,13 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="60">
             <DockPanel.Background>
-                <ImageBrush ImageSource="pack://application:,,,/EndGame.Common;component/Resources/hdt-banner.png" 
+                <ImageBrush ImageSource="pack://application:,,,/EndGame.Common;component/Resources/hdt-banner.png"
                             Viewport="0,-50,600,150"
                             ViewportUnits="Absolute"
                             TileMode="Tile"
                             Stretch="None"
                             AlignmentX="Left"
-                            AlignmentY="Top"/>
+                            AlignmentY="Top" />
             </DockPanel.Background>
             <controls:MoonTextButton DockPanel.Dock="Right" Margin="4,4,6,4"
                                      Text="SETTINGS" Icon="&#xe994;" Cursor="Hand"

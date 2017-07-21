@@ -1,136 +1,174 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.EndGame.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
-	public class StatsViewModel : ViewModelBase
-	{
-		public ObservableCollection<ArchetypeRecord> Stats { get; set; }
+    public class StatsViewModel : ViewModelBase
+    {
+        public ObservableCollection<ArchetypeRecord> Stats { get; set; }
 
-		private IEnumerable<Deck> _decks;
+        private int _totalWins;
 
-		public IEnumerable<Deck> Decks
-		{
-			get { return _decks; }
-			set { Set(() => Decks, ref _decks, value); }
-		}
+        public int TotalWins
+        {
+            get { return _totalWins; }
+            set { Set(() => TotalWins, ref _totalWins, value); }
+        }
 
-		private IEnumerable<GameMode> _gameModes;
+        private int _totalLosses;
 
-		public IEnumerable<GameMode> GameModes
-		{
-			get { return _gameModes; }
-			set { Set(() => GameModes, ref _gameModes, value); }
-		}
+        public int TotalLosses
+        {
+            get { return _totalLosses; }
+            set { Set(() => TotalLosses, ref _totalLosses, value); }
+        }
 
-		private IEnumerable<GameFormat> _gameFormats;
+        private IEnumerable<Deck> _decks;
 
-		public IEnumerable<GameFormat> GameFormats
-		{
-			get { return _gameFormats; }
-			set { Set(() => GameFormats, ref _gameFormats, value); }
-		}
+        public IEnumerable<Deck> Decks
+        {
+            get { return _decks; }
+            set { Set(() => Decks, ref _decks, value); }
+        }
 
-		private IEnumerable<TimeFrame> _timePeriods;
+        private IEnumerable<GameMode> _gameModes;
 
-		public IEnumerable<TimeFrame> TimePeriods
-		{
-			get { return _timePeriods; }
-			set { Set(() => TimePeriods, ref _timePeriods, value); }
-		}
+        public IEnumerable<GameMode> GameModes
+        {
+            get { return _gameModes; }
+            set { Set(() => GameModes, ref _gameModes, value); }
+        }
 
-		private IEnumerable<Region> _regions;
+        private IEnumerable<GameFormat> _gameFormats;
 
-		public IEnumerable<Region> Regions
-		{
-			get { return _regions; }
-			set { Set(() => Regions, ref _regions, value); }
-		}
+        public IEnumerable<GameFormat> GameFormats
+        {
+            get { return _gameFormats; }
+            set { Set(() => GameFormats, ref _gameFormats, value); }
+        }
 
-		private GameMode _selectedGameMode;
+        private IEnumerable<TimeFrame> _timeFrames;
 
-		public GameMode SelectedGameMode
-		{
-			get { return _selectedGameMode; }
-			set { Set(() => SelectedGameMode, ref _selectedGameMode, value); }
-		}
+        public IEnumerable<TimeFrame> TimeFrames
+        {
+            get { return _timeFrames; }
+            set { Set(() => TimeFrames, ref _timeFrames, value); }
+        }
 
-		private GameFormat _selectedGameFormat;
+        private IEnumerable<Region> _regions;
 
-		public GameFormat SelectedGameFormat
-		{
-			get { return _selectedGameFormat; }
-			set { Set(() => SelectedGameFormat, ref _selectedGameFormat, value); }
-		}
+        public IEnumerable<Region> Regions
+        {
+            get { return _regions; }
+            set { Set(() => Regions, ref _regions, value); }
+        }
 
-		private TimeFrame _selectedTimeFrame;
+        private IEnumerable<PlayerClass> _classes;
 
-		public TimeFrame SelectedTimeFrame
-		{
-			get { return _selectedTimeFrame; }
-			set { Set(() => SelectedTimeFrame, ref _selectedTimeFrame, value); }
-		}
+        public IEnumerable<PlayerClass> Classes
+        {
+            get { return _classes; }
+            set { _classes = value; }
+        }
 
-		private Region _selectedRegion;
+        private PlayerClass _selectedClass;
 
-		public Region SelectedRegion
-		{
-			get { return _selectedRegion; }
-			set { Set(() => SelectedRegion, ref _selectedRegion, value); }
-		}
+        public PlayerClass SelectedClass
+        {
+            get { return _selectedClass; }
+            set { _selectedClass = value; }
+        }
 
-		private Deck _selectedDeck;
+        private GameMode _selectedGameMode;
 
-		public Deck SelectedDeck
-		{
-			get { return _selectedDeck; }
-			set { Set(() => SelectedDeck, ref _selectedDeck, value); Update(value); }
-		}
+        public GameMode SelectedGameMode
+        {
+            get { return _selectedGameMode; }
+            set { Set(() => SelectedGameMode, ref _selectedGameMode, value); }
+        }
 
-		public StatsViewModel()
-		{
-			Stats = new ObservableCollection<ArchetypeRecord>();
-			// initialize selection lists
-			GameModes = Enum.GetValues(typeof(GameMode)).OfType<GameMode>();
-			GameFormats = Enum.GetValues(typeof(GameFormat)).OfType<GameFormat>();
-			TimePeriods = Enum.GetValues(typeof(TimeFrame)).OfType<TimeFrame>();
-			Regions = Enum.GetValues(typeof(Region)).OfType<Region>().Where(x => x != Region.UNKNOWN);
+        private GameFormat _selectedGameFormat;
 
-			Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
+        public GameFormat SelectedGameFormat
+        {
+            get { return _selectedGameFormat; }
+            set { Set(() => SelectedGameFormat, ref _selectedGameFormat, value); }
+        }
 
-			// set default selections
-			SelectedGameMode = GameMode.ALL;
-			SelectedGameFormat = GameFormat.ANY;
-			SelectedRegion = Region.US;
-			SelectedTimeFrame = TimeFrame.ALL;
-			SelectedDeck = Decks.First();
+        private TimeFrame _selectedTimeFrame;
 
-			PropertyChanged += StatsViewModel_PropertyChanged;
-		}
+        public TimeFrame SelectedTimeFrame
+        {
+            get { return _selectedTimeFrame; }
+            set { Set(() => SelectedTimeFrame, ref _selectedTimeFrame, value); }
+        }
 
-		private void Update(Deck deck)
-		{
-			EndGame.Logger.Info("Updating stats");
-			Stats.Clear();
-			foreach (var s in ViewModelHelper.GetArchetypeStats(EndGame.Data, deck))
-			{
-				EndGame.Logger.Info("Adding " + s.ToString());
-				Stats.Add(s);
-			}
-		}
+        private Region _selectedRegion;
 
-		private void StatsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == "SelectedDeck")
-				EndGame.Logger.Info("Selected " + SelectedDeck.Name);
-		}
-	}
+        public Region SelectedRegion
+        {
+            get { return _selectedRegion; }
+            set { Set(() => SelectedRegion, ref _selectedRegion, value); }
+        }
+
+        private Deck _selectedDeck;
+
+        public Deck SelectedDeck
+        {
+            get { return _selectedDeck; }
+            set { Set(() => SelectedDeck, ref _selectedDeck, value); Update(value); }
+        }
+
+        public StatsViewModel()
+        {
+            Stats = new ObservableCollection<ArchetypeRecord>();
+            // initialize selection lists
+            GameModes = Enum.GetValues(typeof(GameMode)).OfType<GameMode>();
+            GameFormats = Enum.GetValues(typeof(GameFormat)).OfType<GameFormat>();
+            TimeFrames = Enum.GetValues(typeof(TimeFrame)).OfType<TimeFrame>();
+            Regions = Enum.GetValues(typeof(Region)).OfType<Region>().Where(x => x != Region.UNKNOWN);
+            Classes = Enum.GetValues(typeof(PlayerClass)).OfType<PlayerClass>();
+
+            Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
+
+            // set default selections
+            SelectedGameMode = GameMode.RANKED;
+            SelectedGameFormat = GameFormat.STANDARD;
+            SelectedRegion = Region.US;
+            SelectedTimeFrame = TimeFrame.ALL;
+            SelectedDeck = Decks.First();
+            SelectedClass = PlayerClass.ALL;
+
+            PropertyChanged += StatsViewModel_PropertyChanged;
+        }
+
+        private void Update(Deck deck)
+        {
+            EndGame.Logger.Info("Updating stats");
+            Stats.Clear();
+            int wins = 0;
+            int losses = 0;
+            foreach (var s in ViewModelHelper.GetArchetypeStats(EndGame.Data, deck))
+            {
+                EndGame.Logger.Info("Adding " + s.ToString());
+                Stats.Add(s);
+                wins += s.TotalWins;
+                losses += s.TotalLosses;
+            }
+            TotalWins = wins;
+            TotalLosses = losses;
+        }
+
+        private void StatsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedDeck")
+                EndGame.Logger.Info("Selected " + SelectedDeck.Name);
+        }
+    }
 }
