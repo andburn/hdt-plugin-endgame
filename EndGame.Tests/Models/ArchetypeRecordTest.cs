@@ -67,5 +67,29 @@ namespace HDT.Plugins.EndGame.Tests.Models
 			record.TotalLosses = 6;
 			Assert.That(record.WinRateText, Is.EqualTo("33%"));
 		}
+
+		[Test]
+		public void Update_IncreasesTotalWins_WithWin()
+		{
+			record.Update(GameResult.WIN);
+			Assert.That(record.TotalWins, Is.EqualTo(1));
+			Assert.That(record.TotalLosses, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Update_IncreasesTotalLosses_WithLoss()
+		{
+			record.Update(GameResult.LOSS);
+			Assert.That(record.TotalWins, Is.EqualTo(0));
+			Assert.That(record.TotalLosses, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Update_NoChange_WithDraw()
+		{
+			record.Update(GameResult.DRAW);
+			Assert.That(record.TotalWins, Is.EqualTo(0));
+			Assert.That(record.TotalLosses, Is.EqualTo(0));
+		}
 	}
 }

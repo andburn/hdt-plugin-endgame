@@ -35,17 +35,32 @@ namespace HDT.Plugins.EndGame.Models
 			Klass = klass;
 		}
 
-		private float CalcWinRate()
+		public void Update(GameResult result)
 		{
-			var total = (float)(TotalWins + TotalLosses);
-			if (total <= 0)
-				return 0;
-			return TotalWins / total * 100;
+			switch (result)
+			{
+				case GameResult.WIN:
+					TotalWins++;
+					break;
+				case GameResult.LOSS:
+					TotalLosses++;
+					break;
+				default:
+					break;
+			}
 		}
 
 		public override string ToString()
 		{
 			return $"{Name} ({Klass}) {TotalWins}-{TotalLosses} ({WinRateText})";
 		}
+
+		private float CalcWinRate()
+		{
+			var total = (float)(TotalWins + TotalLosses);
+			if (total <= 0)
+				return 0;
+			return TotalWins / total * 100;
+		}		
 	}
 }

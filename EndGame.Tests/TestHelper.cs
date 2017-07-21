@@ -30,6 +30,7 @@ namespace HDT.Plugins.EndGame.Tests
 		internal static Deck CreateDeck(PlayerClass klass, bool standard, string str)
 		{
 			var deck = new Deck();
+			deck.Id = Guid.NewGuid();
 			deck.Class = klass;
 			deck.IsStandard = standard;
 			deck.Cards = CreateCards(str);
@@ -44,6 +45,17 @@ namespace HDT.Plugins.EndGame.Tests
 			deck.IsStandard = standard;
 			deck.Cards = CreateCards(str);
 			return deck;
+		}
+
+		internal static Game CreateGame(GameResult result, PlayerClass player, PlayerClass opponent, Deck deck, string archetype)
+		{
+			var game = new Game();
+			game.Deck = deck;
+			game.Result = result;
+			game.PlayerClass = player;
+			game.OpponentClass = opponent;
+			game.Note = new Note() { Archetype = archetype };
+			return game;
 		}
 	}
 }
