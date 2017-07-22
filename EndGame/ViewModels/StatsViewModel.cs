@@ -3,6 +3,7 @@ using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Utils;
 using HDT.Plugins.EndGame.Models;
+using HDT.Plugins.EndGame.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -177,6 +178,20 @@ namespace HDT.Plugins.EndGame.ViewModels
             }
         }
 
+        public bool IncludeUnknown
+        {
+            get
+            {
+                return EndGame.Settings.Get(Strings.IncludeUnknown).Bool;
+            }
+            set
+            {
+                EndGame.Settings.Set(Strings.IncludeUnknown, value);
+                RaisePropertyChanged(Strings.IncludeUnknown);
+                UpdateStats();
+            }
+        }
+
         public StatsViewModel()
         {
             _games = new List<Game>();
@@ -200,8 +215,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 
             RankMax = 0;
             RankMin = 25;
-
-            //PropertyChanged += StatsViewModel_PropertyChanged;
         }
 
         private void UpdateGames()
@@ -235,11 +248,5 @@ namespace HDT.Plugins.EndGame.ViewModels
             TotalWins = wins;
             TotalLosses = losses;
         }
-
-        //private void StatsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    if (e.PropertyName == "SelectedDeck")
-        //        EndGame.Logger.Info("Selected " + SelectedDeck.Name);
-        //}
     }
 }

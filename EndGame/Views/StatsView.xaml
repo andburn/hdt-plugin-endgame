@@ -120,6 +120,12 @@
                     <Label Content="Region" />
                     <ComboBox ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}">
                     </ComboBox>
+                    <DockPanel Margin="0,15">
+                        <CheckBox DockPanel.Dock="Right" Margin="6,0,0,0" 
+                                  IsChecked="{Binding IncludeUnknown}"/>
+                        <TextBlock Text="Include unknown archetypes" 
+                                   FontSize="10" Height="30" TextWrapping="Wrap" TextAlignment="Right"/>
+                    </DockPanel>
                 </StackPanel>
             </DockPanel>
         </Border>

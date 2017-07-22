@@ -86,7 +86,10 @@ namespace HDT.Plugins.EndGame.ViewModels
                 string index = string.Empty;
                 string name = ArchetypeRecord.DefaultName;
                 if (g.Note.HasArchetype)
-                    name = g.Note.Archetype;
+                    name = g.Note.Archetype;                
+                else if (!EndGame.Settings.Get(Strings.IncludeUnknown).Bool)
+                    // if we don't want to include unknown archetypes skip game
+                    continue;
                 index = $"{name}.{g.OpponentClass}";
                 // update an existing record or add a new one
                 if (!lookup.ContainsKey(index))

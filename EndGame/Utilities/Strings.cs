@@ -18,6 +18,7 @@
 		public const string DeveloperMode = "DeveloperMode";
 		public const string WaitUntilBackInMenu = "WaitUntilBackInMenu";
 		public const string IncludeWild = "IncludeWild";
+        public const string IncludeUnknown = "IncludeUnknown";
 		// Navigation
 		public const string NavSettings = "settings";
 		public const string NavNote = "note";
