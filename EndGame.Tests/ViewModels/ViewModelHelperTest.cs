@@ -115,7 +115,8 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		[Test]
 		public void GetDecksArchetypeStats()
 		{
-			var stats = ViewModelHelper.GetArchetypeStats(mock.Object, decks[1]);
+            var games = mock.Object.GetAllGamesWithDeck(decks[1].Id);
+            var stats = ViewModelHelper.GetArchetypeStats(games);
 			Assert.That(stats.Count, Is.EqualTo(3));
 		}
 	}

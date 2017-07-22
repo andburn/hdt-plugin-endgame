@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Utils;
 using HDT.Plugins.EndGame.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
     public class StatsViewModel : ViewModelBase
     {
+        private List<Game> _games;
+
         public ObservableCollection<ArchetypeRecord> Stats { get; set; }
 
         private int _totalWins;
@@ -82,7 +85,11 @@ namespace HDT.Plugins.EndGame.ViewModels
         public PlayerClass SelectedClass
         {
             get { return _selectedClass; }
-            set { _selectedClass = value; }
+            set
+            {
+                _selectedClass = value;
+                UpdateStats();
+            }
         }
 
         private GameMode _selectedGameMode;
@@ -90,7 +97,11 @@ namespace HDT.Plugins.EndGame.ViewModels
         public GameMode SelectedGameMode
         {
             get { return _selectedGameMode; }
-            set { Set(() => SelectedGameMode, ref _selectedGameMode, value); }
+            set
+            {
+                Set(() => SelectedGameMode, ref _selectedGameMode, value);
+                UpdateStats();
+            }
         }
 
         private GameFormat _selectedGameFormat;
@@ -98,7 +109,11 @@ namespace HDT.Plugins.EndGame.ViewModels
         public GameFormat SelectedGameFormat
         {
             get { return _selectedGameFormat; }
-            set { Set(() => SelectedGameFormat, ref _selectedGameFormat, value); }
+            set
+            {
+                Set(() => SelectedGameFormat, ref _selectedGameFormat, value);
+                UpdateStats();
+            }
         }
 
         private TimeFrame _selectedTimeFrame;
@@ -106,7 +121,11 @@ namespace HDT.Plugins.EndGame.ViewModels
         public TimeFrame SelectedTimeFrame
         {
             get { return _selectedTimeFrame; }
-            set { Set(() => SelectedTimeFrame, ref _selectedTimeFrame, value); }
+            set
+            {
+                Set(() => SelectedTimeFrame, ref _selectedTimeFrame, value);
+                UpdateStats();
+            }
         }
 
         private Region _selectedRegion;
@@ -114,7 +133,35 @@ namespace HDT.Plugins.EndGame.ViewModels
         public Region SelectedRegion
         {
             get { return _selectedRegion; }
-            set { Set(() => SelectedRegion, ref _selectedRegion, value); }
+            set
+            {
+                Set(() => SelectedRegion, ref _selectedRegion, value);
+                UpdateStats();
+            }
+        }
+
+        private int _rankMin;
+
+        public int RankMin
+        {
+            get { return _rankMin; }
+            set
+            {
+                Set(() => RankMin, ref _rankMin, value);
+                UpdateStats();
+            }
+        }
+
+        private int _rankMax;
+
+        public int RankMax
+        {
+            get { return _rankMax; }
+            set
+            {
+                Set(() => RankMax, ref _rankMax, value);
+                UpdateStats();
+            }
         }
 
         private Deck _selectedDeck;
@@ -122,11 +169,17 @@ namespace HDT.Plugins.EndGame.ViewModels
         public Deck SelectedDeck
         {
             get { return _selectedDeck; }
-            set { Set(() => SelectedDeck, ref _selectedDeck, value); Update(value); }
+            set
+            {
+                Set(() => SelectedDeck, ref _selectedDeck, value);
+                UpdateGames();
+                UpdateStats();
+            }
         }
 
         public StatsViewModel()
         {
+            _games = new List<Game>();
             Stats = new ObservableCollection<ArchetypeRecord>();
             // initialize selection lists
             GameModes = Enum.GetValues(typeof(GameMode)).OfType<GameMode>();
@@ -142,21 +195,39 @@ namespace HDT.Plugins.EndGame.ViewModels
             SelectedGameFormat = GameFormat.STANDARD;
             SelectedRegion = Region.US;
             SelectedTimeFrame = TimeFrame.ALL;
-            SelectedDeck = Decks.First();
+            SelectedDeck = Decks.FirstOrDefault();
             SelectedClass = PlayerClass.ALL;
 
-            PropertyChanged += StatsViewModel_PropertyChanged;
+            RankMax = 0;
+            RankMin = 25;
+
+            //PropertyChanged += StatsViewModel_PropertyChanged;
         }
 
-        private void Update(Deck deck)
+        private void UpdateGames()
         {
-            EndGame.Logger.Info("Updating stats");
-            Stats.Clear();
+            if (SelectedDeck != null && SelectedDeck.Id != Guid.Empty)
+            {
+                _games = EndGame.Data.GetAllGamesWithDeck(SelectedDeck.Id);
+            }
+        }
+
+        private void UpdateStats()
+        {
             int wins = 0;
             int losses = 0;
-            foreach (var s in ViewModelHelper.GetArchetypeStats(EndGame.Data, deck))
+
+            if (_games == null || _games.Count == 0)
+                UpdateGames();
+
+            Stats.Clear();
+
+            var filter = new GameFilter(null, SelectedRegion, SelectedGameMode, SelectedTimeFrame,
+                SelectedGameFormat, PlayerClass.ALL, SelectedClass, RankMin, RankMax);
+            var filtered = filter.Apply(_games);
+            var stats = ViewModelHelper.GetArchetypeStats(filtered);
+            foreach (var s in stats)
             {
-                EndGame.Logger.Info("Adding " + s.ToString());
                 Stats.Add(s);
                 wins += s.TotalWins;
                 losses += s.TotalLosses;
@@ -165,10 +236,10 @@ namespace HDT.Plugins.EndGame.ViewModels
             TotalLosses = losses;
         }
 
-        private void StatsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "SelectedDeck")
-                EndGame.Logger.Info("Selected " + SelectedDeck.Name);
-        }
+        //private void StatsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (e.PropertyName == "SelectedDeck")
+        //        EndGame.Logger.Info("Selected " + SelectedDeck.Name);
+        //}
     }
 }

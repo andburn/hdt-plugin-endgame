@@ -69,36 +69,33 @@ namespace HDT.Plugins.EndGame.ViewModels
             return decks;
         }
 
-        public static IEnumerable<ArchetypeRecord> GetArchetypeStats(IDataRepository data, Deck deck)
+        public static IEnumerable<ArchetypeRecord> GetArchetypeStats(List<Game> games)
         {
             var stats = new List<ArchetypeRecord>();
-            // if deck has no id return the empty list
-            if (deck != null && deck.Id != null && deck.Id != Guid.Empty)
+            var lookup = new Dictionary<string, ArchetypeRecord>();
+                
+            foreach (var g in games)
             {
-                var lookup = new Dictionary<string, ArchetypeRecord>();
-                var games = data.GetAllGamesWithDeck(deck.Id);
-                foreach (var g in games)
+                // if opponent class is missing skip game
+                if (g.OpponentClass == PlayerClass.ALL)
                 {
-                    // if opponent class is missing skip game
-                    if (g.OpponentClass == PlayerClass.ALL)
-                    {
-                        EndGame.Logger.Info($"Skipping game {g.Id}, no opponent class");
-                        continue;
-                    }
-                    // create an index for the archetype including class
-                    string index = string.Empty;
-                    string name = ArchetypeRecord.DefaultName;
-                    if (g.Note.HasArchetype)
-                        name = g.Note.Archetype;
-                    index = $"{name}.{g.OpponentClass}";
-                    // update an existing record or add a new one
-                    if (!lookup.ContainsKey(index))
-                        lookup[index] = new ArchetypeRecord(name, g.OpponentClass);
-                    lookup[index].Update(g.Result);
+                    EndGame.Logger.Info($"Skipping game {g.Id}, no opponent class");
+                    continue;
                 }
-                if (lookup.Count > 0)
-                    stats.AddRange(lookup.Values.ToList());
+                // create an index for the archetype including class
+                string index = string.Empty;
+                string name = ArchetypeRecord.DefaultName;
+                if (g.Note.HasArchetype)
+                    name = g.Note.Archetype;
+                index = $"{name}.{g.OpponentClass}";
+                // update an existing record or add a new one
+                if (!lookup.ContainsKey(index))
+                    lookup[index] = new ArchetypeRecord(name, g.OpponentClass);
+                lookup[index].Update(g.Result);
             }
+            if (lookup.Count > 0)
+                stats.AddRange(lookup.Values.ToList());
+
             return stats;
         }
     }

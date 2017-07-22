@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
+             xmlns:vm="clr-namespace:HDT.Plugins.EndGame.ViewModels"
              xmlns:common="clr-namespace:HDT.Plugins.Common.Enums;assembly=EndGame.Common"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
@@ -86,6 +87,28 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <Label Content="Rank" ToolTip="Enabled when Ranked mode is also selected" />
+                    <DockPanel>
+                        <TextBox DockPanel.Dock="Left" Width="40">
+                            <TextBox.Text>
+                                <Binding Path="RankMin" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vm:RankRangeRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox DockPanel.Dock="Right" Width="40">
+                            <TextBox.Text>
+                                <Binding Path="RankMax" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vm:RankRangeRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Text="To" Margin="10,0" VerticalAlignment="Bottom" />
+                    </DockPanel>
                     <Label Content="Game Format" />
                     <ComboBox ItemsSource="{Binding GameFormats}" SelectedItem="{Binding SelectedGameFormat}">
                         <ComboBox.ItemTemplate>

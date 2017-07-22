@@ -104,6 +104,7 @@
     <Compile Include="ViewModels\EmptyNoteViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModelBase.cs" />
+    <Compile Include="ViewModels\RankRangeRule.cs" />
     <Compile Include="ViewModels\StatsViewModel.cs" />
     <Compile Include="Views\BasicNoteView.xaml.cs">
       <DependentUpon>BasicNoteView.xaml</DependentUpon>
