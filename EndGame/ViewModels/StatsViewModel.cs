@@ -113,6 +113,7 @@ namespace HDT.Plugins.EndGame.ViewModels
             set
             {
                 Set(() => SelectedGameFormat, ref _selectedGameFormat, value);
+                EndGame.Settings.Set(Strings.LastFormat, value);
                 UpdateStats();
             }
         }
@@ -137,6 +138,7 @@ namespace HDT.Plugins.EndGame.ViewModels
             set
             {
                 Set(() => SelectedRegion, ref _selectedRegion, value);
+                EndGame.Settings.Set(Strings.LastRegion, value);
                 UpdateStats();
             }
         }
@@ -206,12 +208,15 @@ namespace HDT.Plugins.EndGame.ViewModels
             Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
 
             // set default selections
-            SelectedGameMode = GameMode.RANKED;
-            SelectedGameFormat = GameFormat.STANDARD;
-            SelectedRegion = Region.US;
+            SelectedGameMode = GameMode.RANKED;            
             SelectedTimeFrame = TimeFrame.ALL;
             SelectedDeck = Decks.FirstOrDefault();
             SelectedClass = PlayerClass.ALL;
+            // get Format and Region from settings
+            Enum.TryParse(EndGame.Settings.Get(Strings.LastFormat), out GameFormat format);
+            SelectedGameFormat = format;      
+            Enum.TryParse(EndGame.Settings.Get(Strings.LastRegion), out Region region);
+            SelectedRegion = region;
 
             RankMax = 0;
             RankMin = 25;
