@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Enums;
 using HDT.Plugins.EndGame.Utilities;
+using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -12,8 +12,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 		private static readonly NoteViewModelBase NoteVM = new NoteViewModel();
 		private static readonly NoteViewModelBase BasicNoteVM = new BasicNoteViewModel();
 		private static readonly NoteViewModelBase EmptyNoteVM = new EmptyNoteViewModel();
-		private static readonly StatsViewModel StatsVM = new StatsViewModel();
-		
+		private static readonly ViewModelBase StatsVM = new StatsViewModel();
+
 		private string _contentTitle;
 
 		public string ContentTitle
@@ -53,6 +53,9 @@ namespace HDT.Plugins.EndGame.ViewModels
 			else if (loc == Strings.NavStats)
 			{
 				ContentViewModel = StatsVM;
+				var updatable = ContentViewModel as IUpdatable;
+				if (updatable != null)
+					await updatable.Update();
 			}
 			else
 			{

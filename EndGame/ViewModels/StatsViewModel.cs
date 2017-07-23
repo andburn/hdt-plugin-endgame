@@ -8,10 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
-    public class StatsViewModel : ViewModelBase
+    public class StatsViewModel : ViewModelBase, IUpdatable
     {
         private List<Game> _games;
 
@@ -204,22 +205,32 @@ namespace HDT.Plugins.EndGame.ViewModels
             TimeFrames = Enum.GetValues(typeof(TimeFrame)).OfType<TimeFrame>();
             Regions = Enum.GetValues(typeof(Region)).OfType<Region>().Where(x => x != Region.UNKNOWN);
             Classes = Enum.GetValues(typeof(PlayerClass)).OfType<PlayerClass>();
-
             Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
-
             // set default selections
             SelectedGameMode = GameMode.RANKED;            
-            SelectedTimeFrame = TimeFrame.ALL;
-            SelectedDeck = Decks.FirstOrDefault();
+            SelectedTimeFrame = TimeFrame.ALL;            
             SelectedClass = PlayerClass.ALL;
             // get Format and Region from settings
             Enum.TryParse(EndGame.Settings.Get(Strings.LastFormat), out GameFormat format);
             SelectedGameFormat = format;      
             Enum.TryParse(EndGame.Settings.Get(Strings.LastRegion), out Region region);
             SelectedRegion = region;
-
+            // get the active deck if its in the list
+            SelectedDeck = ActiveOrDefaultDeck();
+               
             RankMax = 0;
             RankMin = 25;
+        }
+
+        private Deck ActiveOrDefaultDeck()
+        {
+            Guid id = EndGame.Data.GetActiveDeckId();
+            Deck deck = null;
+            if (id != Guid.Empty)
+            {
+                deck = Decks.SingleOrDefault(d => d.Id == id);
+            }
+            return deck ?? Decks.FirstOrDefault();
         }
 
         private void UpdateGames()
@@ -252,6 +263,13 @@ namespace HDT.Plugins.EndGame.ViewModels
             }
             TotalWins = wins;
             TotalLosses = losses;
+        }
+
+        public async Task Update()
+        {
+            Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
+            SelectedDeck = ActiveOrDefaultDeck();
+            UpdateStats();
         }
     }
 }
