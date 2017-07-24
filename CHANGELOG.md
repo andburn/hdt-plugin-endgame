@@ -7,5 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Changelog
+- Basic statistics screen
 
 [Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/v1.0.0...HEAD
