@@ -3,27 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:vm="clr-namespace:HDT.Plugins.EndGame.ViewModels"
-             xmlns:common="clr-namespace:HDT.Plugins.Common.Enums;assembly=EndGame.Common"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="500">
     <UserControl.Resources>
-        <common:EnumStringConverter x:Key="EnumStringConverter" />
-        <BooleanToVisibilityConverter x:Key="BoolToVisiblityConverter" />
-        <CollectionViewSource x:Key="StatsGroup"  Source="{Binding Path=Stats}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Klass" />
-            </CollectionViewSource.GroupDescriptions>
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="WinRate" Direction="Descending" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="FontWeight" Value="Bold" />
-        </Style>
-        <SolidColorBrush x:Key="DarkBackground">#2e3136</SolidColorBrush>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
@@ -44,7 +32,7 @@
                         <TextBlock Text="{Binding Name}" Margin="0,0,6,0" />
                         <TextBlock FontStyle="Italic" Text="(" />
                         <TextBlock FontStyle="Italic"
-                                            Text="{Binding Path=Class, Converter={StaticResource EnumStringConverter}}" />
+                                            Text="{Binding Class, Converter={StaticResource EnumStringConverter}}" />
                         <TextBlock FontStyle="Italic" Text=")" />
                     </WrapPanel>
                 </DataTemplate>
@@ -90,22 +78,18 @@
                     <Label Content="Rank" ToolTip="Enabled when Ranked mode is also selected" />
                     <DockPanel>
                         <TextBox DockPanel.Dock="Left" Width="40">
-                            <TextBox.Text>
-                                <Binding Path="RankMin" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vm:RankRangeRule />
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
+                            <Binding Path="RankMin" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vm:RankRangeRule />
+                                </Binding.ValidationRules>
+                            </Binding>
                         </TextBox>
                         <TextBox DockPanel.Dock="Right" Width="40">
-                            <TextBox.Text>
-                                <Binding Path="RankMax" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vm:RankRangeRule />
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
+                            <Binding Path="RankMax" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vm:RankRangeRule />
+                                </Binding.ValidationRules>
+                            </Binding>
                         </TextBox>
                         <TextBlock Text="To" Margin="10,0" VerticalAlignment="Bottom" />
                     </DockPanel>
@@ -118,55 +102,47 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="Region" />
-                    <ComboBox ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}">
-                    </ComboBox>
+                    <ComboBox ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}" />
                     <DockPanel Margin="0,15">
-                        <CheckBox DockPanel.Dock="Right" Margin="6,0,0,0" 
-                                  IsChecked="{Binding IncludeUnknown}"/>
-                        <TextBlock Text="Include unknown archetypes" 
-                                   FontSize="10" Height="30" TextWrapping="Wrap" TextAlignment="Right"/>
+                        <CheckBox DockPanel.Dock="Right" Margin="6,0,0,0"
+                                  IsChecked="{Binding IncludeUnknown}" />
+                        <TextBlock Text="Include unknown archetypes"
+                                   FontSize="10" Height="30" TextWrapping="Wrap" TextAlignment="Right" />
                     </DockPanel>
                 </StackPanel>
             </DockPanel>
         </Border>
 
-        <!-- Content -->
-        <!--<WrapPanel Grid.Column="1" Grid.Row="0">
-            <TextBlock Text="Overall" />
-            <TextBlock Text="{Binding TotalWins}" />
-            <TextBlock Text="{Binding TotalLosses}" />
-        </WrapPanel>-->
-
         <Border Grid.Row="1" Grid.Column="1" Margin="0,10,10,10"
-            BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                <ListView x:Name="StatsList" Margin="0,4"
-                  DataContext="{StaticResource StatsGroup}" ItemsSource="{Binding IsAsync=True}">
-                    <ListView.Resources>
-                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                        </Style>
-                    </ListView.Resources>
-                    <ListView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
+            BorderBrush="{StaticResource DarkBackground}" BorderThickness="1,0,1,1">
+            <ListView x:Name="StatsList" Margin="0,0"
+                      ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      ItemsSource="{Binding IsAsync=True}">
+                <ListView.DataContext>
+                    <StaticResource ResourceKey="StatsGroup" />
+                </ListView.DataContext>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="Black">
                                     <!-- Note this is the Name attribute of the GroupView (not of Stats item) -->
-                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" />
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ListView.GroupStyle>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
-                            <GridViewColumn Header="Win" Width="50" DisplayMemberBinding="{Binding TotalWins}" />
-                            <GridViewColumn Header="Loss" Width="50" DisplayMemberBinding="{Binding TotalLosses}" />
-                            <GridViewColumn Header="Win Rate" Width="50" DisplayMemberBinding="{Binding WinRateText}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </ScrollViewer>
+                                    <TextBlock Margin="4,4,0,0" FontWeight="Bold" Text="{Binding Name}" />
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeader}">
+                        <GridViewColumn Header="Name" Width="250" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Win" Width="50" DisplayMemberBinding="{Binding TotalWins}" />
+                        <GridViewColumn Header="Loss" Width="50" DisplayMemberBinding="{Binding TotalLosses}" />
+                        <GridViewColumn Header="Win Rate" Width="120" DisplayMemberBinding="{Binding WinRateText}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Border>
     </Grid>
 </UserControl>

@@ -65,7 +65,7 @@ namespace HDT.Plugins.EndGame.ViewModels
                 .ToLookup(x => x);
             var decks = data.GetAllDecks()
                 .Where(d => games.Contains(d.Id))
-                .ToList();
+                .OrderBy(d => d.Name);
             return decks;
         }
 
