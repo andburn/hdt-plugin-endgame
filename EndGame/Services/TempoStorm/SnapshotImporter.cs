@@ -146,5 +146,12 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			}
 			return deckCount;
 		}
+
+        public async Task<bool> HasUpdate(string type, string previous)
+        {
+            var slug = await GetSnapshotSlug(
+                type == Strings.MetaWild ? Strings.MetaWild : Strings.MetaStandard);
+            return slug.Item1.CompareTo(previous) >= 1 ? true : false;
+        }
 	}
 }
