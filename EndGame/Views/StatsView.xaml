@@ -76,7 +76,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="Rank" ToolTip="Enabled when Ranked mode is also selected" />
-                    <DockPanel>
+                    <DockPanel IsEnabled="{Binding RankFilterIsEnabled}">
                         <TextBox DockPanel.Dock="Left" Width="40">
                             <Binding Path="RankMin" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>

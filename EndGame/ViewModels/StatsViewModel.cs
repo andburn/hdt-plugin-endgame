@@ -102,6 +102,7 @@ namespace HDT.Plugins.EndGame.ViewModels
             set
             {
                 Set(() => SelectedGameMode, ref _selectedGameMode, value);
+				RankFilterIsEnabled = _selectedGameMode == GameMode.RANKED;
                 UpdateStats();
             }
         }
@@ -195,7 +196,16 @@ namespace HDT.Plugins.EndGame.ViewModels
             }
         }
 
-        public StatsViewModel()
+		private bool _rankFilterIsEnabled;
+
+		public bool RankFilterIsEnabled
+		{
+			get { return _rankFilterIsEnabled; }
+			set { Set(() => RankFilterIsEnabled, ref _rankFilterIsEnabled, value); }
+		}
+
+
+		public StatsViewModel()
         {
             _games = new List<Game>();
             Stats = new ObservableCollection<ArchetypeRecord>();
