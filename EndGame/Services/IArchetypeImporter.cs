@@ -4,7 +4,7 @@ namespace HDT.Plugins.EndGame.Services
 {
 	public interface IArchetypeImporter
 	{
-        Task<bool> HasUpdate(string type, string previous);
+        Task<UpdateResult> CheckForUpdates(string standardDate, string wildDate);
 
 		Task<int> ImportDecks(bool includeWild, bool archive, bool delete, bool removeClass);
 	}

@@ -102,6 +102,8 @@ namespace HDT.Plugins.EndGame
             {
                 Logger.Error(e);
             }
+            // update meta decks if an update is available
+            await ImportMetaDecks(false);
             // check for plugin update
             await UpdateCheck("andburn", "hdt-plugin-endgame");
             // set the action to run on the game end event
@@ -180,17 +182,37 @@ namespace HDT.Plugins.EndGame
                 .AutoClose(autoClose);
         }
 
-        public static async Task ImportMetaDecks()
+        public static async Task ImportMetaDecks(bool forced)
         {
             try
             {
                 IArchetypeImporter importer = _kernel.Get<SnapshotImporter>();
-                var count = await importer.ImportDecks(
-                    Settings.Get(Strings.IncludeWild).Bool,
-                    Settings.Get(Strings.AutoArchiveArchetypes).Bool,
-                    Settings.Get(Strings.DeletePreviouslyImported).Bool,
-                    Settings.Get(Strings.RemoveClassFromName).Bool);
-                Notify("Import Complete", $"{count} decks imported", 10, IcoMoon.Notification, null);
+                bool incWild = Settings.Get(Strings.IncludeWild).Bool;			
+                // check if there is an update available
+				UpdateResult update = await importer.CheckForUpdates(
+					Settings.Get(Strings.LastSnapshotStandard),
+					Settings.Get(Strings.LastSnapshotWild));
+                // import the decks if there is an update or forced
+                if (forced || (update != null && update.HasUpdates(incWild)))
+                {
+                    var count = await importer.ImportDecks(incWild,
+                        Settings.Get(Strings.AutoArchiveArchetypes).Bool,
+                        Settings.Get(Strings.DeletePreviouslyImported).Bool,
+                        Settings.Get(Strings.RemoveClassFromName).Bool);
+                    // on success save date and show notification
+                    if (count > 0)
+                    {
+                        Settings.Set(Strings.LastSnapshotStandard, update.StandardLatest);
+						if (incWild)
+							Settings.Set(Strings.LastSnapshotWild, update.WildLatest);
+						Notify("Import Complete", $"{count} decks imported", 10, IcoMoon.Notification, null);
+                    }
+                    else
+					{
+						Logger.Error("Update error, no decks imported");
+						Notify("Import Failed", "Update contained no decks", 15, IcoMoon.Warning, null);
+					}
+                }                                
             }
             catch (Exception e)
             {
@@ -236,7 +258,7 @@ namespace HDT.Plugins.EndGame
         {
             var pm = new PluginMenu("End Game", IcoMoon.Target);
             pm.Append("Import Meta Decks", IcoMoon.Download2,
-                new RelayCommand(async () => await ImportMetaDecks()));
+                new RelayCommand(async () => await ImportMetaDecks(true)));
             pm.Append("Stats", IcoMoon.StatsDots,
                 new RelayCommand(async () => await ShowStats()));
             pm.Append("Settings", IcoMoon.Cog,

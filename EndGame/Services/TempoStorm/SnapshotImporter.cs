@@ -44,7 +44,6 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			if (metaResponse.Error != null)
 				throw new ImportException($"Getting the snapshot slug failed ({metaResponse.Error.Status})");
 			// the slug needed to request the full snapshot (e.g. '2016-06-19')
-			// only want standard
 			if (metaResponse.Slugs.Count != 1)
 				throw new ImportException("Snapshot slug count greater than one");
 
@@ -147,11 +146,11 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return deckCount;
 		}
 
-        public async Task<bool> HasUpdate(string type, string previous)
+        public async Task<UpdateResult> CheckForUpdates(string stdDate, string wildDate)
         {
-            var slug = await GetSnapshotSlug(
-                type == Strings.MetaWild ? Strings.MetaWild : Strings.MetaStandard);
-            return slug.Item1.CompareTo(previous) >= 1 ? true : false;
+            var std = GetSnapshotSlug(Strings.MetaStandard);
+            var wild = GetSnapshotSlug(Strings.MetaWild);
+            return new UpdateResult(stdDate, (await std).Item1, wildDate, (await wild).Item1);
         }
 	}
 }

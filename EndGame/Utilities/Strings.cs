@@ -21,6 +21,8 @@
         public const string IncludeUnknown = "IncludeUnknown";
         public const string LastRegion = "LastRegion";
         public const string LastFormat = "LastFormat";
+        public const string LastSnapshotStandard = "LastSnapshotStandard";
+        public const string LastSnapshotWild = "LastSnapshotWild";
         // Navigation
         public const string NavSettings = "settings";
 		public const string NavNote = "note";

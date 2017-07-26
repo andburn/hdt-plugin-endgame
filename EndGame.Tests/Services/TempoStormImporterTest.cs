@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using HDT.Plugins.Common.Services;
+﻿using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Services.TempoStorm;
 using Moq;
 using NUnit.Framework;
-using HDT.Plugins.EndGame.Utilities;
+using System;
+using System.Collections.Generic;
 
 namespace HDT.Plugins.EndGame.Tests.Services
 {
@@ -64,58 +63,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 				.With.Message.EqualTo("Snapshot slug count greater than one"));
 		}
 
-        [Test]
-        public void SnapshotUpdate_Available()
-        {
-            var mock = new Mock<IHttpClient>();
-            mock.Setup(x => x.JsonGet(It.IsAny<string>()))
-                .ReturnsAsync(@"{""snapshotType"":""standard"",""slugs"":[{""slug"":""2016-08-20""}]}");
-
-            var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
-
-            Assert.That(async () => await importer.HasUpdate(Strings.MetaStandard, "2016-07-10"), Is.True);
-        }
-
-        [Test]
-        public void SnapshotUpdate_NotAvailable()
-        {
-            var mock = new Mock<IHttpClient>();
-            mock.Setup(x => x.JsonGet(It.IsAny<string>()))
-                .ReturnsAsync(@"{""snapshotType"":""standard"",""slugs"":[{""slug"":""2016-07-10""}]}");
-
-            var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
-
-            Assert.That(async () => await importer.HasUpdate(Strings.MetaStandard, "2016-07-10"), Is.False);
-        }
-
-        [Test]
-        public void SnapshotUpdate_PreviousIsEmptyOrNull_ShouldBeAvailable()
-        {
-            var mock = new Mock<IHttpClient>();
-            mock.Setup(x => x.JsonGet(It.IsAny<string>()))
-                .ReturnsAsync(@"{""snapshotType"":""standard"",""slugs"":[{""slug"":""2016-07-10""}]}");
-
-            var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
-
-            Assert.That(async () => await importer.HasUpdate(Strings.MetaStandard, null), Is.True);
-            Assert.That(async () => await importer.HasUpdate(Strings.MetaStandard, string.Empty), Is.True);
-        }
-
-        [Test]
-        public void SnapshotUpdate_ShoulWorkWithWild()
-        {
-            var mock = new Mock<IHttpClient>();
-            mock.Setup(x => x.JsonGet(It.Is<string>(s => s.Contains(Strings.MetaWild))))
-                .ReturnsAsync(@"{""snapshotType"":""wild"",""slugs"":[{""slug"":""2016-08-21""}]}");
-            mock.Setup(x => x.JsonGet(It.Is<string>(s => s.Contains(Strings.MetaStandard))))
-                .ReturnsAsync(@"{""snapshotType"":""standard"",""slugs"":[{""slug"":""2016-06-16""}]}");
-
-            var importer = new SnapshotImporter(mock.Object, _data.Object, _log.Object);
-
-            Assert.That(async () => await importer.HasUpdate(Strings.MetaWild, "2016-07-10"), Is.True);
-        }
-
-        [Test]
+		[Test]
 		public void GetSnapshot()
 		{
 			var mock = new Mock<IHttpClient>();
@@ -179,7 +127,7 @@ namespace HDT.Plugins.EndGame.Tests.Services
 				Is.EqualTo(1));
 
 			_data.Verify(x => x.AddDeck(
-				It.Is<string>(s => s == "Deck"), It.Is<string>(s => s == "Mage"), 
+				It.Is<string>(s => s == "Deck"), It.Is<string>(s => s == "Mage"),
 				It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string[]>()),
 				Times.Once);
 		}

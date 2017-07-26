@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ArchetypeRecord.cs" />
+    <Compile Include="Services\UpdateResult.cs" />
     <Compile Include="Utilities\IUpdatable.cs" />
     <Compile Include="ViewModels\BasicNoteViewModel.cs" />
     <Compile Include="ViewModels\EmptyNoteViewModel.cs" />
