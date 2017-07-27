@@ -162,6 +162,19 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
+		public int StartRank
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.StartRank).Int;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.StartRank, value);
+				RaisePropertyChanged(Strings.StartRank);
+			}
+		}
+
 		public SettingsViewModel()
 		{
 		}

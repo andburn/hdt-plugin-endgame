@@ -23,8 +23,9 @@
         public const string LastFormat = "LastFormat";
         public const string LastSnapshotStandard = "LastSnapshotStandard";
         public const string LastSnapshotWild = "LastSnapshotWild";
-        // Navigation
-        public const string NavSettings = "settings";
+        public const string StartRank = "StartRank";		
+		// Navigation
+		public const string NavSettings = "settings";
 		public const string NavNote = "note";
 		public const string NavStats = "stats";
 		// Other

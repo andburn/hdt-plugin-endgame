@@ -37,7 +37,10 @@ namespace HDT.Plugins.EndGame.ViewModels
             switch (mode.ToLowerInvariant())
             {
                 case "ranked":
-                    return EndGame.Settings.Get(Strings.RecordRankedArchetypes).Bool;
+					// also check current player rank is above the threshold setting
+					return EndGame.Settings.Get(Strings.RecordRankedArchetypes).Bool
+						&& (EndGame.Data.GetPlayerRank() 
+							<= EndGame.Settings.Get(Strings.StartRank).Int);
 
                 case "casual":
                     return EndGame.Settings.Get(Strings.RecordCasualArchetypes).Bool;

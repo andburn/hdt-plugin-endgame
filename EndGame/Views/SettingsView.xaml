@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
              mc:Ignorable="d" d:DesignWidth="300" >
     <StackPanel Margin="15">
         <Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0,0,0,15">
@@ -87,6 +86,30 @@
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="For unchecked game modes show the regular note box." />
+            <Border BorderBrush="Black" BorderThickness="1" Margin="0,15,0,0">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Do not show the note box below a certain rank:" 
+                           ToolTip="The note box will not show when playing at a rank less than this." />
+                    <DockPanel Margin="0,6,0,0">
+                        <TextBox x:Name="TextBoxStartRank"
+                                 Text="{Binding ElementName=SliderStartRank, Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                 DockPanel.Dock="Left"
+                                 TextAlignment="Center"
+                                 Width="30"
+                                 ToolTip="The note box will not show when playing at a rank less than this." />
+                        <Slider x:Name="SliderStartRank"
+                                Margin="5,0,0,0"
+                                Maximum="25"
+                                Minimum="0"
+                                Value="{Binding StartRank}"                                
+                                TickPlacement="BottomRight"
+                                TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                IsDirectionReversed="True"
+                                ToolTip="The note box will not show when playing at a rank less than this." />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </StackPanel>
 </UserControl>
