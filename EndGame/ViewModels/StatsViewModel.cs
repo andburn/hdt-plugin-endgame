@@ -128,7 +128,8 @@ namespace HDT.Plugins.EndGame.ViewModels
             set
             {
                 Set(() => SelectedTimeFrame, ref _selectedTimeFrame, value);
-                UpdateStats();
+				EndGame.Settings.Set(Strings.LastTimeFrame, value);
+				UpdateStats();
             }
         }
 
@@ -217,11 +218,12 @@ namespace HDT.Plugins.EndGame.ViewModels
             Classes = Enum.GetValues(typeof(PlayerClass)).OfType<PlayerClass>();
             Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
             // set default selections
-            SelectedGameMode = GameMode.RANKED;            
-            SelectedTimeFrame = TimeFrame.ALL;            
+            SelectedGameMode = GameMode.RANKED;          
             SelectedClass = PlayerClass.ALL;
-            // get Format and Region from settings
-            Enum.TryParse(EndGame.Settings.Get(Strings.LastFormat), out GameFormat format);
+			// get remembered selections from settings
+			Enum.TryParse(EndGame.Settings.Get(Strings.LastTimeFrame), out TimeFrame timeFrame);
+			SelectedTimeFrame = timeFrame;
+			Enum.TryParse(EndGame.Settings.Get(Strings.LastFormat), out GameFormat format);
             SelectedGameFormat = format;      
             Enum.TryParse(EndGame.Settings.Get(Strings.LastRegion), out Region region);
             SelectedRegion = region;

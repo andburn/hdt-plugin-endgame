@@ -21,6 +21,7 @@
         public const string IncludeUnknown = "IncludeUnknown";
         public const string LastRegion = "LastRegion";
         public const string LastFormat = "LastFormat";
+		public const string LastTimeFrame = "LastTimeFrame";
         public const string LastSnapshotStandard = "LastSnapshotStandard";
         public const string LastSnapshotWild = "LastSnapshotWild";
         public const string StartRank = "StartRank";		
