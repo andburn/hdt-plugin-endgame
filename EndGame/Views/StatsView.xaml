@@ -139,7 +139,7 @@
                         <GridViewColumn Header="Name" Width="250" DisplayMemberBinding="{Binding Name}" />
                         <GridViewColumn Header="Win" Width="50" DisplayMemberBinding="{Binding TotalWins}" />
                         <GridViewColumn Header="Loss" Width="50" DisplayMemberBinding="{Binding TotalLosses}" />
-                        <GridViewColumn Header="Win Rate" Width="120" DisplayMemberBinding="{Binding WinRateText}" />
+                        <GridViewColumn Header="Win Rate" Width="80" DisplayMemberBinding="{Binding WinRateText}" />
                     </GridView>
                 </ListView.View>
             </ListView>
