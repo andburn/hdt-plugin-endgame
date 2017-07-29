@@ -175,8 +175,43 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
+		public bool IsInDevMode
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.DeveloperMode).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.DeveloperMode, value);
+				RaisePropertyChanged("IsInDevMode");
+			}
+		}
+
+		public bool EnableDebugLog
+		{
+			get
+			{
+				return EndGame.Settings.Get(Strings.DebugLog).Bool;
+			}
+			set
+			{
+				EndGame.Settings.Set(Strings.DebugLog, value);
+				RaisePropertyChanged("EnableDebugLog");
+			}
+		}
+
 		public SettingsViewModel()
 		{
+			PropertyChanged += SettingsViewModel_PropertyChanged;
+		}
+
+		private void SettingsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "EnableDebugLog")
+			{
+				EndGame.UpdateLogger();
+			}
 		}
 	}
 }

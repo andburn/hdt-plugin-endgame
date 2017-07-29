@@ -50,8 +50,12 @@ namespace HDT.Plugins.EndGame
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
             Settings = new Settings(assembly.GetManifestResourceStream(resourceName), "EndGame");
-            // main view model
-            _viewModel = new MainViewModel();
+			// set logger name and pass object down to common
+			Logger.SetDumpFileName("EndGame");
+			UpdateLogger();
+			Common.Common.Log = Logger;
+			// main view model
+			_viewModel = new MainViewModel();
         }
 
         public string Name => "End Game";
@@ -220,6 +224,18 @@ namespace HDT.Plugins.EndGame
                 Notify("Import Failed", e.Message, 15, IcoMoon.Warning, null);
             }
         }
+
+		public static void UpdateLogger()
+		{
+			if (Settings.Get(Strings.DeveloperMode).Bool)
+			{
+				if (Settings.Get(Strings.DebugLog).Bool)
+					Logger.EnableDumpToFile();
+				else
+					Logger.DisableDumpToFile();
+			}
+			
+		}
 
         private static async Task WaitUntilInMenu()
         {

@@ -18,17 +18,20 @@
 		public const string DeveloperMode = "DeveloperMode";
 		public const string WaitUntilBackInMenu = "WaitUntilBackInMenu";
 		public const string IncludeWild = "IncludeWild";
-        public const string IncludeUnknown = "IncludeUnknown";
-        public const string LastRegion = "LastRegion";
-        public const string LastFormat = "LastFormat";
+		public const string IncludeUnknown = "IncludeUnknown";
+		public const string LastRegion = "LastRegion";
+		public const string LastFormat = "LastFormat";
 		public const string LastTimeFrame = "LastTimeFrame";
-        public const string LastSnapshotStandard = "LastSnapshotStandard";
-        public const string LastSnapshotWild = "LastSnapshotWild";
-        public const string StartRank = "StartRank";		
+		public const string LastSnapshotStandard = "LastSnapshotStandard";
+		public const string LastSnapshotWild = "LastSnapshotWild";
+		public const string StartRank = "StartRank";
+		public const string DebugLog = "DebugLog";
+
 		// Navigation
 		public const string NavSettings = "settings";
 		public const string NavNote = "note";
 		public const string NavStats = "stats";
+
 		// Other
 		public const string ArchetypeTag = "Archetype";
 		public const string PluginTag = "EndGame";
