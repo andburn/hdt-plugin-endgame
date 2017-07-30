@@ -14,10 +14,12 @@ namespace HDT.Plugins.EndGame.ViewModels
     {
         public static void FocusTextBox(TextBox box)
         {
+			EndGame.Logger.Debug($"Helper: Focusing TextBox ({box.Name})");
             box.Focus();
             if (!string.IsNullOrEmpty(box.Text) && box.CaretIndex <= 0)
             {
-                box.CaretIndex = box.Text.Length;
+				EndGame.Logger.Debug($"Helper: Moving caret to ({box.Text.Length})");
+				box.CaretIndex = box.Text.Length;
             }
         }
 
@@ -32,15 +34,20 @@ namespace HDT.Plugins.EndGame.ViewModels
                 .ToList();
         }
 
-        public static bool IsModeEnabledForArchetypes(string mode)
+		public static bool IsDeckAvailable()
+		{
+			var deck = EndGame.Data.GetOpponentDeck();
+			return deck.Cards.Count >= 1 && deck.Class != PlayerClass.ALL;
+		}
+
+		public static bool IsModeEnabledForArchetypes(string mode)
         {
             switch (mode.ToLowerInvariant())
             {
                 case "ranked":
 					// also check current player rank is above the threshold setting
 					return EndGame.Settings.Get(Strings.RecordRankedArchetypes).Bool
-						&& (EndGame.Data.GetPlayerRank() 
-							<= EndGame.Settings.Get(Strings.StartRank).Int);
+						&& (EndGame.Data.GetPlayerRank() <= EndGame.Settings.Get(Strings.StartRank).Int);
 
                 case "casual":
                     return EndGame.Settings.Get(Strings.RecordCasualArchetypes).Bool;
@@ -82,7 +89,7 @@ namespace HDT.Plugins.EndGame.ViewModels
                 // if opponent class is missing skip game
                 if (g.OpponentClass == PlayerClass.ALL)
                 {
-                    EndGame.Logger.Info($"Skipping game {g.Id}, no opponent class");
+                    EndGame.Logger.Debug($"Skipping game {g.Id}, no opponent class");
                     continue;
                 }
                 // create an index for the archetype including class

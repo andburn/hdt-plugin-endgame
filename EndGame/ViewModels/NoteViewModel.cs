@@ -93,17 +93,19 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			if (string.IsNullOrWhiteSpace(text))
 				return;
-			Note = Note ?? string.Empty;
-			_log.Debug($"Adding {text} to note");
+
+			Note = Note ?? string.Empty;			
 			const string regex = "\\[(?<tag>(.*?))\\]";
 			var match = Regex.Match(Note, regex);
 			if (match.Success)
-			{
+			{				
 				var tag = match.Groups["tag"].Value;
+				_log.Debug($"NoteVM: Replacing '{tag}' with {text}'");
 				Note = Note.Replace(match.Value, $"[{text}]");
 			}
 			else
 			{
+				_log.Debug($"NoteVM: Adding '{text}' to note");
 				Note = $"[{text}] {Note}";
 			}
 		}
@@ -111,7 +113,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 		private void NoteViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == "SelectedDeck")
+			{
 				DeckSelected(SelectedDeck);
+				_log.Debug($"NoteVM: DeckSelected ({SelectedDeck.Deck.DisplayName})");
+			}
+			else if (e.PropertyName == "Note")
+			{
+				_log.Debug($"NoteVM: Note changed '{Note}'");
+			}
 		}
 	}
 }

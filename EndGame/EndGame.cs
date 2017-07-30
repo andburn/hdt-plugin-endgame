@@ -150,6 +150,15 @@ namespace HDT.Plugins.EndGame
 
         public static async Task ShowMainView(string location)
         {
+			Logger.Debug($"EndGame: Showing MainView ({location})");
+
+			if (location.ToLower() == Strings.NavNote
+				&& !NoteBoxShouldBeDisplayed())
+			{
+				Logger.Debug($"EndGame: Aborting main view navigation on '{Strings.NavNote}'");
+				return;
+			}
+
             MainView view = null;
             // check for any open windows
             var open = Application.Current.Windows.OfType<MainView>();
@@ -169,8 +178,9 @@ namespace HDT.Plugins.EndGame
             if (view.WindowState == WindowState.Minimized)
                 view.WindowState = WindowState.Normal;
             view.Activate();
-            // navigate to location
-            await _viewModel.OnNavigation(location);
+			
+			// navigate to location
+			await _viewModel.OnNavigation(location);
         }
 
         public static void CloseMainView()
@@ -203,8 +213,14 @@ namespace HDT.Plugins.EndGame
                         Settings.Get(Strings.AutoArchiveArchetypes).Bool,
                         Settings.Get(Strings.DeletePreviouslyImported).Bool,
                         Settings.Get(Strings.RemoveClassFromName).Bool);
-                    // on success save date and show notification
-                    if (count > 0)
+
+					if (forced)
+						Logger.Debug($"EndGame: forced meta update ({count})");
+					else
+						Logger.Debug($"EndGame: meta update available ({count})");
+
+					// on success save date and show notification
+					if (count > 0)
                     {
                         Settings.Set(Strings.LastSnapshotStandard, update.StandardLatest);
 						if (incWild)
@@ -216,8 +232,10 @@ namespace HDT.Plugins.EndGame
 						Logger.Error("Update error, no decks imported");
 						Notify("Import Failed", "Update contained no decks", 15, IcoMoon.Warning, null);
 					}
-                }                                
-            }
+                }
+				else
+					Logger.Debug("EndGame: No meta updates available");
+			}
             catch (Exception e)
             {
                 Logger.Error(e);
@@ -227,17 +245,39 @@ namespace HDT.Plugins.EndGame
 
 		public static void UpdateLogger()
 		{
+			Logger.Debug($"EndGame: Updating logger");
 			if (Settings.Get(Strings.DeveloperMode).Bool)
 			{
+				Logger.Debug($"EndGame: DevMode enabled");
 				if (Settings.Get(Strings.DebugLog).Bool)
 					Logger.EnableDumpToFile();
 				else
 					Logger.DisableDumpToFile();
+			}			
+		}
+		
+		// Check if note box should be displayed before navigating to 
+		// the MainView and showing the note, avoids it poppin up
+		// regardless of other settings
+		public static bool NoteBoxShouldBeDisplayed()
+		{
+			var mode = Data.GetGameMode();
+
+			if (ViewModelHelper.IsDeckAvailable())
+			{
+				if (ViewModelHelper.IsModeEnabledForArchetypes(mode)
+						|| Settings.Get(Strings.ShowRegularNoteBox).Bool)
+					return true;
+				else
+					return false;
 			}
-			
+			else if (Settings.Get(Strings.DeveloperMode).Bool)
+				return true;
+
+			return false;
 		}
 
-        private static async Task WaitUntilInMenu()
+		private static async Task WaitUntilInMenu()
         {
             var timeout = 30000;
             var wait = 1000;
@@ -246,8 +286,11 @@ namespace HDT.Plugins.EndGame
             {
                 await Task.Delay(wait);
                 elapsed += wait;
-                if (elapsed >= timeout)
-                    return;
+				if (elapsed >= timeout)
+				{
+					Logger.Debug($"EndGame: InMenu wait timed out after {timeout / 1000}s");
+					return;
+				}
             }
         }
 

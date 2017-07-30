@@ -71,30 +71,40 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			NoteViewModelBase viewModel = EmptyNoteVM;
 			var mode = EndGame.Data.GetGameMode();
-			if (IsDeckAvailable())
+			var show = true;
+
+			if (ViewModelHelper.IsDeckAvailable())
 			{
+				EndGame.Logger.Debug($"MainView: Opponent deck is available");
 				if (ViewModelHelper.IsModeEnabledForArchetypes(mode))
 				{
+					EndGame.Logger.Debug($"MainView: note is enabled for {mode} mode");
 					viewModel = NoteVM;
 				}
 				else if (EndGame.Settings.Get(Strings.ShowRegularNoteBox).Bool)
 				{
+					EndGame.Logger.Debug($"MainView: enabling regular note box");
 					viewModel = BasicNoteVM;
+				}
+				else
+				{
+					EndGame.Logger.Debug($"MainView: no note dialog should be displayed");
+					// stop the view model being set and updated
+					show = false;
 				}
 			}
 			else if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
 			{
+				EndGame.Logger.Debug($"MainView: DevMode enabled enabling note view");
 				viewModel = NoteVM;
 			}
 
-			ContentViewModel = viewModel;
-			await viewModel.Update();
-		}
-
-		public static bool IsDeckAvailable()
-		{
-			var deck = EndGame.Data.GetOpponentDeck();
-			return deck.Cards.Count >= 1 && deck.Class != PlayerClass.ALL;
-		}
+			if (show)
+			{
+				EndGame.Logger.Debug($"MainView: Updating view model");
+				ContentViewModel = viewModel;
+				await viewModel.Update();
+			}
+		}		
 	}
 }
