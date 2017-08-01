@@ -33,7 +33,8 @@
                     <TextBox x:Name="NoteTextBox"
                          common:Focusable.IsFocused="{Binding IsNoteFocused}"
                          TextWrapping="Wrap"        
-                         Text="{Binding Note}" Style="{StaticResource NoBorder}">
+                         Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource NoBorder}">
                         <common:WatermarkService.Watermark>
                             <TextBlock Margin="8,3,0,0">Enter note text here...</TextBlock>
                         </common:WatermarkService.Watermark>

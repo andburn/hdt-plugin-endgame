@@ -21,12 +21,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			get
 			{
+				EndGame.Logger.Debug("BasicNoteVM: Get Note");
 				if (_note == null)
 					_note = _repository.GetGameNote();
 				return _note;
 			}
 			set
 			{
+				EndGame.Logger.Debug("BasicNoteVM: Set Note");
 				Set(() => Note, ref _note, value);
 				_repository.UpdateGameNote(Note);
 			}

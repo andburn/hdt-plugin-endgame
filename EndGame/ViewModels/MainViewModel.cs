@@ -73,7 +73,12 @@ namespace HDT.Plugins.EndGame.ViewModels
 			var mode = EndGame.Data.GetGameMode();
 			var show = true;
 
-			if (ViewModelHelper.IsDeckAvailable())
+			if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
+			{
+				EndGame.Logger.Debug($"MainView: DevMode enabled enabling note view");
+				viewModel = NoteVM;
+			}
+			else if (ViewModelHelper.IsDeckAvailable())
 			{
 				EndGame.Logger.Debug($"MainView: Opponent deck is available");
 				if (ViewModelHelper.IsModeEnabledForArchetypes(mode))
@@ -92,11 +97,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 					// stop the view model being set and updated
 					show = false;
 				}
-			}
-			else if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
-			{
-				EndGame.Logger.Debug($"MainView: DevMode enabled enabling note view");
-				viewModel = NoteVM;
 			}
 
 			if (show)

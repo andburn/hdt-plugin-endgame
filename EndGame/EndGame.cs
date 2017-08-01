@@ -143,7 +143,12 @@ namespace HDT.Plugins.EndGame
             await ShowMainView(Strings.NavSettings);
         }
 
-        public static async Task ShowStats()
+		public static async Task ShowNote()
+		{
+			await ShowMainView(Strings.NavNote);
+		}
+
+		public static async Task ShowStats()
         {
             await ShowMainView(Strings.NavStats);
         }
@@ -245,35 +250,34 @@ namespace HDT.Plugins.EndGame
 
 		public static void UpdateLogger()
 		{
-			Logger.Debug($"EndGame: Updating logger");
-			if (Settings.Get(Strings.DeveloperMode).Bool)
-			{
-				Logger.Debug($"EndGame: DevMode enabled");
-				if (Settings.Get(Strings.DebugLog).Bool)
-					Logger.EnableDumpToFile();
-				else
-					Logger.DisableDumpToFile();
-			}			
+			Logger.Debug($"EndGame: Updating Logger");
+			if (Settings.Get(Strings.DebugLog).Bool)
+				Logger.EnableDumpToFile();
+			else
+				Logger.DisableDumpToFile();		
 		}
 		
 		// Check if note box should be displayed before navigating to 
-		// the MainView and showing the note, avoids it poppin up
-		// regardless of other settings
+		// the MainView and showing the note, avoids it popping up
+		// and ignoring other settings
 		public static bool NoteBoxShouldBeDisplayed()
 		{
-			var mode = Data.GetGameMode();
-
-			if (ViewModelHelper.IsDeckAvailable())
+			if (Settings.Get(Strings.DeveloperMode).Bool)
 			{
-				if (ViewModelHelper.IsModeEnabledForArchetypes(mode)
-						|| Settings.Get(Strings.ShowRegularNoteBox).Bool)
-					return true;
-				else
-					return false;
-			}
-			else if (Settings.Get(Strings.DeveloperMode).Bool)
 				return true;
-
+			}
+			else if (ViewModelHelper.IsDeckAvailable())
+			{
+				var mode = Data.GetGameMode();
+				if (ViewModelHelper.IsModeEnabledForArchetypes(mode))
+				{
+					return ViewModelHelper.ModeIsEffectedByRank(mode);
+				}
+				else if (Settings.Get(Strings.ShowRegularNoteBox).Bool)
+				{
+					return ViewModelHelper.ModeIsEffectedByRank(mode);
+				}
+			}
 			return false;
 		}
 
@@ -322,6 +326,11 @@ namespace HDT.Plugins.EndGame
                 new RelayCommand(async () => await ShowStats()));
             pm.Append("Settings", IcoMoon.Cog,
                 new RelayCommand(async () => await ShowSettings()));
+			if (Settings.Get(Strings.DeveloperMode).Bool)
+			{
+				pm.Append("Note", IcoMoon.Pen,
+					new RelayCommand(async () => await ShowNote()));
+			}
             return pm.Menu;
         }
 

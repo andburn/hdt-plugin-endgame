@@ -68,8 +68,10 @@
                     Foreground="White" />
                 <AdornerDecorator>
                     <TextBox x:Name="NoteTextBox"
+                     common:Focusable.IsFocused="{Binding IsNoteFocused}"
                      TextWrapping="Wrap"
-                     Text="{Binding Note}" Style="{StaticResource NoBorder}"
+                     Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}" 
+                     Style="{StaticResource NoBorder}"
                      TextChanged="NoteTextBox_TextChanged">
                         <common:WatermarkService.Watermark>
                             <TextBlock Margin="8,2,0,0">Enter note text here...</TextBlock>

@@ -55,7 +55,12 @@ namespace HDT.Plugins.EndGame.ViewModels
 		{
 			IsLoadingDecks = true;
 			Note = _repository.GetGameNote()?.ToString();
-			var deck = _repository.GetOpponentDeck();
+
+			Deck deck;
+			if (EndGame.Settings.Get(Strings.DeveloperMode).Bool)
+				deck = _repository.GetOpponentDeckLive();
+			else
+				deck = _repository.GetOpponentDeck();
 
 			Cards.Clear();
 			deck.Cards.ForEach(c => Cards.Add(c));
@@ -70,7 +75,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 					.ToList();
 				var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
 				results.ForEach(r => Decks.Add(r));
-				results.ForEach(r => _log.Info($"{r.Deck.Name} [{r.Similarity}, {r.Containment}]"));
+				results.ForEach(r => _log.Debug($"Archetype: ({r.Similarity}, {r.Containment}) {r.Deck.DisplayName}"));
 
 				var firstDeck = Decks.FirstOrDefault();
 				if (firstDeck != null && firstDeck.Similarity > MatchResult.THRESHOLD)
@@ -116,10 +121,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			{
 				DeckSelected(SelectedDeck);
 				_log.Debug($"NoteVM: DeckSelected ({SelectedDeck.Deck.DisplayName})");
-			}
-			else if (e.PropertyName == "Note")
-			{
-				_log.Debug($"NoteVM: Note changed '{Note}'");
 			}
 		}
 	}

@@ -116,7 +116,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 				foreach (var dt in snapshot.DeckTiers)
 				{
 					var cards = "";
-					_logger.Info($"Importing deck ({dt.Name})");
+					_logger.Debug($"Importing deck ({dt.Name})");
 					foreach (var cd in dt.Deck.Cards)
 					{
 						cards += cd.Detail.Name;
@@ -141,7 +141,7 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			}
 			else
 			{
-				_logger.Info($"Unknonwn meta import type: {type}");
+				_logger.Info($"Unknown meta import type: {type}");
 			}
 			return deckCount;
 		}
