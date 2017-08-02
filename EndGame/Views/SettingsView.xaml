@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" d:DesignWidth="300" >
+             mc:Ignorable="d" d:DesignWidth="300"  Background="White">
     <StackPanel Margin="15">
         <StackPanel.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVisiblityConverter" />
@@ -89,24 +89,25 @@
                       VerticalAlignment="Top" />
         </Grid>
         <StackPanel Margin="0,10,0,0">
-            <CheckBox Content="Show regular note box for unchecked modes"
+            <CheckBox Content="Show regular note window for unchecked modes"
                           IsChecked="{Binding ShowRegularNoteBox }"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top"
-                          ToolTip="For unchecked game modes show the regular note box." />
-            <Border BorderBrush="Black" BorderThickness="1" Margin="0,15,0,0">
+                          VerticalAlignment="Top" 
+                          ToolTip="For unchecked game modes show the regular note window." />
+            <Border BorderBrush="Black" BorderThickness="0,1,0,0" Margin="0,15,0,0">
                 <StackPanel Margin="5">
-                    <TextBlock Text="Do not show the note box below a certain rank:" 
-                           ToolTip="The note box will not show when playing at a rank less than this." />
                     <DockPanel Margin="0,6,0,0">
+                        <TextBlock Text="Start Rank" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="14"
+                                   ToolTip="Do not show the note window below this rank" />
                         <TextBox x:Name="TextBoxStartRank"
                                  Text="{Binding ElementName=SliderStartRank, Path=Value, UpdateSourceTrigger=PropertyChanged}"
                                  DockPanel.Dock="Left"
                                  TextAlignment="Center"
+                                 VerticalContentAlignment="Center"
                                  Width="30"
-                                 ToolTip="The note box will not show when playing at a rank less than this." />
+                                 ToolTip="Do not show the note window below this rank" />
                         <Slider x:Name="SliderStartRank"
-                                Margin="5,0,0,0"
+                                Margin="10,0,0,0"
                                 Maximum="25"
                                 Minimum="0"
                                 Value="{Binding StartRank}"                                
@@ -114,8 +115,9 @@
                                 TickFrequency="1"
                                 IsSnapToTickEnabled="True"
                                 IsDirectionReversed="True"
-                                ToolTip="The note box will not show when playing at a rank less than this." />
+                                ToolTip="Do not show the note window below this rank" />
                     </DockPanel>
+                    <TextBlock Margin="0,6,0,0" Text="In ranked mode do not show the note window below this rank" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
         </StackPanel>

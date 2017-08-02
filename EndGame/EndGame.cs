@@ -328,7 +328,7 @@ namespace HDT.Plugins.EndGame
                 new RelayCommand(async () => await ShowSettings()));
 			if (Settings.Get(Strings.DeveloperMode).Bool)
 			{
-				pm.Append("Note", IcoMoon.Pen,
+				pm.Append("Note", IcoMoon.FileText2,
 					new RelayCommand(async () => await ShowNote()));
 			}
             return pm.Menu;
