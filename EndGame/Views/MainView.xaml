@@ -7,9 +7,9 @@
              xmlns:views="clr-namespace:HDT.Plugins.EndGame.Views"
              xmlns:controls="clr-namespace:HDT.Plugins.Common.Controls;assembly=EndGame.Common"
              mc:Ignorable="d"
-             Width="620" Height="560"
-             MinWidth="620" MinHeight="560"
-             d:DesignWidth="620" d:DesignHeight="560"
+             Width="620" Height="580"
+             MinWidth="620" MinHeight="580"
+             d:DesignWidth="620" d:DesignHeight="580"
              Topmost="True"
              WindowStartupLocation="CenterScreen"
              Title="Hearthstone Deck Tracker (End Game)">

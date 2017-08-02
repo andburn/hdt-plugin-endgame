@@ -230,7 +230,7 @@ namespace HDT.Plugins.EndGame
                         Settings.Set(Strings.LastSnapshotStandard, update.StandardLatest);
 						if (incWild)
 							Settings.Set(Strings.LastSnapshotWild, update.WildLatest);
-						Notify("Import Complete", $"{count} decks imported", 10, IcoMoon.Notification, null);
+						Notify("Meta Decks Updated", $"{count} decks imported", 10, IcoMoon.Notification, null);
                     }
                     else
 					{

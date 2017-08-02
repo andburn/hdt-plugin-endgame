@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
+using GalaSoft.MvvmLight.Command;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -50,6 +51,15 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => IsNoteFocused, ref _isNoteFocused, value); }
 		}
 
+		public bool OpponentDeckIsValid {
+			get
+			{
+				return Cards != null && Cards.Count > 0;
+			}
+		}
+
+		public RelayCommand AddOpponentDeck { get; private set; }
+
 		public BasicNoteViewModel()
 			: this(EndGame.Data, EndGame.Logger)
 		{
@@ -61,6 +71,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 			BindingOperations.EnableCollectionSynchronization(Cards, _cardLock);
 			_repository = track;
 			_logger = logger;
+			AddOpponentDeck = new RelayCommand(() => ViewModelHelper.EditNewArchetypeDeck(Cards));
 		}
 
 		public override async Task Update()

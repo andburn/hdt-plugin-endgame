@@ -10,5 +10,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Basic statistics screen
 - Auto-update meta deck importing
 - Setting to not show note box below a certain rank
+- Create a archetype deck from opponents cards
 
 [Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/v1.0.0...HEAD

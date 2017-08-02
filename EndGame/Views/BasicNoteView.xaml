@@ -54,7 +54,15 @@
                     TextAlignment="Left" FontSize="12"
                     Background="{StaticResource DarkBackground}"
                     Foreground="White"/>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                <Border Background="{StaticResource DarkBackground}" 
+                        BorderThickness="0"
+                        DockPanel.Dock="Bottom"
+                        Visibility="{Binding OpponentDeckIsValid, Converter={StaticResource VisibilityConverter}}">
+                    <Button Height="26" Width="140" Margin="8"                             
+                            Command="{Binding AddOpponentDeck}" 
+                            Cursor="Hand">Create Archetype</Button>
+                </Border>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

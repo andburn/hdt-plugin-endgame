@@ -34,6 +34,12 @@ namespace HDT.Plugins.EndGame.ViewModels
 				.ToList();
 		}
 
+		public static void EditNewArchetypeDeck(IEnumerable<Card> cards)
+		{
+			EndGame.Logger.Debug($"VMHelper: New archetype deck edit ({cards.Count()})");
+			EndGame.Client.OpenDeckEditor(cards, Strings.ArchetypeTag);
+		}
+
 		public static bool IsDeckAvailable()
 		{
 			var deck = EndGame.Data.GetOpponentDeck();
