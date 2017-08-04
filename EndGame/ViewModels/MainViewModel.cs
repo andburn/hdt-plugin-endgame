@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HDT.Plugins.Common.Enums;
 using HDT.Plugins.EndGame.Utilities;
 using System.Threading.Tasks;
 
@@ -8,11 +7,65 @@ namespace HDT.Plugins.EndGame.ViewModels
 {
 	public class MainViewModel : ViewModelBase
 	{
-		private static readonly ViewModelBase SettingsVM = new SettingsViewModel();
-		private static readonly NoteViewModelBase NoteVM = new NoteViewModel();
-		private static readonly NoteViewModelBase BasicNoteVM = new BasicNoteViewModel();
-		private static readonly NoteViewModelBase EmptyNoteVM = new EmptyNoteViewModel();
-		private static readonly ViewModelBase StatsVM = new StatsViewModel();
+		private static ViewModelBase _settings;
+
+		private static ViewModelBase SettingsVM
+		{
+			get
+			{
+				if (_settings == null)
+					_settings = new SettingsViewModel();
+				return _settings;
+			}
+		}
+
+		private static NoteViewModelBase _note;
+
+		private static NoteViewModelBase NoteVM
+		{
+			get
+			{
+				if (_note == null)
+					_note = new NoteViewModel();
+				return _note;
+			}
+		}
+
+		private static NoteViewModelBase _basicNote;
+
+		private static NoteViewModelBase BasicNoteVM
+		{
+			get
+			{
+				if (_basicNote == null)
+					_basicNote = new BasicNoteViewModel();
+				return _basicNote;
+			}
+		}
+
+		private static NoteViewModelBase _emptyNote;
+
+		private static NoteViewModelBase EmptyNoteVM
+		{
+			get
+			{
+				if (_emptyNote == null)
+					_emptyNote = new EmptyNoteViewModel();
+				return _emptyNote;
+			}
+		}
+
+		private static ViewModelBase _stats;
+
+		private static ViewModelBase StatsVM
+		{
+			get
+			{
+				if (_stats == null)
+					_stats = new StatsViewModel();
+				return _stats;
+			}
+		}
 
 		private string _contentTitle;
 
@@ -105,6 +158,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 				ContentViewModel = viewModel;
 				await viewModel.Update();
 			}
-		}		
+		}
 	}
 }
