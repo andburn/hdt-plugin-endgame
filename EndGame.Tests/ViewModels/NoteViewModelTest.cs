@@ -32,6 +32,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 
 			trackMock.Setup(x => x.GetGameNote()).Returns("Note Text");
 			trackMock.Setup(x => x.GetOpponentDeck()).Returns(deck);
+			trackMock.Setup(x => x.GetOpponentDeckLive()).Returns(deck);
 			trackMock.Setup(x => x.GetAllDecksWithTag(Strings.ArchetypeTag)).Returns(new List<Deck>());
 
 			viewModel = new NoteViewModel(trackMock.Object, logMock.Object);

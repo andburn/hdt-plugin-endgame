@@ -54,7 +54,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void MatchSameClassStandardSingle()
 		{
 			var deck = CreateDeck(PlayerClass.DRUID, true, "DR_123:1;NT_001:1");
-			var results = MatchArchetypes(deck, archetypes);
+			var results = MatchArchetypes(GameFormat.STANDARD, deck, archetypes);
 			Assert.AreEqual("one", results.Single().Deck.Name);
 		}
 
@@ -62,7 +62,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void MatchSameClassWildSingle()
 		{
 			var deck = CreateDeck(PlayerClass.DRUID, false, "DR_123:1;NT_001:1");
-			var results = MatchArchetypes(deck, archetypes);
+			var results = MatchArchetypes(GameFormat.WILD, deck, archetypes);
 			Assert.AreEqual("one", results.Single().Deck.Name);
 		}
 
@@ -70,7 +70,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void MatchSameClassStandardMultiple()
 		{
 			var deck = CreateDeck(PlayerClass.MAGE, true, "MG_123:1;NT_001:1");
-			var results = MatchArchetypes(deck, archetypes);
+			var results = MatchArchetypes(GameFormat.STANDARD, deck, archetypes);
 			Assert.AreEqual(2, results.Count);
 			Assert.AreEqual("two", results.First().Deck.Name);
 		}
@@ -79,7 +79,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void MatchSameClassWildMultiple()
 		{
 			var deck = CreateDeck(PlayerClass.MAGE, false, "MG_123:1;NT_001:1");
-			var results = MatchArchetypes(deck, archetypes);
+			var results = MatchArchetypes(GameFormat.WILD, deck, archetypes);
 			Assert.AreEqual(3, results.Count);
 			Assert.AreEqual(0.67f, results.First().Similarity);
 		}
@@ -88,7 +88,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void MatchAnyClassStandard()
 		{
 			var deck = CreateDeck(PlayerClass.ALL, true, "NT_001:2");
-			var results = MatchArchetypes(deck, archetypes);
+			var results = MatchArchetypes(GameFormat.STANDARD, deck, archetypes);
 			Assert.AreEqual(3, results.Count);
 			Assert.AreEqual(0.25f, results.First().Similarity);
 		}
@@ -97,7 +97,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void SortedBySimilarity()
 		{
 			var deck = CreateDeck(PlayerClass.ALL, false, "DR_123:1;NT_001:1");
-			var results = MatchArchetypes(deck, archetypes);
+			var results = MatchArchetypes(GameFormat.WILD, deck, archetypes);
 			Assert.AreEqual(4, results.Count);
 			Assert.AreEqual("one", results[0].Deck.Name);
 			Assert.AreEqual("four", results[1].Deck.Name);
@@ -116,7 +116,7 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		public void GetDecksArchetypeStats()
 		{
             var games = mock.Object.GetAllGamesWithDeck(decks[1].Id);
-            var stats = ViewModelHelper.GetArchetypeStats(games);
+            var stats = GetArchetypeStats(games);
 			Assert.That(stats.Count, Is.EqualTo(3));
 		}
 	}

@@ -53,6 +53,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public override async Task Update()
 		{
+			IsNoteFocused = true;
 			IsLoadingDecks = true;
 			Note = _repository.GetGameNote()?.ToString();
 
@@ -67,22 +68,29 @@ namespace HDT.Plugins.EndGame.ViewModels
 			PlayerClass = deck.Class.ToString();
 
 			Decks.Clear();
+			if (Cards.Count <= 0)
+			{
+				EndGame.Logger.Debug("NoteVM: Opponent deck is empty, skipping");
+				IsLoadingDecks = false;
+				return;
+			}
 			await Task.Run(() =>
 			{
 				var alldecks = _repository
 					.GetAllDecksWithTag(Strings.ArchetypeTag)
 					.Select(d => new ArchetypeDeck(d))
 					.ToList();
-				var results = ViewModelHelper.MatchArchetypes(deck, alldecks);
+				var format = EndGame.Data.GetGameFormat();
+				var results = ViewModelHelper.MatchArchetypes(format, deck, alldecks);
 				results.ForEach(r => Decks.Add(r));
-				results.ForEach(r => _log.Debug($"Archetype: ({r.Similarity}, {r.Containment}) {r.Deck.DisplayName}"));
+				results.ForEach(r => _log.Debug($"Archetype: ({r.Similarity}, {r.Containment}) " +
+					$"{r.Deck.DisplayName} ({r.Deck.Class})"));
 
 				var firstDeck = Decks.FirstOrDefault();
 				if (firstDeck != null && firstDeck.Similarity > MatchResult.THRESHOLD)
 					DeckSelected(firstDeck);
 
 				IsLoadingDecks = false;
-				IsNoteFocused = true;
 			});
 		}
 

@@ -174,10 +174,12 @@ namespace HDT.Plugins.EndGame
             else
             {
                 CloseMainView();
-                // create view
-                view = new MainView();
-                view.DataContext = _viewModel;
-            }
+				// create view
+				view = new MainView()
+				{
+					DataContext = _viewModel
+				};
+			}
             // show the window, and restore if needed
             view.Show();
             if (view.WindowState == WindowState.Minimized)
