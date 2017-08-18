@@ -1,15 +1,12 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HDT.Plugins.EndGame.ViewModels;
-using HDT.Plugins.Common.Services;
-using Moq;
-using HDT.Plugins.EndGame.Utilities;
-using HDT.Plugins.Common.Enums;
+﻿using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
+using HDT.Plugins.EndGame.Utilities;
+using HDT.Plugins.EndGame.ViewModels;
+using Moq;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.Tests.ViewModels
 {

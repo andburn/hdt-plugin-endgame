@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
-using HDT.Plugins.Common.Enums;
+﻿using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.ViewModels;
 using Moq;
 using NUnit.Framework;
-using static HDT.Plugins.EndGame.ViewModels.ViewModelHelper;
+using System.Collections.Generic;
+using System.Linq;
 using static HDT.Plugins.EndGame.Tests.TestHelper;
-using System;
+using static HDT.Plugins.EndGame.ViewModels.ViewModelHelper;
 
 namespace HDT.Plugins.EndGame.Tests.ViewModels
 {
@@ -115,8 +113,8 @@ namespace HDT.Plugins.EndGame.Tests.ViewModels
 		[Test]
 		public void GetDecksArchetypeStats()
 		{
-            var games = mock.Object.GetAllGamesWithDeck(decks[1].Id);
-            var stats = GetArchetypeStats(games);
+			var games = mock.Object.GetAllGamesWithDeck(decks[1].Id);
+			var stats = GetArchetypeStats(games);
 			Assert.That(stats.Count, Is.EqualTo(3));
 		}
 	}

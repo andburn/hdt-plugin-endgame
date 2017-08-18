@@ -1,10 +1,10 @@
-﻿using System;
+﻿using HDT.Plugins.Common.Services;
+using HDT.Plugins.EndGame.Utilities;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HDT.Plugins.Common.Services;
-using HDT.Plugins.EndGame.Utilities;
-using Newtonsoft.Json;
 
 namespace HDT.Plugins.EndGame.Services.TempoStorm
 {
@@ -23,7 +23,8 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			_http = http;
 			_tracker = tracker;
 			_logger = logger;
-			_settings = new JsonSerializerSettings() {
+			_settings = new JsonSerializerSettings()
+			{
 				NullValueHandling = NullValueHandling.Ignore
 			};
 		}
@@ -66,11 +67,13 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			var incSlugs = new IncludeItem("slugs", new Include("linked", "slug"));
 			var inCardsCard = new IncludeItem("card", new Include("id", "name", "cardType", "cost"));
 			var incCards = new IncludeItem("cards", inCardsCard);
-			var incDeck = new IncludeItem("deck", new Include() {
+			var incDeck = new IncludeItem("deck", new Include()
+			{
 				Fields = new List<string> { "id", "name", "slug", "playerClass" },
 				Items = new List<IncludeItem>() { incSlugs, incCards }
 			});
-			var incTiers = new IncludeItem("deckTiers", new Include() {
+			var incTiers = new IncludeItem("deckTiers", new Include()
+			{
 				Fields = new List<string> { "name", "id", "deckId", "tier" },
 				Items = new List<IncludeItem>() { incDeck, incDeckTech }
 			});
@@ -146,11 +149,11 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			return deckCount;
 		}
 
-        public async Task<UpdateResult> CheckForUpdates(string stdDate, string wildDate)
-        {
-            var std = GetSnapshotSlug(Strings.MetaStandard);
-            var wild = GetSnapshotSlug(Strings.MetaWild);
-            return new UpdateResult(stdDate, (await std).Item1, wildDate, (await wild).Item1);
-        }
+		public async Task<UpdateResult> CheckForUpdates(string stdDate, string wildDate)
+		{
+			var std = GetSnapshotSlug(Strings.MetaStandard);
+			var wild = GetSnapshotSlug(Strings.MetaWild);
+			return new UpdateResult(stdDate, (await std).Item1, wildDate, (await wild).Item1);
+		}
 	}
 }

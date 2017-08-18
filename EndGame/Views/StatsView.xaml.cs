@@ -2,11 +2,11 @@
 
 namespace HDT.Plugins.EndGame.Views
 {
-    public partial class StatsView : UserControl
-    {
-        public StatsView()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class StatsView : UserControl
+	{
+		public StatsView()
+		{
+			InitializeComponent();
+		}
+	}
 }

@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="HDT.Plugins.EndGame.Views.BasicNoteView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:common="clr-namespace:HDT.Plugins.Common.Controls.Extensions;assembly=EndGame.Common"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignWidth="600" d:DesignHeight="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Border Margin="10,10,5,10" Grid.Column="0" 
+        <Border Margin="10,10,5,10" Grid.Column="0"
                 BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
             <DockPanel>
                 <TextBlock Text="GAME NOTE"
@@ -28,11 +28,11 @@
                     Height="24"
                     TextAlignment="Left" FontSize="12"
                     Background="{StaticResource DarkBackground}"
-                    Foreground="White"/>
+                    Foreground="White" />
                 <AdornerDecorator>
                     <TextBox x:Name="NoteTextBox"
                          common:Focusable.IsFocused="{Binding IsNoteFocused}"
-                         TextWrapping="Wrap"        
+                         TextWrapping="Wrap"
                          Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource NoBorder}">
                         <common:WatermarkService.Watermark>
@@ -42,7 +42,7 @@
                 </AdornerDecorator>
             </DockPanel>
         </Border>
-        
+
         <Border Grid.Column="1" x:Name="CardList"
                 Width="254" Margin="5,10,10,10"
                 BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
@@ -53,25 +53,25 @@
                     Height="24"
                     TextAlignment="Left" FontSize="12"
                     Background="{StaticResource DarkBackground}"
-                    Foreground="White"/>
-                <Border Background="{StaticResource DarkBackground}" 
+                    Foreground="White" />
+                <Border Background="{StaticResource DarkBackground}"
                         BorderThickness="0"
                         DockPanel.Dock="Bottom"
                         Visibility="{Binding OpponentDeckIsValid, Converter={StaticResource VisibilityConverter}}">
-                    <Button Height="26" Width="140" Margin="8"                             
-                            Command="{Binding AddOpponentDeck}" 
+                    <Button Height="26" Width="140" Margin="8"
+                            Command="{Binding AddOpponentDeck}"
                             Cursor="Hand">Create Archetype</Button>
                 </Border>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl ItemsSource="{Binding Cards}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Rectangle Fill="{Binding Image}" Height="34" Width="217" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-                </DockPanel>
+                    <ItemsControl ItemsSource="{Binding Cards}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Fill="{Binding Image}" Height="34" Width="217" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
         </Border>
     </Grid>
 </UserControl>

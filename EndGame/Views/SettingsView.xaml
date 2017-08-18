@@ -38,7 +38,7 @@
                           VerticalAlignment="Top"
                           ToolTip="Don't show the note box until you are back in the menu screen after the match." />
             <CheckBox Content="Enable debug log"
-                          Visibility="{Binding IsInDevMode, Converter={StaticResource BoolToVisiblityConverter}}"                      
+                          Visibility="{Binding IsInDevMode, Converter={StaticResource BoolToVisiblityConverter}}"
                           IsChecked="{Binding EnableDebugLog}"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
@@ -49,30 +49,30 @@
         </Border>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked" 
+            <CheckBox x:Name="CheckboxRecordRanked" Content="Ranked"
                       Grid.Column="0" Grid.Row="0"
                       IsChecked="{Binding RecordRankedArchetypes}"
                       HorizontalAlignment="Left" Margin="0,5,0,0"
                       VerticalAlignment="Top" />
-            <CheckBox x:Name="CheckboxRecordArena" Content="Arena" 
+            <CheckBox x:Name="CheckboxRecordArena" Content="Arena"
                       Grid.Column="0" Grid.Row="1"
                       IsChecked="{Binding RecordArenaArchetypes}"
                       HorizontalAlignment="Left" Margin="0,5,0,0"
                       VerticalAlignment="Top" />
-            <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl" 
+            <CheckBox x:Name="CheckboxRecordBrawl" Content="Brawl"
                       Grid.Column="0" Grid.Row="2"
                       IsChecked="{Binding RecordBrawlArchetypes}"
                       HorizontalAlignment="Left" Margin="0,5,0,0"
                       VerticalAlignment="Top" />
-            <CheckBox x:Name="CheckboxRecordCasual" Content="Casual" 
+            <CheckBox x:Name="CheckboxRecordCasual" Content="Casual"
                       Grid.Column="1" Grid.Row="0"
                       IsChecked="{Binding RecordCasualArchetypes}"
                       HorizontalAlignment="Left" Margin="0,5,0,0"
@@ -92,7 +92,7 @@
             <CheckBox Content="Show regular note window for unchecked modes"
                           IsChecked="{Binding ShowRegularNoteBox }"
                           HorizontalAlignment="Left" Margin="0,5,0,0"
-                          VerticalAlignment="Top" 
+                          VerticalAlignment="Top"
                           ToolTip="For unchecked game modes show the regular note window." />
             <Border BorderBrush="Black" BorderThickness="0,1,0,0" Margin="0,15,0,0">
                 <StackPanel Margin="5">
@@ -110,7 +110,7 @@
                                 Margin="10,0,0,0"
                                 Maximum="25"
                                 Minimum="0"
-                                Value="{Binding StartRank}"                                
+                                Value="{Binding StartRank}"
                                 TickPlacement="BottomRight"
                                 TickFrequency="1"
                                 IsSnapToTickEnabled="True"

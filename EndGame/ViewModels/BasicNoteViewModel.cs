@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Data;
+﻿using GalaSoft.MvvmLight.Command;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
-using GalaSoft.MvvmLight.Command;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -51,7 +51,8 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => IsNoteFocused, ref _isNoteFocused, value); }
 		}
 
-		public bool OpponentDeckIsValid {
+		public bool OpponentDeckIsValid
+		{
 			get
 			{
 				return Cards != null && Cards.Count > 0;

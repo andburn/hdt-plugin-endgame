@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using HDT.Plugins.Common.Enums;
+﻿using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace HDT.Plugins.EndGame.Tests.Models
 {

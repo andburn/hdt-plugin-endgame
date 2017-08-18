@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using HDT.Plugins.EndGame.Utilities;
+using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HDT.Plugins.Common.Utils;
+using HDT.Plugins.EndGame.Models;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using HDT.Plugins.Common.Utils;
-using HDT.Plugins.EndGame.Models;
 
 namespace HDT.Plugins.EndGame.Utilities
 {

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using HDT.Plugins.EndGame.ViewModels;
+﻿using HDT.Plugins.EndGame.ViewModels;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace HDT.Plugins.EndGame.Tests.ViewModels
 {

@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using HDT.Plugins.EndGame.ViewModels;
+﻿using HDT.Plugins.EndGame.ViewModels;
+using System.Windows.Controls;
 
 namespace HDT.Plugins.EndGame.Views
 {

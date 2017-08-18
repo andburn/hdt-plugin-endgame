@@ -70,7 +70,7 @@
                     <TextBox x:Name="NoteTextBox"
                      common:Focusable.IsFocused="{Binding IsNoteFocused}"
                      TextWrapping="Wrap"
-                     Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource NoBorder}"
                      TextChanged="NoteTextBox_TextChanged">
                         <common:WatermarkService.Watermark>
@@ -92,12 +92,12 @@
                     TextAlignment="Left" FontSize="12"
                     Background="{StaticResource DarkBackground}"
                     Foreground="White" />
-                <Border Background="{StaticResource DarkBackground}" 
+                <Border Background="{StaticResource DarkBackground}"
                         BorderThickness="0"
                         DockPanel.Dock="Bottom"
                         Visibility="{Binding OpponentDeckIsValid, Converter={StaticResource VisibilityConverter}}">
-                    <Button Height="26" Width="140" Margin="8"                             
-                            Command="{Binding AddOpponentDeck}" 
+                    <Button Height="26" Width="140" Margin="8"
+                            Command="{Binding AddOpponentDeck}"
                             Cursor="Hand">Create Archetype</Button>
                 </Border>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled">

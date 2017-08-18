@@ -31,7 +31,6 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
-
 		public bool AutoArchiveArchetypes
 		{
 			get

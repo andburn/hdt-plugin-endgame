@@ -4,6 +4,7 @@
 	{
 		// Settings
 		public const string ArchetypesEnabled = "ArchetypesEnabled";
+
 		public const string AutoArchiveArchetypes = "AutoArchiveArchetypes";
 		public const string DeletePreviouslyImported = "DeletePreviouslyImported";
 		public const string RemoveClassFromName = "RemoveClassFromName";
@@ -29,11 +30,13 @@
 
 		// Navigation
 		public const string NavSettings = "settings";
+
 		public const string NavNote = "note";
 		public const string NavStats = "stats";
 
 		// Other
 		public const string ArchetypeTag = "Archetype";
+
 		public const string PluginTag = "EndGame";
 		public const string MetaStandard = "standard";
 		public const string MetaWild = "wild";

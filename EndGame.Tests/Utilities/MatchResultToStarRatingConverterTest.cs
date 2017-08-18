@@ -1,11 +1,10 @@
-﻿using HDT.Plugins.Common.Models;
-using NUnit.Framework;
-using System.Windows.Data;
+﻿using HDT.Plugins.Common.Utils;
+using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
+using NUnit.Framework;
 using System.Globalization;
 using System.Windows;
-using HDT.Plugins.Common.Utils;
-using HDT.Plugins.EndGame.Models;
+using System.Windows.Data;
 
 namespace HDT.Plugins.EndGame.Tests.Models
 {

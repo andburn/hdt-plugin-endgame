@@ -1,12 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using HDT.Plugins.Common.Models;
+using HDT.Plugins.Common.Services;
+using HDT.Plugins.EndGame.Models;
+using HDT.Plugins.EndGame.Utilities;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using HDT.Plugins.Common.Models;
-using HDT.Plugins.Common.Services;
-using HDT.Plugins.EndGame.Models;
-using HDT.Plugins.EndGame.Utilities;
 
 namespace HDT.Plugins.EndGame.ViewModels
 {
@@ -107,11 +107,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 			if (string.IsNullOrWhiteSpace(text))
 				return;
 
-			Note = Note ?? string.Empty;			
+			Note = Note ?? string.Empty;
 			const string regex = "\\[(?<tag>(.*?))\\]";
 			var match = Regex.Match(Note, regex);
 			if (match.Success)
-			{				
+			{
 				var tag = match.Groups["tag"].Value;
 				_log.Debug($"NoteVM: Replacing '{tag}' with {text}'");
 				Note = Note.Replace(match.Value, $"[{text}]");

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using HDT.Plugins.Common.Enums;
+﻿using HDT.Plugins.Common.Enums;
 using HDT.Plugins.Common.Models;
 using HDT.Plugins.EndGame.Utilities;
+using System;
+using System.Linq;
 
 namespace HDT.Plugins.EndGame.Models
 {
