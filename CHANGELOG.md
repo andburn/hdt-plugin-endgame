@@ -5,11 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- *nothing*
+
+## [1.0.0] - 2017-08-18
 ### Added
-- Changelog
+- Option to import wild meta snapshot
 - Basic statistics screen
 - Auto-update meta deck importing
-- Setting to not show note box below a certain rank
-- Create a archetype deck from opponents cards
+- Option to not show note window below a certain rank
+- Create an archetype deck from opponents cards
+
+## Changed
+- New UI in a separate window
+
+### Removed
+- Screenshot capturing at end of game
 
 [Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/andburn/hdt-plugin-endgameg/compare/v0.4.3...v1.0.0
