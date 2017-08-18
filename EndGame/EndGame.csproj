@@ -102,6 +102,7 @@
     <Compile Include="Services\UpdateResult.cs" />
     <Compile Include="Utilities\IUpdatable.cs" />
     <Compile Include="ViewModels\BasicNoteViewModel.cs" />
+    <Compile Include="ViewModels\DevViewModel.cs" />
     <Compile Include="ViewModels\EmptyNoteViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModelBase.cs" />
@@ -109,6 +110,9 @@
     <Compile Include="ViewModels\StatsViewModel.cs" />
     <Compile Include="Views\BasicNoteView.xaml.cs">
       <DependentUpon>BasicNoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DevView.xaml.cs">
+      <DependentUpon>DevView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EmptyNoteView.xaml.cs">
       <DependentUpon>EmptyNoteView.xaml</DependentUpon>
@@ -159,6 +163,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\BasicNoteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DevView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -67,6 +67,18 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 		}
 
+		private static NoteViewModelBase _dev;
+
+		private static NoteViewModelBase DevVM
+		{
+			get
+			{
+				if (_dev == null)
+					_dev = new DevViewModel();
+				return _dev;
+			}
+		}
+
 		private string _contentTitle;
 
 		public string ContentTitle
@@ -109,6 +121,11 @@ namespace HDT.Plugins.EndGame.ViewModels
 				var updatable = ContentViewModel as IUpdatable;
 				if (updatable != null)
 					await updatable.Update();
+			}
+			else if (loc == Strings.NavDev)
+			{
+				ContentViewModel = DevVM;
+				await DevVM.Update();				
 			}
 			else
 			{

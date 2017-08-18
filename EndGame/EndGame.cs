@@ -319,6 +319,11 @@ namespace HDT.Plugins.EndGame
 			}
 		}
 
+		private async Task ShowDevMode()
+		{
+			await ShowMainView(Strings.NavDev);
+		}
+
 		private MenuItem CreateMenu()
 		{
 			var pm = new PluginMenu("End Game", IcoMoon.Target);
@@ -332,6 +337,8 @@ namespace HDT.Plugins.EndGame
 			{
 				pm.Append("Note", IcoMoon.FileText2,
 					new RelayCommand(async () => await ShowNote()));
+				pm.Append("Dev", IcoMoon.Wink2,
+					new RelayCommand(async () => await ShowDevMode()));
 			}
 			return pm.Menu;
 		}
