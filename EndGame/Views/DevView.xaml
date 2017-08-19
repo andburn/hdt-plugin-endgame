@@ -21,8 +21,8 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Border Grid.Column="0" Grid.Row="0" Margin="10"
@@ -59,25 +59,22 @@
         <Border Margin="10,0,10,10" Grid.Column="0" Grid.Row="1"
                 BorderBrush="{StaticResource DarkBackground}" BorderThickness="1">
             <DockPanel>
-                <TextBlock Text="GAME NOTE"
+                <TextBlock Text="SPARE"
                     Padding="8,4,0,0"
                     DockPanel.Dock="Top"
                     Height="24"
                     TextAlignment="Left" FontSize="12"
                     Background="{StaticResource DarkBackground}"
                     Foreground="White" />
-                <AdornerDecorator>
-                    <TextBox x:Name="NoteTextBox"
-                     common:Focusable.IsFocused="{Binding IsNoteFocused}"
-                     TextWrapping="Wrap"
-                     Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource NoBorder}"
-                     TextChanged="NoteTextBox_TextChanged">
-                        <common:WatermarkService.Watermark>
-                            <TextBlock Margin="8,2,0,0">Enter note text here...</TextBlock>
-                        </common:WatermarkService.Watermark>
-                    </TextBox>
-                </AdornerDecorator>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl Margin="0,4" ItemsSource="{Binding SpareCards}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Fill="{Binding Image}" Height="34" Width="217" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </DockPanel>
         </Border>
 
@@ -92,6 +89,14 @@
                     TextAlignment="Left" FontSize="12"
                     Background="{StaticResource DarkBackground}"
                     Foreground="White" />
+                <Border Background="{StaticResource DarkBackground}"
+                        BorderThickness="0"
+                        DockPanel.Dock="Bottom">
+                    <Button Height="26" Width="140" Margin="8"
+                            Content="{Binding WatchButtonText}"
+                            Command="{Binding WatchButtonClick}"
+                            Cursor="Hand" />
+                </Border>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl Margin="0,4" ItemsSource="{Binding Cards}">
                         <ItemsControl.ItemTemplate>
