@@ -1,8 +1,8 @@
 ## End Game
-[![Build status](https://ci.appveyor.com/api/projects/status/oi4kpe3xiod62qw3?svg=true)](https://ci.appveyor.com/project/andburn/hdt-plugin-endgame)
-[![Coverage Status](https://coveralls.io/repos/github/andburn/hdt-plugin-endgame/badge.svg?branch=master)](https://coveralls.io/github/andburn/hdt-plugin-endgame?branch=master)
-[![GitHub release](https://img.shields.io/github/release/andburn/hdt-plugin-endgame.svg?maxAge=604800)](https://github.com/andburn/hdt-plugin-endgame/releases/latest)
-[![Github Releases](https://img.shields.io/github/downloads/andburn/hdt-plugin-endgame/latest/total.svg?maxAge=604800)](https://github.com/andburn/hdt-plugin-endgame/releases/latest)
+[![AppVeyor branch](https://img.shields.io/appveyor/ci/andburn/hdt-plugin-endgame/master.svg?maxAge=21600)](https://ci.appveyor.com/project/andburn/hdt-plugin-endgame)
+[![Codecov branch](https://img.shields.io/codecov/c/github/andburn/hdt-plugin-endgame/master.svg?maxAge=21600)](https://codecov.io/gh/andburn/hdt-plugin-endgame)
+[![GitHub release](https://img.shields.io/github/release/andburn/hdt-plugin-endgame.svg?maxAge=21600)](https://github.com/andburn/hdt-plugin-endgame/releases/latest)
+[![Github downloads](https://img.shields.io/github/downloads/andburn/hdt-plugin-endgame/latest/total.svg?maxAge=21600)](https://github.com/andburn/hdt-plugin-endgame/releases/latest)
 
 A [Hearthstone Deck Tracker](https://hsdecktracker.net/) that helps keep track of your opponents deck types after a game.
 
