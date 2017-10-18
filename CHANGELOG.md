@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - *nothing*
 
+## [1.0.1] - 2017-10-18
+### Updated
+- HDT compatibility, package dependencies updated
+
 ## [1.0.0] - 2017-08-18
 ### Added
 - Option to import wild meta snapshot
@@ -15,11 +19,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Option to not show note window below a certain rank
 - Create an archetype deck from opponents cards
 
-## Changed
+### Changed
 - New UI in a separate window
 
 ### Removed
 - Screenshot capturing at end of game
 
-[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/andburn/hdt-plugin-endgameg/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/andburn/hdt-plugin-endgameg/compare/v0.4.3...v1.0.0
