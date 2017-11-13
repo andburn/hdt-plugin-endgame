@@ -3,6 +3,7 @@ using HDT.Plugins.Common.Models;
 using HDT.Plugins.Common.Services;
 using HDT.Plugins.EndGame.Models;
 using HDT.Plugins.EndGame.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -89,7 +90,7 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public static IEnumerable<Deck> GetDecksWithArchetypeGames(IDataRepository data)
 		{
 			var games = data.GetAllGames()
-				.Where(g => g.Note.HasArchetype)
+				.Where(g => g.Note.HasArchetype && g.Deck.Id != Guid.Empty)
 				.Select(g => g.Deck.Id)
 				.Distinct()
 				.ToLookup(x => x);
