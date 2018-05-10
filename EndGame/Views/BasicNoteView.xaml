@@ -32,7 +32,7 @@
                          Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource NoBorder}">
                         <common:WatermarkService.Watermark>
-                            <TextBlock Margin="8,3,0,0">Enter note text here...</TextBlock>
+                            <TextBlock Style="{StaticResource ThemeTextColor}" Margin="8,3,0,0">Enter note text here...</TextBlock>
                         </common:WatermarkService.Watermark>
                     </TextBox>
                 </AdornerDecorator>

@@ -11,6 +11,10 @@
         <ResourceDictionary Source="pack://application:,,,/EndGame;component/Views/Styles.xaml" />
     </UserControl.Resources>
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ThemeTextColor}" />
+        </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -69,7 +73,7 @@
                      Style="{StaticResource NoBorder}"
                      TextChanged="NoteTextBox_TextChanged">
                         <common:WatermarkService.Watermark>
-                            <TextBlock Margin="8,2,0,0">Enter note text here...</TextBlock>
+                            <TextBlock Style="{StaticResource ThemeTextColor}" Margin="8,2,0,0">Enter note text here...</TextBlock>
                         </common:WatermarkService.Watermark>
                     </TextBox>
                 </AdornerDecorator>

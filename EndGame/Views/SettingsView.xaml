@@ -3,12 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" d:DesignWidth="300"  Background="White">
+             mc:Ignorable="d" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary Source="pack://application:,,,/EndGame;component/Views/Styles.xaml" />
     </UserControl.Resources>
     <StackPanel Margin="15">
-        <Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0,0,0,15">
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ThemeTextColor}" />
+            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource ThemeBorderColor}" />
+        </StackPanel.Resources>
+        <Border BorderThickness="0,0,0,1" Margin="0,0,0,15">
             <TextBlock FontWeight="Bold" FontSize="16">OPTIONS</TextBlock>
         </Border>
         <StackPanel>
@@ -43,7 +47,7 @@
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top" />
         </StackPanel>
-        <Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0,15">
+        <Border BorderThickness="0,0,0,1" Margin="0,15">
             <TextBlock FontWeight="Bold" FontSize="16"
                        ToolTip="Game modes for which archetypes will be enabled">GAME MODES</TextBlock>
         </Border>
@@ -94,7 +98,7 @@
                           HorizontalAlignment="Left" Margin="0,5,0,0"
                           VerticalAlignment="Top"
                           ToolTip="For unchecked game modes show the regular note window." />
-            <Border BorderBrush="Black" BorderThickness="0,1,0,0" Margin="0,15,0,0">
+            <Border BorderThickness="0,1,0,0" Margin="0,15,0,0">
                 <StackPanel Margin="5">
                     <DockPanel Margin="0,6,0,0">
                         <TextBlock Text="Start Rank" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="14"

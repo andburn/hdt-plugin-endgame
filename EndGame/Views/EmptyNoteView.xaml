@@ -6,7 +6,13 @@
              xmlns:local="clr-namespace:HDT.Plugins.EndGame.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary Source="pack://application:,,,/EndGame;component/Views/Styles.xaml" />
+    </UserControl.Resources>
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ThemeTextColor}" />
+        </StackPanel.Resources>
         <TextBlock FontFamily="pack://application:,,,/EndGame.Common;component/Resources/#IcoMoon-Free"
                    FontSize="40" Text="&#xea0e;" TextAlignment="Center" />
         <TextBlock Text="{Binding Message}" TextAlignment="Center" FontSize="18" />
