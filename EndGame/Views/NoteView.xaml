@@ -47,7 +47,7 @@
         </Border>
 
         <TextBlock Grid.Column="0" Grid.Row="0"
-                   Visibility="{Binding IsLoadingDecks, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}"
+                   Visibility="{Binding IsLoadingDecks, Converter={StaticResource BoolToVisiblityConverter}, FallbackValue=Collapsed}"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="LOADING" FontWeight="Bold" />
 
@@ -90,7 +90,7 @@
                 <Border Background="{StaticResource DarkBackground}"
                         BorderThickness="0"
                         DockPanel.Dock="Bottom"
-                        Visibility="{Binding OpponentDeckIsValid, Converter={StaticResource VisibilityConverter}}">
+                        Visibility="{Binding OpponentDeckIsValid, Converter={StaticResource BoolToVisiblityConverter}}">
                     <Button Height="26" Width="140" Margin="8"
                             Command="{Binding AddOpponentDeck}"
                             Cursor="Hand">Create Archetype</Button>
