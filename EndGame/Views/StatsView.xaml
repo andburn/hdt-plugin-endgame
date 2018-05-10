@@ -7,11 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="500">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/EndGame;component/Views/Styles.xaml" />
     </UserControl.Resources>
 
     <Grid>

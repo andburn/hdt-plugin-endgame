@@ -7,11 +7,7 @@
              mc:Ignorable="d"
              d:DesignWidth="600" d:DesignHeight="400">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
-        <Style x:Key="NoBorder" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <SolidColorBrush x:Key="DarkBackground">#2e3136</SolidColorBrush>
+        <ResourceDictionary Source="pack://application:,,,/EndGame;component/Views/Styles.xaml" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

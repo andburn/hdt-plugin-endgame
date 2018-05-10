@@ -1,15 +1,21 @@
-﻿<ResourceDictionary x:Class="HDT.Plugins.EndGame.Styles"
+﻿<ResourceDictionary x:Class="HDT.Plugins.EndGame.Views.Styles"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cmnenums="clr-namespace:HDT.Plugins.Common.Enums;assembly=EndGame.Common"
              xmlns:cmn="clr-namespace:HDT.Plugins.Common.Utils;assembly=EndGame.Common"
+             xmlns:util="clr-namespace:HDT.Plugins.EndGame.Utilities"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d">
 
+    
     <Style TargetType="{x:Type Label}">
         <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style x:Key="NoBorder" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <SolidColorBrush x:Key="DarkBackground">#2e3136</SolidColorBrush>
@@ -21,6 +27,8 @@
     <cmn:CaseConverter x:Key="CaseConverter" />
 
     <BooleanToVisibilityConverter x:Key="BoolToVisiblityConverter" />
+
+    <util:MatchResultToStarRatingConverter x:Key="StarRatingConverter" />
 
     <CollectionViewSource x:Key="StatsGroup"  Source="{Binding Stats}">
         <CollectionViewSource.GroupDescriptions>
