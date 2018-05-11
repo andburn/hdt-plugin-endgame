@@ -95,6 +95,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 		public async Task OnNavigation(string location)
 		{
 			var loc = location.ToLower();
+
+			if (loc.Length > 2)
+				ContentTitle = loc.Substring(0, 1).ToUpper() + loc.Substring(1);
+
 			if (loc == Strings.NavSettings)
 			{
 				ContentViewModel = SettingsVM;
@@ -112,12 +116,10 @@ namespace HDT.Plugins.EndGame.ViewModels
 			}
 			else
 			{
+				ContentTitle = null;
 				EndGame.Logger.Error($"Unknown Main navigation '{location}'");
 				return;
 			}
-
-			if (loc.Length > 2)
-				ContentTitle = loc.Substring(0, 1).ToUpper() + loc.Substring(1);
 		}
 
 		private async Task LoadNote()

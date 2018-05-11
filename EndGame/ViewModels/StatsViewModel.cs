@@ -205,6 +205,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 			set { Set(() => RankFilterIsEnabled, ref _rankFilterIsEnabled, value); }
 		}
 
+		private bool _isLoadingStats;
+
+		public bool IsLoadingStats
+		{
+			get { return _isLoadingStats; }
+			set { Set(() => IsLoadingStats, ref _isLoadingStats, value); }
+		}
+
 		public StatsViewModel()
 		{
 			_games = new List<Game>();
@@ -278,9 +286,14 @@ namespace HDT.Plugins.EndGame.ViewModels
 
 		public async Task Update()
 		{
-			Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
+			IsLoadingStats = true;
+			await Task.Run(() =>
+			{
+				Decks = ViewModelHelper.GetDecksWithArchetypeGames(EndGame.Data);
+			});
 			SelectedDeck = ActiveOrDefaultDeck();
 			UpdateStats();
+			IsLoadingStats = false;
 		}
 	}
 }
