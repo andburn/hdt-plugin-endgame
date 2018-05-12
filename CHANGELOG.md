@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - *nothing*
 
+## [1.0.5] - 2018-05-12
+### Added
+- Loading message to stats screen
+
+### Fixes
+- Invisible text when using HDT dark theme
+
 ## [1.0.4] - 2018-03-20
 ### Updated
 - Update Common library
@@ -33,7 +40,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - Screenshot capturing at end of game
 
-[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/v1.0.4...HEAD
-[1.0.4]: https://github.com/andburn/hdt-plugin-endgameg/compare/v1.0.1...v1.0.4
-[1.0.1]: https://github.com/andburn/hdt-plugin-endgameg/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/andburn/hdt-plugin-endgameg/compare/v0.4.3...v1.0.0
+[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.5...HEAD
+[1.0.5]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.4...1.0.5
+[1.0.4]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.1...1.0.4
+[1.0.1]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/andburn/hdt-plugin-endgame/compare/0.4.3...1.0.0
