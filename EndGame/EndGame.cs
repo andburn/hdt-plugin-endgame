@@ -46,6 +46,7 @@ namespace HDT.Plugins.EndGame
 			Events = _kernel.Get<IEventsService>();
 			Client = _kernel.Get<IGameClientService>();
 			Config = _kernel.Get<IConfigurationRepository>();
+			NotificationManager.SetService(_kernel.Get<IToastService>());
 			// load settings
 			var assembly = Assembly.GetExecutingAssembly();
 			var resourceName = "HDT.Plugins.EndGame.Resources.Default.ini";
@@ -134,7 +135,7 @@ namespace HDT.Plugins.EndGame
 			catch (Exception e)
 			{
 				Logger.Error(e);
-				Notify("EndGame Error", e.Message, 15, IcoMoon.Warning, null);
+				Notify("EndGame Error", e.Message, IcoMoon.Warning);
 			}
 		}
 
@@ -196,11 +197,9 @@ namespace HDT.Plugins.EndGame
 				x.Close();
 		}
 
-		public static void Notify(string title, string message, int autoClose, string icon = null, Action action = null)
+		public static void Notify(string title, string message, string icon = null, string url = null)
 		{
-			SlidePanelManager
-				.Notification(_kernel.Get<ISlidePanel>(), title, message, icon, action)
-				.AutoClose(autoClose);
+			NotificationManager.ShowToast(title, message, icon, url);
 		}
 
 		public static async Task ImportMetaDecks(bool forced)
@@ -232,12 +231,12 @@ namespace HDT.Plugins.EndGame
 						Settings.Set(Strings.LastSnapshotStandard, update.StandardLatest);
 						if (incWild)
 							Settings.Set(Strings.LastSnapshotWild, update.WildLatest);
-						Notify("Meta Decks Updated", $"{count} decks imported", 10, IcoMoon.Notification, null);
+						Notify("Meta Decks Updated", $"{count} decks imported", IcoMoon.Notification);
 					}
 					else
 					{
 						Logger.Error("Update error, no decks imported");
-						Notify("Import Failed", "Update contained no decks", 15, IcoMoon.Warning, null);
+						Notify("Import Failed", "Update contained no decks", IcoMoon.Warning);
 					}
 				}
 				else
@@ -246,7 +245,7 @@ namespace HDT.Plugins.EndGame
 			catch (Exception e)
 			{
 				Logger.Error(e);
-				Notify("Import Failed", e.Message, 15, IcoMoon.Warning, null);
+				Notify("Import Failed", e.Message, IcoMoon.Warning);
 			}
 		}
 
@@ -309,8 +308,8 @@ namespace HDT.Plugins.EndGame
 				{
 					Logger.Info($"Plugin Update available ({latest.Version})");
 					Notify("Plugin Update Available",
-						$"[DOWNLOAD]({latest.DownloadUrl}) {Name} v{latest.Version}",
-						10, IcoMoon.Download3, () => Process.Start(latest.DownloadUrl));
+						$"{Name} v{latest.Version}",
+						IcoMoon.Download3, latest.DownloadUrl);
 				}
 			}
 			catch (Exception e)
@@ -332,7 +331,7 @@ namespace HDT.Plugins.EndGame
 			{
 				pm.Append("Note", IcoMoon.FileText2,
 					new RelayCommand(async () => await ShowNote()));
-			}
+            }
 			return pm.Menu;
 		}
 
@@ -351,6 +350,7 @@ namespace HDT.Plugins.EndGame
 			kernel.Bind<IGameClientService>().To<TrackerClientService>().InSingletonScope();
 			kernel.Bind<IConfigurationRepository>().To<TrackerConfigRepository>().InSingletonScope();
 			kernel.Bind<ISlidePanel>().To<MetroSlidePanel>();
+			kernel.Bind<IToastService>().To<TrackerToastService>().InSingletonScope();
 			kernel.Bind<IHttpClient>().To<HttpClient>();
 			return kernel;
 		}

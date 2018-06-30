@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - *nothing*
 
+## [1.0.6] - 2018-06-30
+### Updated
+- Notifications now appear as HDT toasts
+
+### Fixes
+- No longer crashes when notifications are shown
+
 ## [1.0.5] - 2018-05-12
 ### Added
 - Loading message to stats screen
@@ -40,7 +47,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - Screenshot capturing at end of game
 
-[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.5...HEAD
+[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.6...HEAD
+[1.0.6]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.1...1.0.4
 [1.0.1]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.0...1.0.1
