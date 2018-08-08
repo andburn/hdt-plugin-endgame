@@ -33,8 +33,8 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		{
 			// build the Json query
 			var metaReq = new SnapshotRequest();
-			metaReq.SortOrder = "createdDate DESC";
-			metaReq.SetFields("id", "snapshotType", "isActive");
+			metaReq.SortOrder = "createdDate+DESC";
+			metaReq.SetFields("id", "snapshotType", "isActive", "publishDate");
 			metaReq.SetQuery("isActive:true", $"snapshotType:{type}");
 			metaReq.Includes.Add(new IncludeItem("slugs"));
 			// make the request and deserialize Json result
@@ -57,7 +57,6 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 		{
 			var snapReq = new SnapshotRequest();
 			snapReq.SetQuery($"slug:{slug.Item1}", $"snapshotType:{slug.Item2}");
-			snapReq.SetFields("snapNum", "title", "snapshotType", "isActive", "id", "createdDate", "updatedDate");
 			// build the rest of the Json request, what sections to include/exclude
 			// first, the tech cards
 			var incCard = new IncludeItem("card", new Include("name"));
@@ -65,7 +64,8 @@ namespace HDT.Plugins.EndGame.Services.TempoStorm
 			var incDeckTech = new IncludeItem("deckTech", incCardTech);
 			// then, acutal decks and cards
 			var incSlugs = new IncludeItem("slugs", new Include("linked", "slug"));
-			var inCardsCard = new IncludeItem("card", new Include("id", "name", "cardType", "cost"));
+			var inCardsCard = new IncludeItem("card", new Include(
+				"id", "name", "name_ru", "cardType", "cost", "dust", "photoNames"));
 			var incCards = new IncludeItem("cards", inCardsCard);
 			var incDeck = new IncludeItem("deck", new Include()
 			{
