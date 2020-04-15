@@ -23,7 +23,7 @@ deploy:
   release: Update $(APPVEYOR_REPO_TAG_NAME)
   description: Description
   auth_token:
-    secure: OpNj+lrWxBC7mLLsC2F7BqFrwrOBXsgqelz6t0wK8pqIBjO7Imn9Adp+k6OuNbCN
+    secure: FwL5p581MbZH+QA+4YW2G9SfjypFLWXRFbmNwZmo51i+hm3ugRyEvJMyZO7s7uDs
   artifact: Release
   draft: true
   on:
