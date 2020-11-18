@@ -1,10 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.8] - 2020-04-20
+## [1.0.8] - 2020-11-18
 
 ### Fixes
 - No longer crashes HDT when toasts are shown
+
+### Updated
+- Dependcies updated
 
 ## [1.0.6] - 2018-06-30
 ### Updated
