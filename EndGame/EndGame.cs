@@ -337,7 +337,7 @@ namespace HDT.Plugins.EndGame
 
 		private Version GetVersion()
 		{
-			return GitVersion.Get(Assembly.GetExecutingAssembly(), this);
+			return Assembly.GetExecutingAssembly().GetName().Version;
 		}
 
 		private IKernel GetKernel()
