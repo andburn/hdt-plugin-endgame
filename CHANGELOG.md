@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.9] - 2020-11-20
+
+### Fixes
+- Update notification showing on startup when on latest release
+
 ## [1.0.8] - 2020-11-18
 
 ### Fixes
@@ -49,7 +54,8 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Screenshot capturing at end of game
 
-[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.8...HEAD
+[Unreleased]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.9...HEAD
+[1.0.9]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.6...1.0.7
 [1.0.6]: https://github.com/andburn/hdt-plugin-endgame/compare/1.0.5...1.0.6
